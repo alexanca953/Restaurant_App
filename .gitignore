@@ -1,0 +1,24 @@
+### Maven (Build) ###
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+### IntelliJ IDEA (Ignoram setarile personale) ###
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+### Java Class Files ###
+*.class
+
+### Loguri si Sistem ###
+*.log
+.DS_Store
+
+### Eclipse / VS Code (In caz ca folositi altceva vreodata) ###
+.classpath
+.project
+.settings/
+.vscode/
+bin/
