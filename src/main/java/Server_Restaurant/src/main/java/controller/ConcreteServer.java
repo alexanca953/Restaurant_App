@@ -11,10 +11,16 @@ public class ConcreteServer extends AbstractServer {
      * @param port the port number on which to listen.
      */
     final public static int DEFAULT_PORT=8080;
+    private RestaurantController controller;
 
     public ConcreteServer(int port) {
         super(port);
     }
+
+    public void setController(RestaurantController controller) {
+        this.controller = controller;
+    }
+
     @Override
     protected void serverStarted() {
         super.serverStarted();
@@ -37,18 +43,11 @@ public class ConcreteServer extends AbstractServer {
     }
     @Override
     protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
-
-    }
-    public static void main(String[] args)
-    {
-        int port=DEFAULT_PORT;
-        ConcreteServer sv = new ConcreteServer(port);
-        try {
-            sv.listen();
+        if (controller != null) {
+            controller.processRequest(msg, client);
+        } else {
+            System.out.println("Error: Controller is null!");
         }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
+
 }
