@@ -1,5 +1,6 @@
-package commands;
+package commands.usercommands;
 
+import commands.ICommandHandler;
 import model.Message;
 import model.User;
 import model.repository.UserRepository;

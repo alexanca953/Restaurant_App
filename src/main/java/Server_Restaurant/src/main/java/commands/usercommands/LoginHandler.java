@@ -1,4 +1,4 @@
-package commands;
+package commands.usercommands;
 
 import commands.ICommandHandler;
 import model.Message;
