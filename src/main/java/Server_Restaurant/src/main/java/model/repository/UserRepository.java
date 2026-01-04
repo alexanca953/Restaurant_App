@@ -24,8 +24,8 @@ public class UserRepository implements IUserRepository {
             stmt.setString(2, password);
 
             ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                // Returnam utilizatorul gasit
+            if (rs.next())
+            {
                 return new User(
                         rs.getInt("user_id"),
                         rs.getString("role"),
@@ -162,10 +162,8 @@ public class UserRepository implements IUserRepository {
         String sql = "SELECT * FROM user WHERE email = ?";
         try (Connection conn = repository.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-
             stmt.setString(1, email);
             ResultSet rs = stmt.executeQuery();
-
             if (rs.next()) {
                 return new User(
                         rs.getInt("user_id"),
