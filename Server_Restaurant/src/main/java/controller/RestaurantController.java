@@ -115,12 +115,18 @@ public class RestaurantController {
         handlers.put("GET_ALL_TABLE_RESERVATIONS", new GetAllTableReservationsHandler(tableReservationRepository));
         handlers.put("UPDATE_TABLE_RESERVATION", new UpdateTableReservationHandler(tableReservationRepository));
     }
-    public void processRequest(Object msg, ConnectionToClient client) {
+    public void processRequest(Message msg, ConnectionToClient client) {
         try {
-            if (msg instanceof ICommandHandler) {
-                ICommandHandler command = (ICommandHandler) msg;
-                Object result = command.execute(this);
+
+            if (handlers.get(msg.getCommand()) != null) {
+                ICommandHandler command = (ICommandHandler) handlers.get(msg.getCommand()) ;
+                Message result = command.execute(msg.getData());
+                System.out.println("res= "+result.toString());
                 client.sendToClient(result);
+            }
+            else
+            {
+                System.out.println("is not an Icommand instance!");
             }
         } catch (Exception e) {
             e.printStackTrace();

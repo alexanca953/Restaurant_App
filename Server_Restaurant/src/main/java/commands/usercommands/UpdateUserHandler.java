@@ -14,7 +14,7 @@ public class UpdateUserHandler implements ICommandHandler {
 
     @Override
     public Message execute(Object data) {
-        User userToUpdate = (User) data;
+        User userToUpdate = (User)data;
         boolean result = userRepo.updateUser(userToUpdate.getUserId(), userToUpdate);
         return new Message("UPDATE_USER_RESPONSE", result);
     }

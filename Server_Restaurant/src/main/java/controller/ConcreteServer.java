@@ -1,5 +1,6 @@
 package controller;
 
+import model.Message;
 import ocsf.AbstractServer;
 import ocsf.ConnectionToClient;
 
@@ -43,11 +44,20 @@ public class ConcreteServer extends AbstractServer {
     }
     @Override
     protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
-        if (controller != null) {
-            controller.processRequest(msg, client);
-        } else {
-            System.out.println("Error: Controller is null!");
+        try {
+           Message messageRecived = (Message)msg;
+            if (controller != null) {
+                System.out.println("SERVER: Received a message "+ messageRecived.toString());
+                controller.processRequest(messageRecived, client);
+            } else
+            {
+                System.out.println("Error: Controller is null!");
+            }
         }
+        catch (Exception e) {
+            System.out.println("SERVER: Error processing a message: " + e.toString());
+        }
+
     }
 
 }
