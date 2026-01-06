@@ -13,6 +13,14 @@ public class Client implements Serializable {
         this.userId = userId;
     }
 
+    @Override
+    public String toString() {
+        return "Client{" +
+                "clientId=" + clientId +
+                ", userId=" + userId +
+                '}';
+    }
+
     public int getClientId() { return clientId; }
     public void setClientId(int clientId) { this.clientId = clientId; }
 

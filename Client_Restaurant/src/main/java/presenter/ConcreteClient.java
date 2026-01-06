@@ -14,32 +14,19 @@ public class ConcreteClient extends AbstractClient {
 
     private CompletableFuture<Object> pendingResponse;
 
-    /**
-     * Constructor.
-     * connects to localhost on port 8080 (Must match the Java Server port).
-     */
     public ConcreteClient() {
         super("localhost", 8080);
     }
 
-    /**
-     * Sends a request to the server and blocks execution until a response is received.
-     * This is necessary because Web Controllers need a synchronous response.
-     *
-     * @param message The request object (e.g., new Message("GET_ALL_USERS", null))
-     * @return The data received from the server (e.g., List<User>)
-     */
     public Object sendAndReceive(Object message) {
         // 1. Reset the promise (create a new empty container for the response)
         pendingResponse = new CompletableFuture<>();
-
         try {
             // 2. Ensure connection is open
             if (!isConnected()) {
                 System.out.println("WEB CLIENT: Attempting to connect to backend server...");
                 openConnection();
             }
-
             // 3. Send the message
             Message messageToSend = (Message) message;
             sendToServer(messageToSend);

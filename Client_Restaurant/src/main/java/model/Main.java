@@ -1,6 +1,7 @@
 package com.example.client; // Pune pachetul tau corect
 
 import model.Message;
+import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -8,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import presenter.ConcreteClient;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 @SpringBootApplication
@@ -35,8 +37,9 @@ public class Main implements CommandLineRunner {
                 break;
             }
 
+            User a=new User(10,"a","a","a","a","a","a");
             // 1. Facem mesajul simplu (fara date suplimentare momentan)
-            Message msg = new Message(comanda, null);
+            Message msg = new Message(comanda, a);
 
             // 2. Il trimitem si ASTEPTAM raspunsul pe loc (metoda aia cu sendAndReceive)
             Object raspuns = client.sendAndReceive(msg);

@@ -26,6 +26,20 @@ public class Feedback implements Serializable {
         this.dateTime = dateTime;
     }
 
+    @Override
+    public String toString() {
+        return "Feedback{" +
+                "reviewId=" + reviewId +
+                ", clientId=" + clientId +
+                ", employeeId=" + employeeId +
+                ", productId=" + productId +
+                ", score=" + score +
+                ", comment='" + comment + '\'' +
+                ", type='" + type + '\'' +
+                ", dateTime=" + dateTime +
+                '}';
+    }
+
     public int getReviewId() { return reviewId; }
     public void setReviewId(int reviewId) { this.reviewId = reviewId; }
 

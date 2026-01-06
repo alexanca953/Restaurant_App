@@ -13,6 +13,14 @@ public class Employee implements Serializable {
         this.userId = userId;
     }
 
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "employeeId=" + employeeId +
+                ", userId=" + userId +
+                '}';
+    }
+
     public int getEmployeeId() { return employeeId; }
     public void setEmployeeId(int employeeId) { this.employeeId = employeeId; }
 

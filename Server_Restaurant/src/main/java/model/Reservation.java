@@ -21,6 +21,18 @@ public class Reservation implements Serializable {
         this.status = status;
     }
 
+    @Override
+    public String toString() {
+        return "Reservation{" +
+                "reservationId=" + reservationId +
+                ", clientId=" + clientId +
+                ", employeeId=" + employeeId +
+                ", dateTime=" + dateTime +
+                ", numberOfPeople=" + numberOfPeople +
+                ", status='" + status + '\'' +
+                '}';
+    }
+
     public int getReservationId() { return reservationId; }
     public void setReservationId(int reservationId) { this.reservationId = reservationId; }
 

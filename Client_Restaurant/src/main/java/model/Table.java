@@ -26,6 +26,16 @@ public class Table implements Serializable {
     public int getCapacity() { return capacity; }
     public void setCapacity(int capacity) { this.capacity = capacity; }
 
+    @Override
+    public String toString() {
+        return "Table{" +
+                "tableId=" + tableId +
+                ", tableNumber=" + tableNumber +
+                ", capacity=" + capacity +
+                ", status='" + status + '\'' +
+                '}';
+    }
+
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
 }

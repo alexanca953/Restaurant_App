@@ -5,24 +5,24 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Repository {
-    Connection SqlConnection;
+    // Definim datele de conectare ca constante
+    private static final String URL = "jdbc:mysql://localhost:3306/restaurant_db";
+    private static final String USER = "root";
+    private static final String PASSWORD = "root";
+
     public Repository() {
         try {
-            String url = "jdbc:mysql://localhost:3306/restaurant_db";
-            String username = "root";
-            String password = "root";
+            // Incarcam driverul o singura data, la pornire
             Class.forName("com.mysql.cj.jdbc.Driver");
-            this.SqlConnection = DriverManager.getConnection(url, username, password);
-            System.out.println("Conexiune reusita la baza de date!");
         } catch (ClassNotFoundException e) {
-            System.out.println("Nu am gasit Driverul de MySQL! Verifica pom.xml.");
-            e.printStackTrace();
-        } catch (SQLException e) {
-            System.out.println("Eroare la conectare SQL (Verifica user/parola/nume baza)!");
+            System.out.println("DID NOT FIND DRIVER MYSQL");
             e.printStackTrace();
         }
     }
-    public Connection getConnection() {
-        return this.SqlConnection;
+
+    // Aceasta metoda creeaza o conexiune NOUA de fiecare data cand e chemata
+    public Connection getConnection() throws SQLException {
+        Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+        return conn;
     }
 }

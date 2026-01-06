@@ -15,6 +15,15 @@ public class TableReservation implements Serializable {
         this.tableId = tableId;
     }
 
+    @Override
+    public String toString() {
+        return "TableReservation{" +
+                "reservationTableId=" + reservationTableId +
+                ", reservationId=" + reservationId +
+                ", tableId=" + tableId +
+                '}';
+    }
+
     public int getReservationTableId() { return reservationTableId; }
     public void setReservationTableId(int reservationTableId) { this.reservationTableId = reservationTableId; }
 
