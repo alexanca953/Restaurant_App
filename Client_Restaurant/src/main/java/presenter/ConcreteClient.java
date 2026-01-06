@@ -1,55 +1,93 @@
 package presenter;
-import model.*;
-import ocsf.*;
+
+import model.Message;
+import ocsf.AbstractClient;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
+@Component
 public class ConcreteClient extends AbstractClient {
 
+    private CompletableFuture<Object> pendingResponse;
+
     /**
-     * Constructs the client.
-     *
-     * @param host the server's host name.
-     * @param port the port number.
+     * Constructor.
+     * connects to localhost on port 8080 (Must match the Java Server port).
      */
-    public ConcreteClient(String host, int port) {
-        super(host, port);
+    public ConcreteClient() {
+        super("localhost", 8080);
+    }
+
+    /**
+     * Sends a request to the server and blocks execution until a response is received.
+     * This is necessary because Web Controllers need a synchronous response.
+     *
+     * @param message The request object (e.g., new Message("GET_ALL_USERS", null))
+     * @return The data received from the server (e.g., List<User>)
+     */
+    public Object sendAndReceive(Object message) {
+        // 1. Reset the promise (create a new empty container for the response)
+        pendingResponse = new CompletableFuture<>();
+
+        try {
+            // 2. Ensure connection is open
+            if (!isConnected()) {
+                System.out.println("WEB CLIENT: Attempting to connect to backend server...");
+                openConnection();
+            }
+
+            // 3. Send the message
+            Message messageToSend = (Message) message;
+            sendToServer(messageToSend);
+            System.out.println("WEB CLIENT: Sent to server and waiting for response: " + messageToSend.toString());
+
+            // 4. WAIT FOR RESPONSE (Block here for max 5 seconds)
+            return pendingResponse.get(5, TimeUnit.SECONDS);
+
+        } catch (TimeoutException e) {
+            System.out.println("WEB CLIENT: Server did not respond within 5 seconds.");
+            return null;
+        } catch (Exception e) {
+            System.out.println("WEB CLIENT: Communication error: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
     protected void handleMessageFromServer(Object msg) {
-        try{
-            Message message = (Message) msg;
-            System.out.println(message.toString());
-        }
-        catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-    public void sendMessage(Object message) {
         try {
-            Message messageToSend =(Message)message;
-            sendToServer(messageToSend);
-            System.out.println("CLIENT: Am trimis catre server: " + messageToSend.toString());
-        } catch (IOException e) {
-            System.out.println("CLIENT: Nu am putut trimite mesajul la server.");
-            e.printStackTrace();
+            Message message = (Message) msg;
+            System.out.println("WEB CLIENT: Received response: " + message.toString());
+
+            // If there is a pending request from the Web Controller, complete it now
+            if (pendingResponse != null && !pendingResponse.isDone()) {
+                pendingResponse.complete(message.getData());
+            }
+        } catch (Exception e) {
+            System.out.println("WEB CLIENT: Error processing response: " + e.getMessage());
+            if (pendingResponse != null) {
+                pendingResponse.complete(null);
+            }
         }
     }
-
 
     @Override
     protected void connectionEstablished() {
-        System.out.println("CLIENT: M-am conectat cu succes la server!");
+        System.out.println("WEB CLIENT: Successfully connected to backend server!");
     }
 
     @Override
     protected void connectionClosed() {
-        System.out.println("CLIENT: Conexiunea cu serverul s-a inchis.");
+        System.out.println("WEB CLIENT: Connection to server closed.");
     }
 
     @Override
     protected void connectionException(Exception exception) {
-        System.out.println("CLIENT: Eroare de conexiune server: " + exception);
+        System.out.println("WEB CLIENT: Connection error: " + exception.getMessage());
     }
 }
