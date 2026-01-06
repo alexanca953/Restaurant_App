@@ -1,13 +1,14 @@
 package commands.tablecommands;
 
 import commands.ICommandHandler;
+import model.ITableRepository;
 import model.Message;
 import model.repository.TableRepository;
 
 public class DeleteTableHandler implements ICommandHandler {
-    private TableRepository tableRepo;
+    private ITableRepository tableRepo;
 
-    public DeleteTableHandler(TableRepository tableRepo) {
+    public DeleteTableHandler(ITableRepository tableRepo) {
         this.tableRepo = tableRepo;
     }
 

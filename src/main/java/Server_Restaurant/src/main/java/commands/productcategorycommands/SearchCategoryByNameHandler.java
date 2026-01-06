@@ -1,15 +1,16 @@
 package commands.productcategorycommands;
 
 import commands.ICommandHandler;
+import model.IProductCategoryRepository;
 import model.Message;
 import model.ProductCategory;
 import model.repository.ProductCategoryRepository;
 import java.util.List;
 
 public class SearchCategoryByNameHandler implements ICommandHandler {
-    private ProductCategoryRepository repo;
+    private IProductCategoryRepository repo;
 
-    public SearchCategoryByNameHandler(ProductCategoryRepository repo) {
+    public SearchCategoryByNameHandler(IProductCategoryRepository repo) {
         this.repo = repo;
     }
 

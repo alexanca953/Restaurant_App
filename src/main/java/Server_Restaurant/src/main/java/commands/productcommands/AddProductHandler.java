@@ -1,14 +1,15 @@
 package commands.productcommands;
 
 import commands.ICommandHandler;
+import model.IProductRepository;
 import model.Message;
 import model.Product;
 import model.repository.ProductRepository;
 
 public class AddProductHandler implements ICommandHandler {
-    private ProductRepository productRepo;
+    private IProductRepository productRepo;
 
-    public AddProductHandler(ProductRepository productRepo) {
+    public AddProductHandler(IProductRepository productRepo) {
         this.productRepo = productRepo;
     }
 

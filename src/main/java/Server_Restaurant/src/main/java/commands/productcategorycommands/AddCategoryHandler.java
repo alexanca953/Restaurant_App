@@ -1,14 +1,15 @@
 package commands.productcategorycommands;
 
 import commands.ICommandHandler;
+import model.IProductCategoryRepository;
 import model.Message;
 import model.ProductCategory;
 import model.repository.ProductCategoryRepository;
 
 public class AddCategoryHandler implements ICommandHandler {
-    private ProductCategoryRepository repo;
+    private IProductCategoryRepository repo;
 
-    public AddCategoryHandler(ProductCategoryRepository repo) {
+    public AddCategoryHandler(IProductCategoryRepository repo) {
         this.repo = repo;
     }
 

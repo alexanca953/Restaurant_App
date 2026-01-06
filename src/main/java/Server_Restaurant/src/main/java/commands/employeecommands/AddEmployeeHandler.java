@@ -2,13 +2,14 @@ package commands.employeecommands;
 
 import commands.ICommandHandler;
 import model.Employee;
+import model.IEmployeeRepository;
 import model.Message;
 import model.repository.EmployeeRepository;
 
 public class AddEmployeeHandler implements ICommandHandler {
-    private EmployeeRepository employeeRepo;
+    private IEmployeeRepository employeeRepo;
 
-    public AddEmployeeHandler(EmployeeRepository employeeRepo) {
+    public AddEmployeeHandler(IEmployeeRepository employeeRepo) {
         this.employeeRepo = employeeRepo;
     }
 

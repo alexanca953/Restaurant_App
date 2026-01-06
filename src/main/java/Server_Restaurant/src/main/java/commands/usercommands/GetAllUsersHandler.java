@@ -1,15 +1,16 @@
 package commands.usercommands;
 
 import commands.ICommandHandler;
+import model.IUserRepository;
 import model.Message;
 import model.repository.UserRepository;
 import java.util.List;
 import model.User;
 
 public class GetAllUsersHandler implements ICommandHandler {
-    private UserRepository userRepo;
+    private IUserRepository userRepo;
 
-    public GetAllUsersHandler(UserRepository userRepo) {
+    public GetAllUsersHandler(IUserRepository userRepo) {
         this.userRepo = userRepo;
     }
 

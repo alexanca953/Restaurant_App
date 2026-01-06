@@ -1,14 +1,15 @@
 package commands.tablecommands;
 
 import commands.ICommandHandler;
+import model.ITableRepository;
 import model.Message;
 import model.Table;
 import model.repository.TableRepository;
 
 public class UpdateTableHandler implements ICommandHandler {
-    private TableRepository tableRepo;
+    private ITableRepository tableRepo;
 
-    public UpdateTableHandler(TableRepository tableRepo) {
+    public UpdateTableHandler(ITableRepository tableRepo) {
         this.tableRepo = tableRepo;
     }
 

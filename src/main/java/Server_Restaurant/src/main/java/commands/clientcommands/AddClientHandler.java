@@ -2,13 +2,14 @@ package commands.clientcommands;
 
 import commands.ICommandHandler;
 import model.Client;
+import model.IClientRepository;
 import model.Message;
 import model.repository.ClientRepository;
 
 public class AddClientHandler implements ICommandHandler {
-    private ClientRepository clientRepo;
+    private IClientRepository clientRepo;
 
-    public AddClientHandler(ClientRepository clientRepo) {
+    public AddClientHandler(IClientRepository clientRepo) {
         this.clientRepo = clientRepo;
     }
 

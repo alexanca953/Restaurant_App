@@ -1,13 +1,14 @@
 package commands.productcommands;
 
 import commands.ICommandHandler;
+import model.IProductRepository;
 import model.Message;
 import model.repository.ProductRepository;
 
 public class DeleteProductHandler implements ICommandHandler {
-    private ProductRepository productRepo;
+    private IProductRepository productRepo;
 
-    public DeleteProductHandler(ProductRepository productRepo) {
+    public DeleteProductHandler(IProductRepository productRepo) {
         this.productRepo = productRepo;
     }
 

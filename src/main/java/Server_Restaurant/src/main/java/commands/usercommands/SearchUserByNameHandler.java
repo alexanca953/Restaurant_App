@@ -1,15 +1,16 @@
 package commands.usercommands;
 
 import commands.ICommandHandler;
+import model.IUserRepository;
 import model.Message;
 import model.repository.UserRepository;
 import java.util.List;
 import model.User;
 
 public class SearchUserByNameHandler implements ICommandHandler {
-    private UserRepository userRepo;
+    private IUserRepository userRepo;
 
-    public SearchUserByNameHandler(UserRepository userRepo) {
+    public SearchUserByNameHandler(IUserRepository userRepo) {
         this.userRepo = userRepo;
     }
 

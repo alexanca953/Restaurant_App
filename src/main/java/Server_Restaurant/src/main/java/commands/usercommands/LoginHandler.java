@@ -1,14 +1,15 @@
 package commands.usercommands;
 
 import commands.ICommandHandler;
+import model.IUserRepository;
 import model.Message;
 import model.User;
 import model.repository.UserRepository;
 
 public class LoginHandler implements ICommandHandler {
-    private UserRepository userRepo;
+    private IUserRepository userRepo;
 
-    public LoginHandler(UserRepository userRepo) {
+    public LoginHandler(IUserRepository userRepo) {
         this.userRepo = userRepo;
     }
 

@@ -1,15 +1,16 @@
 package commands.productcategorycommands;
 
 import commands.ICommandHandler;
+import model.IProductCategoryRepository;
 import model.Message;
 import model.ProductCategory;
 import model.repository.ProductCategoryRepository;
 import java.util.List;
 
 public class GetAllCategoriesHandler implements ICommandHandler {
-    private ProductCategoryRepository repo;
+    private IProductCategoryRepository repo;
 
-    public GetAllCategoriesHandler(ProductCategoryRepository repo) {
+    public GetAllCategoriesHandler(IProductCategoryRepository repo) {
         this.repo = repo;
     }
 

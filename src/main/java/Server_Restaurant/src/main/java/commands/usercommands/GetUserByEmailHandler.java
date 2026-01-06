@@ -1,14 +1,15 @@
 package commands.usercommands;
 
 import commands.ICommandHandler;
+import model.IUserRepository;
 import model.Message;
 import model.User;
 import model.repository.UserRepository;
 
 public class GetUserByEmailHandler implements ICommandHandler {
-    private UserRepository userRepo;
+    private IUserRepository userRepo;
 
-    public GetUserByEmailHandler(UserRepository userRepo) {
+    public GetUserByEmailHandler(IUserRepository userRepo) {
         this.userRepo = userRepo;
     }
 

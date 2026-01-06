@@ -1,15 +1,16 @@
 package commands.tablecommands;
 
 import commands.ICommandHandler;
+import model.ITableRepository;
 import model.Message;
 import model.Table;
 import model.repository.TableRepository;
 import java.util.List;
 
 public class GetAllTablesHandler implements ICommandHandler {
-    private TableRepository tableRepo;
+    private ITableRepository tableRepo;
 
-    public GetAllTablesHandler(TableRepository tableRepo) {
+    public GetAllTablesHandler(ITableRepository tableRepo) {
         this.tableRepo = tableRepo;
     }
 

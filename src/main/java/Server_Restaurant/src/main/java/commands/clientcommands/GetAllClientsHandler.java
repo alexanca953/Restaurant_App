@@ -2,14 +2,15 @@ package commands.clientcommands;
 
 import commands.ICommandHandler;
 import model.Client;
+import model.IClientRepository;
 import model.Message;
 import model.repository.ClientRepository;
 import java.util.List;
 
 public class GetAllClientsHandler implements ICommandHandler {
-    private ClientRepository clientRepo;
+    private IClientRepository clientRepo;
 
-    public GetAllClientsHandler(ClientRepository clientRepo) {
+    public GetAllClientsHandler(IClientRepository clientRepo) {
         this.clientRepo = clientRepo;
     }
 

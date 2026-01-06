@@ -1,13 +1,14 @@
 package commands.clientcommands;
 
 import commands.ICommandHandler;
+import model.IClientRepository;
 import model.Message;
 import model.repository.ClientRepository;
 
 public class DeleteClientHandler implements ICommandHandler {
-    private ClientRepository clientRepo;
+    private IClientRepository clientRepo;
 
-    public DeleteClientHandler(ClientRepository clientRepo) {
+    public DeleteClientHandler(IClientRepository clientRepo) {
         this.clientRepo = clientRepo;
     }
 

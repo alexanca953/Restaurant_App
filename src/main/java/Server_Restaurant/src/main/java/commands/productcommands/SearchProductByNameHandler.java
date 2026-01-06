@@ -1,15 +1,16 @@
 package commands.productcommands;
 
 import commands.ICommandHandler;
+import model.IProductRepository;
 import model.Message;
 import model.Product;
 import model.repository.ProductRepository;
 import java.util.List;
 
 public class SearchProductByNameHandler implements ICommandHandler {
-    private ProductRepository productRepo;
+    private IProductRepository productRepo;
 
-    public SearchProductByNameHandler(ProductRepository productRepo) {
+    public SearchProductByNameHandler(IProductRepository productRepo) {
         this.productRepo = productRepo;
     }
 

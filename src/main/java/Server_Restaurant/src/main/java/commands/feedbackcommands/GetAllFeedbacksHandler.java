@@ -2,14 +2,15 @@ package commands.feedbackcommands;
 
 import commands.ICommandHandler;
 import model.Feedback;
+import model.IFeedbackRepository;
 import model.Message;
 import model.repository.FeedbackRepository;
 import java.util.List;
 
 public class GetAllFeedbacksHandler implements ICommandHandler {
-    private FeedbackRepository feedbackRepo;
+    private IFeedbackRepository feedbackRepo;
 
-    public GetAllFeedbacksHandler(FeedbackRepository feedbackRepo) {
+    public GetAllFeedbacksHandler(IFeedbackRepository feedbackRepo) {
         this.feedbackRepo = feedbackRepo;
     }
 

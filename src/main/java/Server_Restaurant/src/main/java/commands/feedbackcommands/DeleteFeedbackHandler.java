@@ -1,13 +1,14 @@
 package commands.feedbackcommands;
 
 import commands.ICommandHandler;
+import model.IFeedbackRepository;
 import model.Message;
 import model.repository.FeedbackRepository;
 
 public class DeleteFeedbackHandler implements ICommandHandler {
-    private FeedbackRepository feedbackRepo;
+    private IFeedbackRepository feedbackRepo;
 
-    public DeleteFeedbackHandler(FeedbackRepository feedbackRepo) {
+    public DeleteFeedbackHandler(IFeedbackRepository feedbackRepo) {
         this.feedbackRepo = feedbackRepo;
     }
 

@@ -1,13 +1,14 @@
 package commands.employeecommands;
 
 import commands.ICommandHandler;
+import model.IEmployeeRepository;
 import model.Message;
 import model.repository.EmployeeRepository;
 
 public class DeleteEmployeeHandler implements ICommandHandler {
-    private EmployeeRepository employeeRepo;
+    private IEmployeeRepository employeeRepo;
 
-    public DeleteEmployeeHandler(EmployeeRepository employeeRepo) {
+    public DeleteEmployeeHandler(IEmployeeRepository employeeRepo) {
         this.employeeRepo = employeeRepo;
     }
 

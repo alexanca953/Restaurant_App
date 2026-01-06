@@ -1,13 +1,14 @@
 package commands.reservationcommands;
 
 import commands.ICommandHandler;
+import model.IReservationRepository;
 import model.Message;
 import model.repository.ReservationRepository;
 
 public class DeleteReservationHandler implements ICommandHandler {
-    private ReservationRepository reservationRepo;
+    private IReservationRepository reservationRepo;
 
-    public DeleteReservationHandler(ReservationRepository reservationRepo) {
+    public DeleteReservationHandler(IReservationRepository reservationRepo) {
         this.reservationRepo = reservationRepo;
     }
 

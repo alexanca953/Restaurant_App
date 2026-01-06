@@ -1,14 +1,15 @@
 package commands.tablereservationcommands;
 
 import commands.ICommandHandler;
+import model.ITableReservationRepository;
 import model.Message;
 import model.TableReservation;
 import model.repository.TableReservationRepository;
 
 public class AddTableReservationHandler implements ICommandHandler {
-    private TableReservationRepository repo;
+    private ITableReservationRepository repo;
 
-    public AddTableReservationHandler(TableReservationRepository repo) {
+    public AddTableReservationHandler(ITableReservationRepository repo) {
         this.repo = repo;
     }
 

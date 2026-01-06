@@ -2,13 +2,14 @@ package commands.feedbackcommands;
 
 import commands.ICommandHandler;
 import model.Feedback;
+import model.IFeedbackRepository;
 import model.Message;
 import model.repository.FeedbackRepository;
 
 public class AddFeedbackHandler implements ICommandHandler {
-    private FeedbackRepository feedbackRepo;
+    private IFeedbackRepository feedbackRepo;
 
-    public AddFeedbackHandler(FeedbackRepository feedbackRepo) {
+    public AddFeedbackHandler(IFeedbackRepository feedbackRepo) {
         this.feedbackRepo = feedbackRepo;
     }
 

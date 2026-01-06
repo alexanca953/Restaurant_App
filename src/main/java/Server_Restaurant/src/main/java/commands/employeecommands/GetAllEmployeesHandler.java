@@ -2,14 +2,15 @@ package commands.employeecommands;
 
 import commands.ICommandHandler;
 import model.Employee;
+import model.IEmployeeRepository;
 import model.Message;
 import model.repository.EmployeeRepository;
 import java.util.List;
 
 public class GetAllEmployeesHandler implements ICommandHandler {
-    private EmployeeRepository employeeRepo;
+    private IEmployeeRepository employeeRepo;
 
-    public GetAllEmployeesHandler(EmployeeRepository employeeRepo) {
+    public GetAllEmployeesHandler(IEmployeeRepository employeeRepo) {
         this.employeeRepo = employeeRepo;
     }
 

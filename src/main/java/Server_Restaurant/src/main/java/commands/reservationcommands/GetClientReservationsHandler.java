@@ -1,15 +1,16 @@
 package commands.reservationcommands;
 
 import commands.ICommandHandler;
+import model.IReservationRepository;
 import model.Message;
 import model.Reservation;
 import model.repository.ReservationRepository;
 import java.util.List;
 
 public class GetClientReservationsHandler implements ICommandHandler {
-    private ReservationRepository reservationRepo;
+    private IReservationRepository reservationRepo;
 
-    public GetClientReservationsHandler(ReservationRepository reservationRepo) {
+    public GetClientReservationsHandler(IReservationRepository reservationRepo) {
         this.reservationRepo = reservationRepo;
     }
 

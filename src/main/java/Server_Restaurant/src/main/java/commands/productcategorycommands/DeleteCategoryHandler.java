@@ -1,13 +1,14 @@
 package commands.productcategorycommands;
 
 import commands.ICommandHandler;
+import model.IProductCategoryRepository;
 import model.Message;
 import model.repository.ProductCategoryRepository;
 
 public class DeleteCategoryHandler implements ICommandHandler {
-    private ProductCategoryRepository repo;
+    private IProductCategoryRepository repo;
 
-    public DeleteCategoryHandler(ProductCategoryRepository repo) {
+    public DeleteCategoryHandler(IProductCategoryRepository repo) {
         this.repo = repo;
     }
 
