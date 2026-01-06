@@ -1,10 +1,9 @@
-package presenter;
+package controller;
 
 import model.Message;
-import ocsf.AbstractClient;
+import service.AbstractClient;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;

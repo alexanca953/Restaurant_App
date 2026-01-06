@@ -7,13 +7,12 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
-import presenter.ConcreteClient;
+import controller.ConcreteClient;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"presenter", "model"}) // Ca sa gaseasca ConcreteClient-ul tau
+@ComponentScan(basePackages = {"controller", "model"}) // Ca sa gaseasca ConcreteClient-ul tau
 public class Main implements CommandLineRunner {
 
     @Autowired
