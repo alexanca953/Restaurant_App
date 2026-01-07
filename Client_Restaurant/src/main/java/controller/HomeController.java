@@ -6,6 +6,7 @@ import model.ProductCategory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -70,6 +71,18 @@ public class HomeController {
         {
             System.out.println(e+"eror at deleting the product");
         }
+        return "redirect:/menu-management";
+    }
+    @PostMapping("/menu-management/save-category")
+    public String saveCategory(Model model, ProductCategory category) {
+
+       try{
+           client.sendAndReceive(new Message("ADD_CATEGORY",category));
+       }
+       catch (Exception e)
+       {
+           System.out.println(e+"eror at saving the category");
+       }
         return "redirect:/menu-management";
     }
 }
