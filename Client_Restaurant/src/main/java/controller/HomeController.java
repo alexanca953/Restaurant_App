@@ -3,6 +3,8 @@ package controller;
 import model.Message;
 import model.Product;
 import model.ProductCategory;
+import model.Message;
+import model.Product;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class HomeController {
@@ -84,5 +90,31 @@ public class HomeController {
            System.out.println(e+"eror at saving the category");
        }
         return "redirect:/menu-management";
+    }
+
+    @GetMapping("/menu")
+    public String showMenu(@RequestParam(name = "keyword", required = false) String keyword, Model model) {
+        ArrayList<Product> products=new ArrayList<>();
+        try{
+                products=(ArrayList<Product>) client.sendAndReceive(new Message("GET_ALL_PRODUCTS",null));
+            List<Product> filteredList=new ArrayList<>();
+            if (keyword != null && !keyword.isEmpty()) {
+                filteredList = new ArrayList<>();
+                for (Product p : products) {
+                    if (p.getProductName().toLowerCase().contains(keyword.toLowerCase())) {
+                        filteredList.add(p);
+                    }
+                }
+            } else {
+                filteredList = products;
+            }
+            model.addAttribute("productList", filteredList);
+            model.addAttribute("keyword", keyword);
+        }
+        catch(Exception e){
+            System.out.println("Error at loading products "+ e.getMessage());
+        }
+
+        return "menu";
     }
 }
