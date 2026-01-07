@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head_common}"></head>
+
+<body>
+
+<div th:replace="~{fragments/layout :: main_layout( ~{::section} )}">
+
+    <section>
+        <h1 style="color: #2c3e50;">Test Dashboard</h1>
+        <p>Dacă vezi meniul în stânga (albastru) și acest text în dreapta, totul funcționează!</p>
+
+        <button style="padding: 10px; background: orange; border: none; margin-top: 20px;">
+            Un buton de test
+        </button>
+    </section>
+
+</div>
+
+</body>
+</html>

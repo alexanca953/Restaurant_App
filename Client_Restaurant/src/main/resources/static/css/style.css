@@ -1,0 +1,211 @@
+
+@font-face {
+    font-family: 'Playfair Display';
+    /* "../fonts/" înseamnă: ieși din folderul css, intră în fonts */
+    src: url('../fonts/Playfair.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+/* Definim Fontul Simplu (Text) */
+@font-face {
+    font-family: 'Lato';
+    src: url('../fonts/Lato.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* (Opțional) Lato Bold pentru butoane */
+@font-face {
+    font-family: 'Lato';
+    src: url('../fonts/LatoBold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Lato' , sans-serif;
+    height: 100vh; /* Corpul paginii ocupă tot ecranul */
+    overflow: hidden; /* Ascundem bara de scroll a browserului */
+    color: #333;
+}
+
+h1, h2, h3, .logo, .hero-title {
+    font-family: 'Playfair Display', serif;
+}
+
+/* 2. DEFINIREA GRILEI (SCHELETUL) */
+.grid-container {
+    display: grid;
+    height: 100vh; /* Grid-ul ocupă toată înălțimea */
+
+    /* COLOANE: Prima e Sidebar (250px), a doua e restul ecranului (1fr) */
+    grid-template-columns: 250px 1fr;
+
+    /* RÂNDURI: Primul e Header (60px), al doilea e conținutul (restul) */
+    grid-template-rows: 60px 1fr;
+
+    /* HARTA VIZUALĂ A ZONELOR */
+    /* "sidebar header"  -> Rândul de sus */
+    /* "sidebar content" -> Rândul de jos */
+    grid-template-areas:
+        "sidebar header"
+        "sidebar content";
+}
+
+/* 3. STILIZAREA ZONELOR */
+
+/* --- SIDEBAR (Stânga) --- */
+.sidebar {
+    grid-area: sidebar; /* Se pune în zona "sidebar" definită mai sus */
+    background-color: #323738; /* Culoare închisă (Dark Blue) */
+    color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column; /* Link-urile unul sub altul */
+}
+
+/* Link-urile din meniu */
+.sidebar a {
+    color: #ecf0f1;
+    text-decoration: none;
+    padding: 12px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: 0.3s;
+    display: block;
+}
+
+.sidebar a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    transform: translateX(5px);
+}
+.menu-label {
+    display: block;
+    margin-top: 25px;          /* Spațiu mare deasupra secțiunii */
+    margin-bottom: 8px;        /* Spațiu mic sub titlu */
+    font-size: 0.75em;         /* Text mic */
+    color: #95a5a6;            /* Culoare gri stins */
+    text-transform: uppercase; /* LITERE MARI AUTOMAT */
+    font-weight: bold;
+    letter-spacing: 1px;       /* Spațiu între litere */
+    padding-left: 15px;        /* Aliniere cu textul butoanelor */
+    border-bottom: 1px solid rgba(255,255,255,0.1); /* Linie subtilă sub titlu */
+    padding-bottom: 5px;
+}
+
+/* --- HEADER (Sus) --- */
+.header {
+    grid-area: header; /* Se pune în zona "header" */
+    background-color: #ecf0f1; /* Gri deschis */
+    border-bottom: 2px solid #bdc3c7;
+    display: flex;
+    align-items: center; /* Centrează textul pe verticală */
+    justify-content: flex-end; /* Împinge conținutul (Logout) în dreapta */
+    padding: 0 30px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* --- MAIN CONTENT (Mijloc) --- */
+.main-content {
+    grid-area: content; /* Se pune în zona "content" */
+    background-color: #fff;
+    padding: 30px;
+    overflow-y: auto; /* Scroll DOAR aici, dacă pagina e lungă */
+}
+
+
+/*----HOME PAGE -------------- */
+     /* Stiluri specifice doar pentru Landing Page */
+body#home-page { margin: 0; overflow-x: hidden; overflow-y: auto; } /* Reactivăm scroll-ul pe verticală */
+
+/* NAVBAR TRANSPARENT SUS */
+.top-nav {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    padding: 20px 50px;
+    display: flex;
+    justify-content: space-between; /* Logo stânga, Buton dreapta */
+    align-items: center;
+    z-index: 100; /* Să fie peste poza de fundal */
+}
+
+.logo { color: white;
+    font-size: 1.8em;
+    font-weight: bold;
+    text-decoration: none;
+    letter-spacing: 2px; }
+.btn-login {
+    background-color: #944d05;
+    color: white;
+    padding: 10px 25px;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+.btn-login:hover { background-color: #d35400; transform: scale(1.05); }
+
+/* HERO SECTION (Ecran complet) */
+.hero-section {
+    height: 100vh; /* 100% din înălțimea ecranului */
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+    url('../images/Home.png');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+}
+
+.hero-title { font-size: 5em;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 10px black;
+    text-transform: uppercase; }
+
+.hero-subtitle {
+    font-size: 1.3em;
+    margin-bottom: 40px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 300; /* Mai subțire */
+    letter-spacing: 1px;}
+
+.btn-menu-public {
+    border: 2px solid white;
+    color: white;
+    padding: 15px 40px;
+    text-decoration: none;
+    font-size: 1.2em;
+    transition: 0.3s;
+}
+.btn-menu-public:hover { background: white; color: black; }
+
+/* SECȚIUNEA DE JOS (Bucătărie) */
+.info-section {
+    padding: 80px 20px;
+    background-color: white;
+    text-align: center;
+}
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: 50px auto;
+}
+.gallery-img { width: 100%; height: 300px; object-fit: cover; border-radius: 8px; }
+
+.footer {background: #323738; color: white; padding: 20px; text-align: center;}

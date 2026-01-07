@@ -1,4 +1,4 @@
-package com.example.client; // Pune pachetul tau corect
+package model; // Pune pachetul tau corect
 
 import model.Message;
 import model.User;

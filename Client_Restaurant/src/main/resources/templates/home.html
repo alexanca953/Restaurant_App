@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Restaurant Home</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+</head>
+
+
+<body id="home-page">
+
+<nav class="top-nav">
+    <div class="logo" style="display: flex; align-items: center;">
+        <img th:src="@{/images/Logo.svg}" alt="Logo" style="height: 40px; margin-right: 15px;filter: brightness(0) invert(1);">
+        <span>Momentum</span>
+    </div>
+    <div>
+        <a href="/menu" style="color: white; margin-right: 20px; text-decoration: none;">View Menu</a>
+        <a href="/login" class="btn-login">Login / New account</a>
+    </div>
+</nav>
+
+<div class="hero-section">
+    <h1 class="hero-title">Live the moment</h1>
+    <p class="hero-subtitle">Where every flavour tells a story</p>
+    <a href="/menu" class="btn-menu-public">View Menu</a>
+</div>
+
+<section class="info-section">
+    <h2 style="font-size: 2.5em; color: #323738;">A Symphony of Flavours</h2>
+    <p style="color: #7f8c8d; max-width: 600px; margin: 20px auto;">
+        Where ambiance meets appetite. Join us for an unforgettable dining experience where every bite tells a story. Good food, good company, timeless moments.
+    </p>
+
+    <div class="gallery-grid">
+        <img th:src="@{/images/PictureHome2.png}" class="gallery-img" alt="Picture 1">
+
+        <img th:src="@{/images/PictureHome1.png}" class="gallery-img" alt="Picture 2">
+
+        <img th:src="@{/images/PictureHome3.png}" class="gallery-img" alt="Picture 3">
+    </div>
+</section>
+
+<footer class="footer">
+    <p>&copy; Momentum. All rights reserved</p>
+</footer>
+
+</body>
+</html>
