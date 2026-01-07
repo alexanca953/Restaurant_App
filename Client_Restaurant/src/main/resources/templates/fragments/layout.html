@@ -3,26 +3,49 @@
 <head th:fragment="head_common">
     <meta charset="UTF-8">
     <title>Restaurant App</title>
-    <link rel="stylesheet" href="\css\style.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
 
 <div th:fragment="main_layout(content)" class="grid-container">
 
     <nav class="sidebar">
-        <h2>🍽️ Restaurant</h2>
+        <div class="logo-container" style="display: flex; align-items: center;">
+            <img th:src="@{/images/Logo.svg}" alt="Logo" style="height: 40px; margin-right: 15px;filter: brightness(0) invert(1);">
+            <h2 style="color: white;">Momentum</h2>
+        </div>
         <hr style="border-color: #7f8c8d; margin: 15px 0;">
 
-        <a href="/dashboard">📊 Dashboard</a>
-        <a href="/menu">🍔 Meniu</a>
-        <a href="/reservations">📅 Rezervări</a>
-        <a href="/tables">🪑 Mese</a>
-        <a href="/employees">👨‍🍳 Angajați</a>
+        <a href="/dashboard" class="nav-link">Dashboard</a>
+
+        <div th:if="${role == 'MANAGER' || role == null}">
+            <p class="menu-label">ADMINISTRATION</p>
+            <a href="/menu-management">Edit Menu</a> <a href="/statistics">Statistics</a> </div>
+
+
+        <div th:if="${role == 'OSPATAR' or role == 'MANAGER' or role == null}">
+            <p class="menu-label">DAILY OPERATIONS</p>
+            <a href="/reservations">Rezervations</a> </div>
+
+
+        <div th:if="${role == 'OSPATAR' or role == null}">
+            <a href="/tables">Table Status</a>
+        </div>
+
+
+        <div th:if="${role == 'ADMIN' or role == null}">
+            <p class="menu-label">SYSTEM ADMIN</p>
+            <a href="/employees">Employees</a>
+            <a href="/clients-admin">Client Accounts</a>
+        </div>
+
     </nav>
 
     <header class="header">
-        <span>Bine ai venit, Admin! &nbsp;</span>
-        <a href="/logout" style="color: red; text-decoration: none; font-weight: bold;">Logout</a>
+        <span>Welcome, <b th:text="${numeUser != null ? numeUser : 'Staff'}">User</b>! &nbsp;</span>
+        <span style="font-size: 0.8em; color: gray;" th:text="'(' + ${role} + ')'"></span>
+
+        <a href="/logout" style="color: #840505; margin-left: 20px;">Logout</a>
     </header>
 
     <main class="main-content">
