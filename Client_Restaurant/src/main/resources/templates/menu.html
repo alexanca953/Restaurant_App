@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Meniu - Momentum</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="dark-theme">
+
+<nav class="top-nav" style="position: relative; background: transparent;">
+    <div class="logo-container" style="display: flex; align-items: center;">
+        <img th:src="@{/images/Logo.svg}" alt="Logo" style="height: 40px; margin-right: 15px;filter: brightness(0) invert(1);">
+        <h2 style="color: white;">Momentum</h2>
+    </div>
+    <a href="/" style="color: white; text-decoration: none;">&larr; Back</a>
+</nav>
+
+<div class="menu-container">
+    <h1 class="menu-title">Our Menu</h1>
+
+    <form action="/menu" method="get" class="search-box">
+        <input type="text" name="keyword" th:value="${keyword}" placeholder="Search a product">
+        <button type="submit">Search</button>
+    </form>
+
+    <div class="products-grid">
+
+        <div th:if="${listaProduse == null} and ${keyword != null} and ${keyword != ''}"
+             style="width: 100%; text-align: center; color: gray; margin-top: 20px;">
+
+            <p>No products found for "[[${keyword}]]".</p>
+            <a href="/menu" style="color: #e67e22;">See full menu</a>
+
+        </div>
+
+        <div class="product-card" th:each="produs : ${productList}">
+            <div class="prod-img">🍔</div>
+
+            <div class="prod-info">
+                <h3 th:text="${produs.name}">Product Name</h3>
+                <p class="desc" th:text="${produs.description}">Ingredients...</p>
+                <div class="price-row">
+                    <span class="price" th:text="${produs.price} + ' RON'">00 RON</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
