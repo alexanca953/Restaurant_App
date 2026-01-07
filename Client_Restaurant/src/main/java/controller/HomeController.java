@@ -91,6 +91,18 @@ public class HomeController {
        }
         return "redirect:/menu-management";
     }
+    @PostMapping("/menu-management/delete-category")
+    public String deleteCategory(@RequestParam("categoryId") int categoryId) {
+        try
+        {
+            client.sendAndReceive(new Message("DELETE_CATEGORY",categoryId));
+        }
+        catch (Exception e)
+        {
+            System.out.println(e+"eror at deleting the category");
+        }
+        return "redirect:/menu-management";
+    }
 
     @GetMapping("/menu")
     public String showMenu(@RequestParam(name = "keyword", required = false) String keyword, Model model) {
