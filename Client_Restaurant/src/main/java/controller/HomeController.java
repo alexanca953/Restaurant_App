@@ -1,21 +1,75 @@
 package controller;
 
+import model.Message;
+import model.Product;
+import model.ProductCategory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.ArrayList;
 
 @Controller
 public class HomeController {
-
+    ConcreteClient client = new ConcreteClient();
     @GetMapping("/")
     public String home() {
         return "home"; // Va căuta home.html
     }
-
-    @GetMapping("/manager")
+///edit menu
+    @GetMapping("/menu-management")
     public String showManager(Model model) {
-        model.addAttribute("products", products);
-        model.addAttribute("categories", categories);
-        model.addAttribute("newProduct", new Product());
-        return "manager"; // trebuie să ai manager.html în templates
+
+        ArrayList<Product> products = null;
+       try {
+            products = (ArrayList<Product>) client.sendAndReceive(new Message("GET_ALL_PRODUCTS",null));
+           ArrayList<ProductCategory> categories= (ArrayList<ProductCategory>) client.sendAndReceive(new Message("GET_ALL_CATEGORIES",null));
+           model.addAttribute("categories", categories);
+       }
+       catch (Exception e) {
+          System.out.println(e+"eror at getting the products from server");
+       }
+       if(products!=null)
+       {
+           model.addAttribute("products", products);
+       }
+        return "menu-management"; // trebuie să ai menu-management.html.html în templates
+    }
+    @PostMapping("/menu-management/save")
+    public String saveProduct(Model model, Product product) {
+        try
+        {
+            if (product.getProductId() == 0) {
+            // CAZUL 1: ID este 0 -> ADĂUGARE PRODUS NOU
+                client.sendAndReceive(new Message("ADD_PRODUCT",product));
+            }
+            else {
+            // CAZUL 2: ID > 0 -> EDITARE PRODUS EXISTENT
+            client.sendAndReceive(new Message("UPDATE_PRODUCT",product));
+                 }
+            ///client.sendAndReceive(new Message("UPDATE_PRODUCT",product));
+            ///return "redirect:/menu-management";
+        }
+        catch (Exception e)
+        {
+            System.out.println(e+"eror at saving the product");
+        }
+        return "redirect:/menu-management";
+    }
+    @PostMapping("/menu-management/delete")
+    public String deleteProduct(@RequestParam("productId") int id) {
+
+        try{
+            Product product = new Product();
+            product.setProductId(id);
+            client.sendAndReceive(new Message("DELETE_PRODUCT",product));
+        }
+        catch (Exception e)
+        {
+            System.out.println(e+"eror at deleting the product");
+        }
+        return "redirect:/menu-management";
     }
 }

@@ -209,3 +209,187 @@ body#home-page { margin: 0; overflow-x: hidden; overflow-y: auto; } /* Reactivă
 .gallery-img { width: 100%; height: 300px; object-fit: cover; border-radius: 8px; }
 
 .footer {background: #323738; color: white; padding: 20px; text-align: center;}
+/* =========================================
+   SECȚIUNE MANAGER (TABEL & MODAL)
+   ========================================= */
+
+/* Titlul paginii interioare */
+.page-header {
+    display: flex;
+    justify-content: space-between; /* Titlu stânga, buton dreapta */
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.page-header h1 {
+    font-family: 'Playfair Display', serif;
+    color: #2c3e50;
+    font-size: 2rem;
+}
+
+/* --- TABEL MODERN (CARD STYLE) --- */
+.table-card {
+    background: white;
+    padding: 25px; /* Spațiu interior generos */
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08); /* Umbră fină */
+    overflow-x: auto; /* Scroll orizontal pe mobil */
+}
+
+.styled-table {
+    width: 100%;
+    border-collapse: collapse; /* Elimină spațiile duble dintre celule */
+    font-family: 'Lato', sans-serif;
+    min-width: 600px; /* Asigură că nu se strivește pe ecrane mici */
+}
+
+.styled-table thead tr {
+    background-color: #f8f9fa;
+    color: #2c3e50;
+    text-align: left;
+    border-bottom: 2px solid #ecf0f1;
+}
+
+.styled-table th {
+    font-family: 'Playfair Display', serif; /* Headerul tabelului cu font elegant */
+    font-size: 1.1rem;
+    padding: 15px 20px; /* SPAȚIERE MARE - Rezolvă problema "înghesuit" */
+}
+
+.styled-table td {
+    padding: 15px 20px; /* SPAȚIERE MARE */
+    border-bottom: 1px solid #eee;
+    color: #555;
+    vertical-align: middle;
+}
+
+/* Efect la hover pe rând */
+.styled-table tbody tr:hover {
+    background-color: #fcfcfc;
+}
+
+/* Culori specifice pentru preț și nume */
+.price-tag {
+    font-weight: bold;
+    color: #27ae60; /* Verde */
+}
+
+.product-name {
+    font-weight: bold;
+    color: #333;
+    font-size: 1.05rem;
+}
+
+/* --- BUTOANE --- */
+.btn-add {
+    background-color: #27ae60;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 30px; /* Rotunjit ca pe Home page */
+    text-decoration: none;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(39, 174, 96, 0.2);
+    transition: transform 0.2s;
+}
+
+.btn-add:hover {
+    transform: translateY(-2px);
+    background-color: #219150;
+}
+
+.btn-icon {
+    padding: 8px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-right: 5px;
+    display: inline-block;
+    border: none;
+    cursor: pointer;
+    font-family: 'Lato', sans-serif;
+}
+
+.edit { background-color: #f39c12; color: white; }
+.delete { background-color: #e74c3c; color: white; }
+
+.btn-icon:hover { opacity: 0.9; }
+
+/* --- MODAL (POP-UP) --- */
+.modal-overlay {
+    display: none; /* Ascuns implicit */
+    position: fixed;
+    z-index: 2000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.6); /* Fundal întunecat */
+    backdrop-filter: blur(3px); /* Efect modern de ceață */
+}
+
+.modal-box {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 30px;
+    border-radius: 10px;
+    width: 500px;
+    max-width: 90%;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.close-modal {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-size: 28px;
+    cursor: pointer;
+    color: #aaa;
+}
+
+.close-modal:hover { color: #333; }
+
+/* Formular stilizat */
+.form-row { margin-bottom: 15px; }
+
+.form-row label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #34495e;
+}
+
+.form-row input, .form-row select, .form-row textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-family: 'Lato', sans-serif;
+    font-size: 1rem;
+}
+
+.form-row input:focus {
+    border-color: #27ae60;
+    outline: none;
+}
+
+.btn-save {
+    width: 100%;
+    padding: 12px;
+    background-color: #323738; /* Aceeași culoare ca Sidebar-ul */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.btn-save:hover { background-color: #1abc9c; }
