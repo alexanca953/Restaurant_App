@@ -11,8 +11,13 @@
 
     <nav class="sidebar">
         <div class="logo-container" style="display: flex; align-items: center;">
-            <img th:src="@{/images/Logo.svg}" alt="Logo" style="height: 40px; margin-right: 15px;filter: brightness(0) invert(1);">
-            <h2 style="color: white;">Momentum</h2>
+            <a th:href="@{/}" class="sidebar-logo" style="text-decoration: none; display: flex; align-items: center;">
+
+                <img th:src="@{/images/Logo.svg}" alt="Logo"
+                     style="height: 40px; margin-right: 15px; filter: brightness(0) invert(1);">
+
+                <h2 style="color: white; margin: 0;">Momentum</h2>
+            </a>
         </div>
         <hr style="border-color: #7f8c8d; margin: 15px 0;">
 

@@ -12,11 +12,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
+import java.util.*;
+
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class HomeController {
@@ -108,7 +109,14 @@ public class HomeController {
             } else {
                 filteredList = products;
             }
-            model.addAttribute("productList", filteredList);
+            Map<Integer, List<Product>> menuGrouped = new LinkedHashMap<>();
+
+            if (filteredList != null) {
+                menuGrouped = filteredList.stream()
+                        .collect(Collectors.groupingBy(Product::getCategoryId));
+            }
+
+            model.addAttribute("menuMap", menuGrouped);
             model.addAttribute("keyword", keyword);
         }
         catch(Exception e){

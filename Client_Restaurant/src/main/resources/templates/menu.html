@@ -15,16 +15,18 @@
 </nav>
 
 <div class="menu-container">
-    <h1 class="menu-title">Our Menu</h1>
+    <div class="menu-header">
+        <h1 class="menu-title">Our Menu</h1>
 
-    <form action="/menu" method="get" class="search-box">
-        <input type="text" name="keyword" th:value="${keyword}" placeholder="Search a product">
-        <button type="submit">Search</button>
-    </form>
+        <form action="/menu" method="get" class="search-box">
+            <input type="text" name="keyword" th:value="${keyword}" placeholder="Search for a delicious product...">
+            <button type="submit">Search</button>
+        </form>
+    </div>
 
     <div class="products-grid">
 
-        <div th:if="${listaProduse == null} and ${keyword != null} and ${keyword != ''}"
+        <div th:if="${(menuMap == null || menuMap.empty) and keyword != null and keyword != ''}"
              style="width: 100%; text-align: center; color: gray; margin-top: 20px;">
 
             <p>No products found for "[[${keyword}]]".</p>
@@ -32,16 +34,32 @@
 
         </div>
 
-        <div class="product-card" th:each="produs : ${productList}">
-            <div class="prod-img">🍔</div>
+        <div class="menu-list-container">
 
-            <div class="prod-info">
-                <h3 th:text="${produs.productName}">Product Name</h3>
-                <p class="desc" th:text="${produs.description}">Ingredients...</p>
-                <div class="price-row">
-                    <span class="price" th:text="${produs.price} + ' RON'">00 RON</span>
+            <div th:each="entry : ${menuMap}" class="menu-category-section">
+
+                <h2 class="category-title" th:text="${entry.key}">Name of Category</h2>
+
+                <div th:each="produs : ${entry.value}" class="menu-item-row">
+
+                    <div class="item-details">
+                        <div class="item-header">
+                            <h3 class="item-name" th:text="${produs.productName}">Name</h3>
+                            <span class="dots"></span>
+                        </div>
+                        <p class="item-desc" th:text="${produs.description}">Description</p>
+                        <p class="item-ingr">Ingredients: <i th:text="${produs.ingredients}">...</i></p>
+                    </div>
+
+                    <div class="item-price">
+                        <span th:text="${produs.price} + ' RON'">00 RON</span>
+                    </div>
+
                 </div>
             </div>
+
+
+
         </div>
 
     </div>

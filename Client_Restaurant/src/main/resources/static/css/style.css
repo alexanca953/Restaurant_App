@@ -89,6 +89,11 @@ h1, h2, h3, .logo, .hero-title {
     color: white;
     transform: translateX(5px);
 }
+.sidebar a.sidebar-logo:hover {
+    background-color: transparent !important;
+    transform: none !important;
+    cursor: pointer;
+}
 .menu-label {
     display: block;
     margin-top: 25px;          /* Spațiu mare deasupra secțiunii */
@@ -208,7 +213,7 @@ body#home-page { margin: 0; overflow-x: hidden; overflow-y: auto; } /* Reactivă
 }
 .gallery-img { width: 100%; height: 300px; object-fit: cover; border-radius: 8px; }
 
-.footer {background: #323738; color: white; padding: 20px; text-align: center;}
+.footer {background: #1e2021; color: white; padding: 15px; text-align: center;}
 /* =========================================
    SECȚIUNE MANAGER (TABEL & MODAL)
    ========================================= */
@@ -414,11 +419,38 @@ body.dark-theme {
     text-align: center;
 }
 
+.menu-header {
+    /* 1. Setări pentru TOT ecranul */
+    height: 100vh; /* 100% din înălțimea vizibilă (Viewport Height) */
+    width: 100%;
+
+    /* 2. Centrare perfectă a textului și a search-ului */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centrat vertical */
+    align-items: center;     /* Centrat orizontal */
+
+    /* 3. Imaginea de fundal (Pune link-ul ales de tine de pe Unsplash) */
+    background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+    url('../images/MenuPicture.png');
+
+    background-size: cover;
+    background-position: center;
+
+    /* Opțional: Efect Parallax (imaginea stă pe loc când dai scroll) */
+    background-attachment: fixed;
+
+    /* 4. Eliminăm linia și spațierea */
+    border-bottom: none; /* Fără dunga portocalie */
+    margin-bottom: 50px; /* Spațiu până la lista de produse */
+}
+
+/* Ajustăm titlul să se vadă bine pe poză */
 .menu-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 3em;
     color: white;
+    font-size: 3.5em;
     margin-bottom: 30px;
+    text-shadow: 2px 2px 4px black; /* Umbră la text să se citească ușor */
 }
 
 /* Stil Search Bar */
@@ -455,74 +487,204 @@ body.dark-theme {
     background: #d35400;
 }
 
-/* Grid Produse */
-.products-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Auto-aranjare */
-    gap: 30px;
+
+/* Containerul Principal */
+.menu-list-container {
+    max-width: 800px;
+    width: 90%;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: transparent; /* Sau o culoare închisă */
+
 }
 
-/* Card Produs Individual */
-.product-card {
-    background-color: #2c2c2c; /* Gri închis */
+/* Titlul Categoriei */
+.category-title {
+    font-family: 'Playfair Display', serif;
+    color: #944d05;
+    border-bottom: 2px solid #944d05;
+    padding-bottom: 10px;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Rândul unui produs */
+.menu-item-row {
+    display: flex;
+    justify-content: space-between; /* Aruncă prețul în dreapta */
+    align-items: flex-start;
+    margin-bottom: 25px;
+    border-bottom: 1px solid rgba(255,255,255,0.1); /* Linie subtilă de separare */
+    padding-bottom: 15px;
+}
+
+/* Detaliile din stânga */
+.item-details {
+    flex: 1;
+    padding-right: 40px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.item-header {
+    display: flex;
+    align-items: baseline; /* Aliniază textul la bază */
+}
+
+.item-name {
+    margin: 0;
+    font-size: 1.3em;
+    color: white; /* Sau #333 pe fundal alb */
+    font-family: 'Playfair Display', serif;
+    font-weight: bold;
+}
+
+.item-desc {
+    margin: 5px 0 0 0;
+    color: #bdc3c7; /* Gri deschis */
+    font-style: italic;
+
+}
+
+.item-ingr {
+    margin: 5px 0 0 0;
+    font-size: 0.85em;
+    color: #95a5a6; /* Gri mai închis */
+}
+
+/* Prețul din dreapta */
+.item-price {
+    white-space: nowrap; /* Să nu treacă pe rândul următor */
+    font-size: 1.3em;
+    color: #944d05;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+/* ========================
+   SECȚIUNEA FEEDBACK
+   ======================== */
+.feedback-section {
+    background-color: #f9f9f9; /* Gri foarte deschis */
+    padding: 60px 20px;
+    text-align: center;
+    border-top: 1px solid #ddd;
+}
+
+.feedback-content h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2em;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.feedback-content p {
+    color: #7f8c8d;
+    margin-bottom: 30px;
+    font-size: 1.1em;
+}
+
+.btn-feedback {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: transparent;
+    color: #944d05; /* Portocaliu */
+    border: 2px solid #944d05;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-feedback:hover {
+    background-color: #944d05;
+    color: white;
+    transform: translateY(-3px); /* Se ridică puțin */
+    box-shadow: 0 5px 15px rgba(230, 126, 34, 0.3);
+}
+
+/* ========================
+   SECȚIUNEA CONTACT
+   ======================== */
+.contact-section {
+    background-color: #323738; /* Fundal închis (Dark Blue/Gray) */
+    color: white;
+    padding: 60px 20px;
+}
+
+.contact-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap; /* Pe mobil trec una sub alta */
+    gap: 50px;       /* Spațiu între text și hartă */
+    align-items: center;
+}
+
+/* Coloana Stânga (Text) */
+.contact-info {
+    flex: 1;
+    min-width: 300px;
+}
+
+.section-title-light {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5em;
+    margin-bottom: 15px;
+    color: #ecf0f1;
+}
+
+.contact-desc {
+    color: #bdc3c7;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.info-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.icon {
+    font-size: 1.5em;
+    margin-right: 15px;
+    margin-top: -3px; /* Ajustare fină */
+}
+
+.info-item strong {
+    display: block;
+    color: #e67e22; /* Titlurile mici portocalii */
+    margin-bottom: 5px;
+}
+
+.info-item p {
+    margin: 0;
+    color: #ecf0f1;
+    line-height: 1.4;
+}
+
+/* Coloana Dreapta (Harta) */
+.contact-map {
+    flex: 1;
+    min-width: 300px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     border-radius: 15px;
     overflow: hidden;
-    transition: transform 0.3s;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    text-align: left;
 }
 
-.product-card:hover {
-    transform: translateY(-5px); /* Se ridică puțin la hover */
-}
-
-.prod-img {
-    height: 150px;
-    background-color: #333; /* Fundal pentru poză */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 3em;
-}
-
-.prod-info {
-    padding: 20px;
-}
-
-.prod-info h3 {
-    margin: 0 0 10px 0;
-    color: #944d05;
-    font-family: 'Playfair Display', serif;
-}
-
-.desc {
-    color: #bdc3c7;
-    font-size: 0.9em;
-    height: 40px; /* Înălțime fixă ca să fie aliniate */
-    overflow: hidden;
-}
-
-.price-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 15px;
-}
-
-.price {
-    font-size: 1.2em;
-    font-weight: bold;
-}
-
-.btn-order {
-    background: white;
-    color: #1a1a1d;
+.contact-map iframe {
+    width: 100%;
+    height: 350px;
+    display: block;
     border: none;
-    padding: 5px 15px;
-    border-radius: 20px;
-    font-weight: bold;
-    cursor: pointer;
 }
-.btn-order:hover {
-    background: #bdc3c7;
-}
+
