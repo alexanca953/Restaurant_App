@@ -14,7 +14,7 @@ public class UserRepository implements IUserRepository {
         this.repository = new Repository();
     }
 
-    // Metoda pentru LOGIN
+    @Override
     public User login(String email, String password) {
         String sql = "SELECT * FROM user WHERE email = ? AND password = ?";
         try (Connection conn = repository.getConnection();
@@ -22,38 +22,29 @@ public class UserRepository implements IUserRepository {
 
             stmt.setString(1, email);
             stmt.setString(2, password);
-
             ResultSet rs = stmt.executeQuery();
-            if (rs.next())
-            {
-                return new User(
-                        rs.getInt("user_id"),
-                        rs.getString("role"),
-                        rs.getString("last_name"),
-                        rs.getString("first_name"),
-                        rs.getString("email"),
-                        rs.getString("password"),
-                        rs.getString("phone")
-                );
+
+            if (rs.next()) {
+                return mapResultSetToUser(rs);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null; // Returnam null daca nu s-a gasit userul
+        return null;
     }
-
-    // Metoda pentru a adauga un utilizator nou (Register)
+    @Override
     public boolean addUser(User user) {
-        String sql = "INSERT INTO user (role, last_name, first_name, email, password, phone) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO user (role, first_name, last_name, email, password, phone) VALUES (?, ?, ?, ?, ?, ?)";
+
         try (Connection conn = repository.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, user.getRole());
-            stmt.setString(2, user.getLastName());
-            stmt.setString(3, user.getFirstName());
+            stmt.setString(1, user.getRole()); // AICI E CHEIA: 'CLIENT' sau 'EMPLOYEE'
+            stmt.setString(2, user.getFirstName());
+            stmt.setString(3, user.getLastName());
             stmt.setString(4, user.getEmail());
             stmt.setString(5, user.getPassword());
-            stmt.setString(6, user.getPhoneNumber());
+            stmt.setString(6, user.getPhoneNumber()); // Java: phoneNumber -> DB: phone
 
             int rows = stmt.executeUpdate();
             return rows > 0;
@@ -131,11 +122,11 @@ public class UserRepository implements IUserRepository {
         return userList;
     }
 
+
     @Override
     public List<User> getAllUsers() {
         List<User> userList = new ArrayList<>();
         String sql = "SELECT * FROM user";
-
         try (Connection conn = repository.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
@@ -179,6 +170,35 @@ public class UserRepository implements IUserRepository {
             e.printStackTrace();
         }
         return null;
+    }
+    public List<User> getUsersByRole(String role) {
+        List<User> list = new ArrayList<>();
+        String sql = "SELECT * FROM user WHERE role = ?";
+
+        try (Connection conn = repository.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, role);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                list.add(mapResultSetToUser(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    private User mapResultSetToUser(ResultSet rs) throws SQLException {
+        User u = new User();
+        u.setUserId(rs.getInt("user_id"));
+        u.setRole(rs.getString("role"));
+        u.setFirstName(rs.getString("first_name"));
+        u.setLastName(rs.getString("last_name"));
+        u.setEmail(rs.getString("email"));
+        u.setPassword(rs.getString("password"));
+        u.setPhoneNumber(rs.getString("phone"));
+        return u;
     }
 }
 

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head_common}"></head>
+
+<body>
+
+<div th:replace="~{fragments/layout :: main_layout( ~{::section} )}">
+
+  <section>
+    <div class="page-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+      <h1 class="res-page-title">Reservations</h1>
+      <button onclick="openResModal(0, '', '', '', 0, 0, 'CONFIRMED')" class="res-btn-add">
+        + New Reservation
+      </button>
+    </div>
+
+    <div class="res-table-card">
+      <table class="res-table">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Customer Name</th>
+          <th>Date & Time</th>
+          <th>Nrper.</th>
+          <th>Table No.</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="r : ${reservations}">
+          <td th:text="${'#' + r.reservationId}"></td>
+          <td th:text="${r.customerName}" style="font-weight: bold;"></td>
+
+          <td th:text="${#temporals.format(r.reservationDate, 'dd-MM-yyyy HH:mm')}"></td>
+
+          <td th:text="${r.numberOfPeople}"></td>
+          <td th:text="${r.tableId != 0 ? 'Table ' + r.tableId : 'Not Assigned'}"></td>
+
+          <td>
+                        <span th:class="'res-status-badge ' +
+                            (${r.status == 'CONFIRMED'} ? 'status-confirmed' :
+                            (${r.status == 'PENDING'} ? 'status-pending' : 'status-cancelled'))"
+                              th:text="${r.status}">
+                        </span>
+          </td>
+
+          <td>
+            <button class="res-action-btn res-edit"
+                    th:onclick="openResModal(
+                                    [[${r.reservationId}]],
+                                    [[${r.customerName}]],
+                                    [[${r.phoneNumber}]],
+                                    [[${r.reservationDate}]], [[${r.numberOfPeople}]],
+                                    [[${r.tableId}]],
+                                    [[${r.status}]]
+                                )">
+              Edit
+            </button>
+
+            <form th:action="@{/reservations/delete}" method="post" style="display:inline;">
+              <input type="hidden" name="reservationId" th:value="${r.reservationId}">
+              <button type="submit" class="res-action-btn res-delete"
+                      onclick="return confirm('Cancel this reservation?')">
+                Cancel
+              </button>
+            </form>
+          </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(reservations)}">
+          <td colspan="7" style="text-align:center; color:#7f8c8d;">No reservations found.</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div id="reservationModal" class="res-modal-overlay">
+      <div class="res-modal-box">
+        <span class="res-close-btn" onclick="closeResModal()">&times;</span>
+        <h2 id="resModalTitle" style="font-family: 'Playfair Display'; margin-bottom: 20px; color: #8e44ad;">Reservation</h2>
+
+        <form th:action="@{/reservations/save}" method="post">
+          <input type="hidden" id="resId" name="reservationId" value="0">
+
+          <div class="res-form-row">
+            <label>Customer Name</label>
+            <input type="text" id="resName" name="tempClientName" required placeholder="John Doe">
+          </div>
+
+          <div class="res-form-row">
+            <label>Phone Number</label>
+            <input type="text" id="resPhone" name="tempClientPhone" required placeholder="07xx...">
+          </div>
+
+          <div class="res-form-row">
+            <label>Date & Time</label>
+            <input type="datetime-local" id="resDate" name="dateTime" required>
+          </div>
+
+          <div class="res-form-row" style="display: flex; gap: 10px;">
+            <div style="flex: 1;">
+              <label>No. People</label>
+              <input type="number" id="resPax" name="numberOfPeople" min="1" required>
+            </div>
+            <div style="flex: 1;">
+              <label>Table ID</label>
+              <input type="number" id="resTable" name="tableId" placeholder="Optional">
+            </div>
+          </div>
+
+          <div class="res-form-row">
+            <label>Status</label>
+            <select id="resStatus" name="status">
+              <option value="PENDING">PENDING</option>
+              <option value="CONFIRMED">CONFIRMED</option>
+              <option value="CANCELLED">CANCELLED</option>
+            </select>
+          </div>
+
+          <button type="submit" class="res-btn-save">Save Reservation</button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      // AM STERS parametrul 'clientId' din paranteza de mai jos
+      function openResModal(id, name, phone, dateStr, pax, tableId, status) {
+        document.getElementById('reservationModal').style.display = 'block';
+
+        document.getElementById('resId').value = id;
+        document.getElementById('resName').value = name;
+        document.getElementById('resPhone').value = phone;
+        document.getElementById('resPax').value = pax;
+        document.getElementById('resTable').value = tableId;
+        document.getElementById('resStatus').value = status;
+
+        const dateInput = document.getElementById('resDate');
+        if (dateStr) {
+          dateInput.value = dateStr.toString().slice(0, 16);
+        } else {
+          const now = new Date();
+          now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+          dateInput.value = now.toISOString().slice(0, 16);
+        }
+
+        const title = document.getElementById('resModalTitle');
+        title.innerText = (id === 0) ? "New Reservation" : "Edit Reservation #" + id;
+      }
+
+      function closeResModal() {
+        document.getElementById('reservationModal').style.display = 'none';
+      }
+
+      window.onclick = function(event) {
+        const modal = document.getElementById('reservationModal');
+        if (event.target == modal) {
+          closeResModal();
+        }
+      }
+    </script>
+  </section>
+
+</div>
+</body>
+</html>

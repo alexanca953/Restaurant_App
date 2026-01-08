@@ -1,22 +1,22 @@
 package controller;
 
-import model.Message;
-import model.Product;
-import model.ProductCategory;
+import model.*;
 import model.Message;
 import model.Product;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 
+import java.beans.PropertyEditorSupport;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class HomeController {
@@ -128,5 +128,86 @@ public class HomeController {
         }
 
         return "menu";
+    }
+    ///RESERVATIONS
+    @GetMapping("/reservations")
+    public String showReservations(Model model) {
+
+        List<Map<String, Object>> reservations = new ArrayList<>();
+        // Presupun ca ai clasa RestaurantTable importata
+        List<Table> tables = new ArrayList<>();
+
+        try {
+            if (client != null && client.isConnected()) {
+                // 1. Luăm Rezervările
+                Object response = client.sendAndReceive(new Message("GET_RESERVATIONS_MAP", null));
+                if (response instanceof List) {
+                    reservations = (List<Map<String, Object>>) response;
+                }
+
+                // 2. Luăm Mesele (CA SĂ AI CE SELECTA ÎN DROPDOWN)
+                // Asigură-te că serverul știe comanda "GET_ALL_TABLES"
+                Object responseTables = client.sendAndReceive(new Message("GET_ALL_TABLES", null));
+                if (responseTables instanceof List) {
+                    tables = (List<Table>) responseTables;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Eroare la preluarea datelor: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        model.addAttribute("reservations", reservations);
+        model.addAttribute("tables", tables); // <--- Trimitem mesele în HTML
+
+        return "reservations";
+    }
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        // Asta invata aplicatia sa transforme textul "2024-01-01T12:00" in LocalDateTime
+        binder.registerCustomEditor(LocalDateTime.class, new PropertyEditorSupport() {
+            @Override
+            public void setAsText(String text) throws IllegalArgumentException {
+                if (text != null && !text.isEmpty()) {
+                    try {
+                        setValue(LocalDateTime.parse(text));
+                    } catch (Exception e) {
+                        setValue(null);
+                    }
+                } else {
+                    setValue(null);
+                }
+            }
+        });
+    }
+    @PostMapping("/reservations/save")
+    public String saveReservation(@ModelAttribute Reservation reservation) {
+        try {
+            if (reservation.getReservationId() == 0) {
+                System.out.println("Adding NEW reservation...");
+                client.sendAndReceive(new Message("ADD_RESERVATION", reservation));
+            }
+            else {
+                System.out.println("Updating reservation ID: " + reservation.getReservationId());
+                client.sendAndReceive(new Message("UPDATE_RESERVATION", reservation));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "redirect:/reservations";
+    }
+    @PostMapping("/reservations/delete")
+    public String deleteReservation(@RequestParam("reservationId") int id) {
+        try {
+            Reservation r = new Reservation();
+            r.setReservationId(id);
+            System.out.println("Deleting reservation ID: " + id);
+            client.sendAndReceive(new Message("DELETE_RESERVATION", r));
+
+        } catch (Exception e) {
+            System.out.println("Eroare la ștergere: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return "redirect:/reservations";
     }
 }
