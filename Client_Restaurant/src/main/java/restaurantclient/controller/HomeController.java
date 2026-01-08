@@ -15,13 +15,22 @@ import java.util.stream.Collectors;
 public class HomeController {
     ConcreteClient client = new ConcreteClient();
 
+    @ModelAttribute
+    public void addGlobalAttributes(HttpSession session, Model model) {
+        User user = (User) session.getAttribute("userLogat");
+        if (user != null) {
+            model.addAttribute("userLogat", user);
+            model.addAttribute("role", user.getRole());
+        }
+    }
     @GetMapping("/")
-    public String home(Model model, HttpSession session){
-        User userLogat = (User) session.getAttribute("userLogat");
-        model.addAttribute("userLogat", userLogat);
+    public String home(Model model) {
         return "home";
     }
-
+    @GetMapping("/dashboard")
+    public String showDashboard() {
+        return "dashboard";
+    }
     @GetMapping("/menu-management")
     public String showManager(Model model) {
         ArrayList<Product> products = null;
@@ -39,9 +48,8 @@ public class HomeController {
         }
         return "menu-management";
     }
-
     @PostMapping("/menu-management/save")
-    public String saveProduct(Model model, Product product) {
+    public String saveProduct(Product product) {
         try {
             if (product.getProductId() == 0) {
                 client.sendAndReceive(new Message("ADD_PRODUCT",product));
@@ -70,7 +78,7 @@ public class HomeController {
     }
 
     @PostMapping("/menu-management/save-category")
-    public String saveCategory(Model model, ProductCategory category) {
+    public String saveCategory(ProductCategory category) {
         try{
             client.sendAndReceive(new Message("ADD_CATEGORY",category));
         }
@@ -280,13 +288,6 @@ public class HomeController {
         return "redirect:/users";
     }
 
-    @GetMapping("/dashboard")
-    public String showDashboard(@SessionAttribute("userLogat") User userLogat, Model model) {
-        model.addAttribute("userLogat", userLogat);
-        model.addAttribute("role", userLogat.getRole());
-        return "dashboard";
-    }
-
     @GetMapping("/login")
     public String showLoginForm(Model model) {
         model.addAttribute("user", new User());
@@ -302,7 +303,7 @@ public class HomeController {
                 session.setAttribute("userLogat", loggedUser);
                 if(loggedUser.getRole().equals("CLIENT"))
                     return "redirect:/";
-                else if(loggedUser.getRole().equals("MANAGER")||loggedUser.getRole().equals("OSPATAR")||loggedUser.getRole().equals("ADMIN"))
+                else if(loggedUser.getRole().equals("MANAGER")||loggedUser.getRole().equals("WAITER")||loggedUser.getRole().equals("ADMIN"))
                     return "redirect:/dashboard";
                 else
                     return "redirect:/";

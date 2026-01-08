@@ -28,12 +28,12 @@
             <a href="/menu-management">Edit Menu</a> <a href="/statistics">Statistics</a> </div>
 
 
-        <div th:if="${role == 'OSPATAR' or role == 'MANAGER' or role == null}">
+        <div th:if="${role == 'WAITER' or role == 'MANAGER' or role == null}">
             <p class="menu-label">DAILY OPERATIONS</p>
             <a href="/reservations">Rezervations</a> </div>
 
 
-        <div th:if="${role == 'OSPATAR' or role == null}">
+        <div th:if="${role == 'WAITER' or role == null}">
             <a href="/tables">Table Status</a>
         </div>
 
