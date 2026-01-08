@@ -1,23 +1,25 @@
 package controller;
 
-import model.Message;
-import model.Product;
-import model.ProductCategory;
+import model.*;
 import model.Message;
 import model.Product;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
+import java.beans.PropertyEditorSupport;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class HomeController {
@@ -92,6 +94,18 @@ public class HomeController {
        }
         return "redirect:/menu-management";
     }
+    @PostMapping("/menu-management/delete-category")
+    public String deleteCategory(@RequestParam("categoryId") int categoryId) {
+        try
+        {
+            client.sendAndReceive(new Message("DELETE_CATEGORY",categoryId));
+        }
+        catch (Exception e)
+        {
+            System.out.println(e+"eror at deleting the category");
+        }
+        return "redirect:/menu-management";
+    }
 
     @GetMapping("/menu")
     public String showMenu(@RequestParam(name = "keyword", required = false) String keyword, Model model) {
@@ -138,5 +152,150 @@ public class HomeController {
         model.addAttribute("keyword", keyword);
 
         return "menu";
+    }
+    ///RESERVATIONS
+    @GetMapping("/reservations")
+    public String showReservations(Model model) {
+
+        List<Map<String, Object>> reservations = new ArrayList<>();
+        List<Table> tables = new ArrayList<>();
+
+        try {
+            if (client != null && client.isConnected()) {
+                Object response = client.sendAndReceive(new Message("GET_RESERVATIONS_MAP", null));
+                if (response instanceof List) {
+                    reservations = (List<Map<String, Object>>) response;
+                }
+                Object responseTables = client.sendAndReceive(new Message("GET_ALL_TABLES", null));
+                if (responseTables instanceof List) {
+                    tables = (List<Table>) responseTables;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Eroare la preluarea datelor: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        model.addAttribute("reservations", reservations);
+        model.addAttribute("tables", tables);
+
+        return "reservations";
+    }
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(LocalDateTime.class, new PropertyEditorSupport() {
+            @Override
+            public void setAsText(String text) throws IllegalArgumentException {
+                if (text != null && !text.isEmpty()) {
+                    try {
+                        setValue(LocalDateTime.parse(text));
+                    } catch (Exception e) {
+                        setValue(null);
+                    }
+                } else {
+                    setValue(null);
+                }
+            }
+        });
+    }
+    @PostMapping("/reservations/save")
+    public String saveReservation(@ModelAttribute Reservation reservation) {
+        try {
+            String command = (reservation.getReservationId() == 0) ? "ADD_RESERVATION" : "UPDATE_RESERVATION";
+            System.out.println("Sending command: " + command);
+            Object response = client.sendAndReceive(new Message(command, reservation));
+            if (Boolean.FALSE.equals(response)) {
+                return "redirect:/reservations?error=true";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "redirect:/reservations";
+    }
+    @PostMapping("/reservations/delete")
+    public String deleteReservation(@RequestParam("reservationId") int id) {
+        try {
+            Reservation r = new Reservation();
+            r.setReservationId(id);
+            System.out.println("Deleting reservation ID: " + id);
+            client.sendAndReceive(new Message("DELETE_RESERVATION", r));
+
+        } catch (Exception e) {
+            System.out.println("Eroare la ștergere: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return "redirect:/reservations";
+    }
+    ///tables
+    @GetMapping("/tables")
+    public String showTablesDashboard(Model model) {
+        List<Table> tables = new ArrayList<>();
+        Map<Integer, List<Map<String, Object>>> reservationsPerTable = new HashMap<>();
+        try {
+            if (client != null && client.isConnected()) {
+                Object tablesResponse = client.sendAndReceive(new Message("GET_ALL_TABLES", null));
+                if (tablesResponse instanceof List) {
+                    tables = (List<Table>) tablesResponse;
+                }
+                Object resResponse = client.sendAndReceive(new Message("GET_RESERVATIONS_MAP", null));
+                List<Map<String, Object>> allReservations = new ArrayList<>();
+                if (resResponse instanceof List) {
+                    allReservations = (List<Map<String, Object>>) resResponse;
+                }
+                LocalDateTime startOfDay = LocalDateTime.now().withHour(0).withMinute(0);
+                LocalDateTime endOfDay = LocalDateTime.now().withHour(23).withMinute(59);
+                for (Map<String, Object> res : allReservations) {
+                    LocalDateTime resDate = (LocalDateTime) res.get("reservationDate");
+                    int tableId = (int) res.get("tableId");
+                    if (resDate != null && resDate.isAfter(startOfDay) && resDate.isBefore(endOfDay)) {
+                        reservationsPerTable.putIfAbsent(tableId, new ArrayList<>());
+                        reservationsPerTable.get(tableId).add(res);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        tables.sort((t1, t2) -> Integer.compare(t1.getTableNumber(), t2.getTableNumber()));
+        model.addAttribute("tables", tables);
+        model.addAttribute("reservationsMap", reservationsPerTable);
+
+        return "tables";
+    }
+    ///admin
+    // 1. AFIȘARE PAGINĂ ADMIN
+    @GetMapping("/users")
+    public String showAdminUsers(Model model) {
+        try {
+            Object response = client.sendAndReceive(new Message("GET_ALL_USERS", null));
+            if (response instanceof List) {
+                model.addAttribute("users", (List<User>) response);
+            } else {
+                model.addAttribute("users", new ArrayList<>());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "admin";
+    }
+
+    @PostMapping("/users/save")
+    public String saveUser(@ModelAttribute User user) {
+        try {
+            String command = (user.getUserId() == 0) ? "ADD_USER" : "UPDATE_USER";
+            client.sendAndReceive(new Message(command, user));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "redirect:/users";
+    }
+    @PostMapping("/users/delete")
+    public String deleteUser(@RequestParam("userId") int userId) {
+        try {
+            client.sendAndReceive(new Message("DELETE_USER", userId));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "redirect:/users";
     }
 }

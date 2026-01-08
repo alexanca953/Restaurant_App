@@ -1,4 +1,147 @@
 
+/* reservations view page*/
+/* Header specific rezervărilor */
+.res-page-title {
+    font-family: 'Playfair Display', serif;
+    color: #2c3e50;
+    margin: 0;
+}
+
+/* Buton specific de adăugare rezervare (Mov închis) */
+.res-btn-add {
+    background-color: #8e44ad;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform 0.2s;
+}
+.res-btn-add:hover {
+    background-color: #732d91;
+    transform: scale(1.05);
+}
+
+/* Tabel specific rezervărilor */
+.res-table-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    padding: 20px;
+    margin-top: 20px;
+    overflow-x: auto;
+}
+
+.res-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.95em;
+    font-family: sans-serif;
+    min-width: 400px;
+}
+
+.res-table thead tr {
+    background-color: #8e44ad; /* Mov */
+    color: #ffffff;
+    text-align: left;
+}
+
+.res-table th, .res-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #dddddd;
+}
+
+.res-table tbody tr:hover {
+    background-color: #f3e5f5; /* Mov foarte deschis */
+}
+
+/* Badge-uri pentru status */
+.res-status-badge {
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.8em;
+    font-weight: bold;
+    color: white;
+}
+.status-confirmed { background-color: #2ecc71; } /* Verde */
+.status-pending { background-color: #f1c40f; color: black; } /* Galben */
+.status-cancelled { background-color: #e74c3c; } /* Rosu */
+
+/* Modal specific rezervărilor */
+.res-modal-overlay {
+    display: none;
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.res-modal-box {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 30px;
+    border: 1px solid #888;
+    width: 500px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    position: relative;
+    animation: slideDown 0.3s;
+}
+
+@keyframes slideDown {
+    from {top: -50px; opacity: 0;}
+    to {top: 0; opacity: 1;}
+}
+
+.res-close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.res-close-btn:hover { color: #000; }
+
+.res-form-row { margin-bottom: 15px; }
+.res-form-row label { display: block; margin-bottom: 5px; color: #34495e; font-weight: bold;}
+.res-form-row input, .res-form-row select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.res-btn-save {
+    width: 100%;
+    padding: 10px;
+    background-color: #8e44ad;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+.res-btn-save:hover { background-color: #732d91; }
+
+/* Butoane actiuni tabel */
+.res-action-btn {
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    color: white;
+    margin-right: 5px;
+}
+.res-edit { background-color: #f39c12; }
+.res-delete { background-color: #e74c3c; }
+/* reservations view page*/
 @font-face {
     font-family: 'Playfair Display';
     /* "../fonts/" înseamnă: ieși din folderul css, intră în fonts */

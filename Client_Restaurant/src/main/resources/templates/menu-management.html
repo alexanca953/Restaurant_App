@@ -14,8 +14,13 @@
                 <button onclick="openModal(0, 1, '', '', 0, '')" class="btn-add">
                     + New Product
                 </button>
+
                 <button onclick="openCategoryModal(0, '')" class="btn-add" style="background-color: #3498db; margin-left: 10px;">
                     + New Category
+                </button>
+
+                <button onclick="openDeleteCategoryModal()" class="btn-add" style="background-color: #e74c3c; margin-left: 10px;">
+                    - Delete Category
                 </button>
             </div>
         </div>
@@ -106,25 +111,52 @@
         </div>
 
         <div id="categoryModal" class="modal-overlay">
-            <div class="modal-box" style="width: 400px;"> <span class="close-modal" onclick="closeCategoryModal()">&times;</span>
+            <div class="modal-box" style="width: 400px;">
+                <span class="close-modal" onclick="closeCategoryModal()">&times;</span>
                 <h2 id="catModalTitle" style="font-family: 'Playfair Display'; margin-bottom: 20px;">Category</h2>
 
                 <form th:action="@{/menu-management/save-category}" method="post">
                     <input type="hidden" id="catId" name="categoryId" value="0">
-
                     <div class="form-row">
                         <label>Category Name</label>
-                        <input type="text" id="catName" name="name" required placeholder="Ex: Pizza, Soups...">
+                        <input type="text" id="catName" name="name" required placeholder="Ex: Pizza...">
+                    </div>
+                    <button type="submit" class="btn-save" style="background-color: #3498db;">Save Category</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="deleteCategoryModal" class="modal-overlay">
+            <div class="modal-box" style="width: 400px; border-top: 5px solid #e74c3c;">
+                <span class="close-modal" onclick="closeDeleteCategoryModal()">&times;</span>
+                <h2 style="font-family: 'Playfair Display'; margin-bottom: 20px; color: #e74c3c;">Delete Category</h2>
+                <p style="font-size: 0.9em; color: #666; margin-bottom: 15px;">
+                    Select the category you want to remove.
+                </p>
+
+                <form th:action="@{/menu-management/delete-category}" method="post">
+                    <div class="form-row">
+                        <label>Select Category</label>
+                        <select name="categoryId" required>
+                            <option value="" disabled selected>-- Choose Category --</option>
+                            <option th:each="cat : ${categories}"
+                                    th:value="${cat.categoryId}"
+                                    th:text="${cat.name}"></option>
+                        </select>
                     </div>
 
-                    <button type="submit" class="btn-save" style="background-color: #3498db;">Save Category</button>
+                    <button type="submit" class="btn-save"
+                            style="background-color: #e74c3c;"
+                            onclick="return confirm('Are you sure? This might fail if products are still assigned to this category!')">
+                        Delete Category
+                    </button>
                 </form>
             </div>
         </div>
 
 
         <script>
-            // --- LOGICA PENTRU PRODUSE ---
+            // --- 1. PRODUS ---
             function openModal(id, catId, name, desc, price, ingr) {
                 document.getElementById('productModal').style.display = 'block';
                 document.getElementById('inId').value = id;
@@ -133,37 +165,36 @@
                 document.getElementById('inDesc').value = desc;
                 document.getElementById('inPrice').value = price;
                 document.getElementById('inIngr').value = ingr;
-
-                const title = document.getElementById('modalTitle');
-                title.innerText = (id === 0) ? "Add New Product" : "Edit " + name;
+                document.getElementById('modalTitle').innerText = (id === 0) ? "Add New Product" : "Edit " + name;
             }
-
             function closeProductModal() {
                 document.getElementById('productModal').style.display = 'none';
             }
 
-            // --- LOGICA PENTRU CATEGORII (NOU) ---
+            // --- 2. CATEGORIE (ADD) ---
             function openCategoryModal(id, name) {
                 document.getElementById('categoryModal').style.display = 'block';
                 document.getElementById('catId').value = id;
                 document.getElementById('catName').value = name;
-
-                const title = document.getElementById('catModalTitle');
-                title.innerText = (id === 0) ? "Add New Category" : "Edit Category";
+                document.getElementById('catModalTitle').innerText = (id === 0) ? "Add New Category" : "Edit Category";
             }
-
             function closeCategoryModal() {
                 document.getElementById('categoryModal').style.display = 'none';
             }
 
-            // --- ÎNCHIDERE LA CLICK ÎN AFARĂ ---
+            // --- 3. CATEGORIE (DELETE) - NOU ---
+            function openDeleteCategoryModal() {
+                document.getElementById('deleteCategoryModal').style.display = 'block';
+            }
+            function closeDeleteCategoryModal() {
+                document.getElementById('deleteCategoryModal').style.display = 'none';
+            }
+
+            // --- INCHIDERE GLOBALA ---
             window.onclick = function(event) {
-                if (event.target == document.getElementById('productModal')) {
-                    closeProductModal();
-                }
-                if (event.target == document.getElementById('categoryModal')) {
-                    closeCategoryModal();
-                }
+                if (event.target == document.getElementById('productModal')) closeProductModal();
+                if (event.target == document.getElementById('categoryModal')) closeCategoryModal();
+                if (event.target == document.getElementById('deleteCategoryModal')) closeDeleteCategoryModal();
             }
         </script>
 

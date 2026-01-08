@@ -35,16 +35,45 @@ public class ProductCategoryRepository implements IProductCategoryRepository {
 
     @Override
     public boolean deleteCategory(int categoryId) {
-        String sql = "DELETE FROM product_category WHERE category_id = ?";
-        try (Connection conn = repository.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        String deleteProductsSql = "DELETE FROM product WHERE category_id = ?";
+        String deleteCategorySql = "DELETE FROM product_category WHERE category_id = ?";
+        Connection conn = null;
+        PreparedStatement deleteProdsStmt = null;
+        PreparedStatement deleteCatStmt = null;
 
-            stmt.setInt(1, categoryId);
-            return stmt.executeUpdate() > 0;
+        try {
+            conn = repository.getConnection();
+            conn.setAutoCommit(false);
+            deleteProdsStmt = conn.prepareStatement(deleteProductsSql);
+            deleteProdsStmt.setInt(1, categoryId);
+            deleteProdsStmt.executeUpdate();
+            deleteCatStmt = conn.prepareStatement(deleteCategorySql);
+            deleteCatStmt.setInt(1, categoryId);
+            int affectedRows = deleteCatStmt.executeUpdate();
+            conn.commit();
+            return affectedRows > 0;
 
         } catch (SQLException e) {
+            if (conn != null) {
+                try {
+                    conn.rollback();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
             e.printStackTrace();
             return false;
+        } finally {
+            try {
+                if (deleteProdsStmt != null) deleteProdsStmt.close();
+                if (deleteCatStmt != null) deleteCatStmt.close();
+                if (conn != null) {
+                    conn.setAutoCommit(true);
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 

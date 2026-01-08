@@ -10,6 +10,6 @@ public interface IUserRepository {
 
     List<User> searchUserByName(String name);
     List<User> getAllUsers();
-
+    List<User> getUsersByRole(String role);
     User getUserByEmail(String email);
 }
