@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Register - Momentum</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="register-body">
+
+<div class="register-card">
+    <h1 class="register-title">Create Account</h1>
+
+    <div th:if="${error}" class="register-error-msg">
+        <span th:text="${error}">Error message</span>
+    </div>
+
+    <form th:action="@{/register}" th:object="${user}" method="post">
+
+        <div class="register-form-group">
+            <label>First Name</label>
+            <input type="text" th:field="*{firstName}" placeholder="Ex: John" required>
+        </div>
+
+        <div class="register-form-group">
+            <label>Last Name</label>
+            <input type="text" th:field="*{lastName}" placeholder="Ex: Doe" required>
+        </div>
+
+        <div class="register-form-group">
+            <label>Phone Number</label>
+            <input type="text" th:field="*{phoneNumber}" placeholder="07xx xxx xxx" required>
+        </div>
+
+        <div class="register-form-group">
+            <label>Email Address</label>
+            <input type="email" th:field="*{email}" placeholder="name@example.com" required>
+        </div>
+
+        <div class="register-form-group">
+            <label>Password</label>
+            <input type="password" th:field="*{password}" placeholder="Create a password" required>
+        </div>
+
+        <div class="register-form-group">
+            <label>Confirm Password</label>
+            <input type="password" name="confirmPassword" placeholder="Repeat password" required>
+        </div>
+
+        <button type="submit" class="btn-register">Sign Up</button>
+    </form>
+
+    <a href="/login" class="register-login-link">Already have an account? Login here</a>
+</div>
+
+</body>
+</html>

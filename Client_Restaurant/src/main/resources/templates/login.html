@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login - Momentum</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        /* Stiluri specifice doar pentru Login ca să fie centrat */
+
+    </style>
+</head>
+<body class="login-body">
+
+<div class="login-card">
+    <h1 class="login-title">Welcome Back</h1>
+
+    <div th:if="${error}" class="login-error-msg">
+        <span th:text="${error}">Error message</span>
+    </div>
+
+    <form th:action="@{/login}" th:object="${user}" method="post">
+
+        <div class="login-form-group">
+            <label>Username</label>
+            <input type="text" th:field="*{email}" placeholder="Enter email" required>
+        </div>
+
+        <div class="login-form-group">
+            <label>Password</label>
+            <input type="password" th:field="*{password}" placeholder="Enter password" required>
+        </div>
+
+        <button type="submit" class="btn-login">Login</button>
+    </form>
+
+    <a href="/" class="back-link">← Back to Home</a>
+    <a href="/register" class="back-link" style="color: #e67e22; margin-top: 10px;">No account? Register here</a>
+</div>
+
+</body>
+</html>

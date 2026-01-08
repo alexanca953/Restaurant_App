@@ -14,10 +14,18 @@
         <img th:src="@{/images/Logo.svg}" alt="Logo" style="height: 40px; margin-right: 15px;filter: brightness(0) invert(1);">
         <span>Momentum</span>
     </div>
-    <div>
-        <a href="/reservation" style="color: white; margin-right: 20px; text-decoration: none;">Make a Reservation</a>
-        <a href="/login" class="btn-login">Login / New account</a>
+
+    <div class="nav-buttons">
+        <a href="/reservation" class="nav-link" >Make a Reservation</a>
+        <a th:if="${userLogat == null}" href="/login" class="btn-nav">Login / New account</a>
+
+        <div th:if="${userLogat != null}" class="user-profile">
+            <span class="welcome-msg">Hello, <b th:text="${userLogat.firstName}">User</b>!</span>
+            <a href="/logout" class="btn-logout">Logout</a>
+        </div>
+
     </div>
+
 </nav>
 
 <div class="hero-section">

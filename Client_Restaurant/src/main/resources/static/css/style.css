@@ -143,6 +143,31 @@ body#home-page { margin: 0; overflow-x: hidden; overflow-y: auto; } /* Reactivă
     justify-content: space-between; /* Logo stânga, Buton dreapta */
     align-items: center;
     z-index: 100; /* Să fie peste poza de fundal */
+
+}
+.nav-buttons {
+    display: flex;
+    align-items: center;
+    gap: 30px; /* Spațiul dintre "Make a Reservation" și "Hello..." */
+}
+.nav-link {
+    color: white;
+    text-decoration: none;
+    font-size: 1em;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.nav-link:hover {
+    color: #e67e22; /* Se face portocaliu când pui mouse-ul */
+}
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Spațiu mic între Nume și butonul Logout */
+    background: rgba(255, 255, 255, 0.1); /* Opțional: un fundal fin transparent */
+    padding: 5px 15px;
+    border-radius: 30px;
 }
 
 .logo { color: white;
@@ -686,3 +711,226 @@ body.dark-theme {
     border: none;
 }
 
+/*---------LOGIN--------------*/
+
+.login-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('../images/Home.png');
+    background-size: cover;
+    margin: 0;
+}
+
+.login-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 40px;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.login-title {
+    color: white;
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5em;
+    margin-bottom: 30px;
+}
+
+.login-form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.login-form-group label {
+    color: #bdc3c7;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.login-form-group input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 5px;
+    border: none;
+    background: rgba(255,255,255,0.9);
+    font-size: 1em;
+    box-sizing: border-box; /* Important ca să nu iasă din chenar */
+}
+
+.btn-login {
+    width: 100%;
+    padding: 12px;
+    background-color: #944d05;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.btn-login:hover {
+    background-color: #d35400;
+    transform: scale(1.02);
+}
+
+.login-error-msg {
+    color: #e74c3c;
+    background: rgba(0,0,0,0.3);
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.back-link {
+    display: block;
+    margin-top: 20px;
+    color: #bdc3c7;
+    text-decoration: none;
+}
+.back-link:hover { color: white; }
+
+/*-------------LOGIN BUTTON------------*/
+
+/* Stil pentru zona de user logat */
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Spațiu între nume și buton */
+}
+
+.welcome-msg {
+    color: white;
+    font-size: 1.1em;
+    font-family: 'Lato', sans-serif;
+}
+
+.welcome-msg b {
+    color: #944d05; /* Numele userului cu portocaliu */
+}
+
+.btn-logout {
+    text-decoration: none;
+    color: #bdc3c7;
+    border: 1px solid #bdc3c7;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    transition: 0.3s;
+}
+
+.btn-logout:hover {
+    color: white;
+    border-color: #e74c3c; /* Roșu la hover pentru logout */
+    background-color: rgba(231, 76, 60, 0.1);
+}
+
+/* Asigură-te că butonul vechi de login arată bine */
+.btn-nav {
+    /* ... stilurile tale existente pentru butonul maro ... */
+    background-color: #944d05; /* Exemplu */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+
+/*---------REGISTER-----------------*/
+
+.register-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('../images/RegisterPicture.png');
+    background-size: cover;
+    margin: 0;
+    font-family: 'Lato', sans-serif;
+}
+
+.register-card {
+    background: rgba(255, 255, 255, 0.1); /* Efect de sticlă */
+    backdrop-filter: blur(10px);
+    padding: 40px;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 450px; /* Puțin mai lat decât login-ul */
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.register-title {
+    color: white;
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2em;
+    margin-bottom: 25px;
+}
+
+.register-form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.register-form-group label {
+    color: #bdc3c7;
+    display: block;
+    margin-bottom: 5px;
+    font-size: 0.9em;
+}
+
+.register-form-group input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 5px;
+    border: none;
+    background: rgba(255,255,255,0.9);
+    font-size: 1em;
+    box-sizing: border-box;
+}
+
+.btn-register {
+    width: 100%;
+    padding: 12px;
+    background-color: #e67e22;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+.btn-register:hover {
+    background-color: #d35400;
+    transform: scale(1.02);
+}
+
+.register-error-msg {
+    color: #ff6b6b;
+    background: rgba(0,0,0,0.4);
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    font-size: 0.9em;
+}
+
+.register-login-link {
+    display: block;
+    margin-top: 20px;
+    color: #bdc3c7;
+    text-decoration: none;
+}
+.register-login-link:hover { color: white; }
