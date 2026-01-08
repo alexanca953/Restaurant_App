@@ -1,11 +1,11 @@
 package commands.usercommands;
 
 import commands.ICommandHandler;
-import model.IUserRepository;
-import model.Message;
+import restaurantclient.model.IUserRepository;
+import restaurantclient.model.Message;
 
 import java.util.List;
-import model.User;
+import restaurantclient.model.User;
 
 public class SearchUserByNameHandler implements ICommandHandler {
     private IUserRepository userRepo;

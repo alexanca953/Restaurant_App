@@ -1,4 +1,4 @@
-import controller.RestaurantController;
+import restaurantclient.controller.RestaurantController;
 
 public class Main {
     public static void main(String[] args) {

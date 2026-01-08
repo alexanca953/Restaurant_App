@@ -1,8 +1,8 @@
 package commands.feedbackcommands;
 
 import commands.ICommandHandler;
-import model.IFeedbackRepository;
-import model.Message;
+import restaurantclient.model.IFeedbackRepository;
+import restaurantclient.model.Message;
 
 public class DeleteFeedbackHandler implements ICommandHandler {
     private IFeedbackRepository feedbackRepo;

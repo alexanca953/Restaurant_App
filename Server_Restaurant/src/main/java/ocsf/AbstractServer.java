@@ -17,7 +17,7 @@ import java.io.*;
 * a concrete subclass. Several other hook methods may also be
 * overriden.<p>
 *
-* Several public service methods are provided to applications that use
+* Several public restaurantclient.service methods are provided to applications that use
 * this framework, and several hook methods are also available<p>
 *
 * Project Name: OCSF (Object Client-Server Framework)<p>

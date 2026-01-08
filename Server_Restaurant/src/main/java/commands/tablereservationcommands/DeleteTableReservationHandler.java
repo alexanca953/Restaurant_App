@@ -1,8 +1,8 @@
 package commands.tablereservationcommands;
 
 import commands.ICommandHandler;
-import model.ITableReservationRepository;
-import model.Message;
+import restaurantclient.model.ITableReservationRepository;
+import restaurantclient.model.Message;
 
 public class DeleteTableReservationHandler implements ICommandHandler {
     private ITableReservationRepository repo;

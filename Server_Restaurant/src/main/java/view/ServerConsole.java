@@ -1,6 +1,6 @@
 package view;
 
-import controller.RestaurantController;
+import restaurantclient.controller.RestaurantController;
 
 public class ServerConsole {
     RestaurantController controller;

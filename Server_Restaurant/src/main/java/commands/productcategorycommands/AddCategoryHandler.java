@@ -1,9 +1,9 @@
 package commands.productcategorycommands;
 
 import commands.ICommandHandler;
-import model.IProductCategoryRepository;
-import model.Message;
-import model.ProductCategory;
+import restaurantclient.model.IProductCategoryRepository;
+import restaurantclient.model.Message;
+import restaurantclient.model.ProductCategory;
 
 public class AddCategoryHandler implements ICommandHandler {
     private IProductCategoryRepository repo;

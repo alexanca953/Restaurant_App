@@ -1,9 +1,9 @@
 package commands.productcommands;
 
 import commands.ICommandHandler;
-import model.IProductRepository;
-import model.Message;
-import model.Product;
+import restaurantclient.model.IProductRepository;
+import restaurantclient.model.Message;
+import restaurantclient.model.Product;
 
 public class UpdateProductHandler implements ICommandHandler {
     private IProductRepository productRepo;

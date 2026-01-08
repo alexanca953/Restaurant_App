@@ -1,8 +1,8 @@
 package commands.tablecommands;
 
 import commands.ICommandHandler;
-import model.ITableRepository;
-import model.Message;
+import restaurantclient.model.ITableRepository;
+import restaurantclient.model.Message;
 
 public class DeleteTableHandler implements ICommandHandler {
     private ITableRepository tableRepo;

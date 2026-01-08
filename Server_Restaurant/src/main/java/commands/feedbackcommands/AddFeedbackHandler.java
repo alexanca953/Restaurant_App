@@ -1,9 +1,9 @@
 package commands.feedbackcommands;
 
 import commands.ICommandHandler;
-import model.Feedback;
-import model.IFeedbackRepository;
-import model.Message;
+import restaurantclient.model.Feedback;
+import restaurantclient.model.IFeedbackRepository;
+import restaurantclient.model.Message;
 
 public class AddFeedbackHandler implements ICommandHandler {
     private IFeedbackRepository feedbackRepo;

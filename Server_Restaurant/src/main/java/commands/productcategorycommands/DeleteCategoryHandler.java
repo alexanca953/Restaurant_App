@@ -1,8 +1,8 @@
 package commands.productcategorycommands;
 
 import commands.ICommandHandler;
-import model.IProductCategoryRepository;
-import model.Message;
+import restaurantclient.model.IProductCategoryRepository;
+import restaurantclient.model.Message;
 
 public class DeleteCategoryHandler implements ICommandHandler {
     private IProductCategoryRepository repo;

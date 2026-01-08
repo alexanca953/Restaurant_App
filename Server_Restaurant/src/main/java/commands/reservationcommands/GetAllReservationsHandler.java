@@ -1,9 +1,9 @@
 package commands.reservationcommands;
 
 import commands.ICommandHandler;
-import model.IReservationRepository;
-import model.Message;
-import model.Reservation;
+import restaurantclient.model.IReservationRepository;
+import restaurantclient.model.Message;
+import restaurantclient.model.Reservation;
 
 import java.util.List;
 
