@@ -96,32 +96,46 @@ public class HomeController {
     @GetMapping("/menu")
     public String showMenu(@RequestParam(name = "keyword", required = false) String keyword, Model model) {
         ArrayList<Product> products=new ArrayList<>();
+        ArrayList<ProductCategory> categories = new ArrayList<>();
+
         try{
-                products=(ArrayList<Product>) client.sendAndReceive(new Message("GET_ALL_PRODUCTS",null));
-            List<Product> filteredList=new ArrayList<>();
-            if (keyword != null && !keyword.isEmpty()) {
-                filteredList = new ArrayList<>();
-                for (Product p : products) {
-                    if (p.getProductName().toLowerCase().contains(keyword.toLowerCase())) {
-                        filteredList.add(p);
-                    }
-                }
-            } else {
-                filteredList = products;
-            }
-            Map<Integer, List<Product>> menuGrouped = new LinkedHashMap<>();
-
-            if (filteredList != null) {
-                menuGrouped = filteredList.stream()
-                        .collect(Collectors.groupingBy(Product::getCategoryId));
-            }
-
-            model.addAttribute("menuMap", menuGrouped);
-            model.addAttribute("keyword", keyword);
+            products=(ArrayList<Product>) client.sendAndReceive(new Message("GET_ALL_PRODUCTS",null));
+            categories=(ArrayList<ProductCategory>) client.sendAndReceive(new Message("GET_ALL_CATEGORIES",null));
         }
         catch(Exception e){
-            System.out.println("Error at loading products "+ e.getMessage());
+            System.out.println("Error at loading products or categories"+ e.getMessage());
         }
+
+        Map<Integer, String> categoryNamesMap = new HashMap<>();
+        if (categories != null) {
+            for (ProductCategory cat : categories) {
+                categoryNamesMap.put(cat.getCategoryId(), cat.getName());
+            }
+        }
+
+        List<Product> filteredList;
+        if (keyword != null && !keyword.isEmpty()) {
+            filteredList = new ArrayList<>();
+            for (Product p : products) {
+                if (p.getProductName().toLowerCase().contains(keyword.toLowerCase())) {
+                    filteredList.add(p);
+                }
+            }
+        } else {
+            filteredList = products;
+        }
+        Map<String, List<Product>> menuGrouped = new LinkedHashMap<>();
+
+        if (filteredList != null) {
+            menuGrouped = filteredList.stream()
+                    .collect(Collectors.groupingBy(product -> {
+                        int idCat = product.getCategoryId();
+                        return categoryNamesMap.getOrDefault(idCat, "Diverse");
+                    }));
+        }
+
+        model.addAttribute("menuMap", menuGrouped);
+        model.addAttribute("keyword", keyword);
 
         return "menu";
     }
