@@ -49,13 +49,54 @@
     </div>
 </section>
 
-</section> <section class="feedback-section">
+<section class="feedback-section">
     <div class="feedback-content">
         <h2>Your opinion matters</h2>
         <p>Did you visit us recently? Tell us how was your culinary experience.</p>
-        <a href="/feedback" class="btn-feedback">Give us a Feedback &rarr;</a>
+
+        <a th:if="${userLogat == null}" href="/login" class="btn-feedback">
+            Login to Give Feedback →
+        </a>
+
+        <button th:if="${userLogat != null}" onclick="openFeedbackModal()" class="btn-feedback" style="cursor: pointer;">
+            Give us a Feedback →
+        </button>
     </div>
 </section>
+<div id="feedbackModal" class="modal-overlay">
+    <div class="modal-box">
+        <span class="close-btn" onclick="closeFeedbackModal()">&times;</span>
+
+        <h2 style="font-family: 'Playfair Display', serif; color: #2c3e50; margin-bottom: 20px;">Your Experience</h2>
+
+        <form action="/submit-feedback" method="post">
+
+            <label for="type">Category:</label>
+            <select name="type" id="type" required>
+                <option value="General">General Restaurant</option>
+                <option value="Food">Food Quality</option>
+                <option value="Service">Staff & Service</option>
+                <option value="Ambiance">Ambiance</option>
+            </select>
+
+            <label for="score">Rating:</label>
+            <div class="rating-wrapper">
+                <select name="score" id="score">
+                    <option value="5">★★★★★ (Excellent)</option>
+                    <option value="4">★★★★☆ (Good)</option>
+                    <option value="3">★★★☆☆ (Average)</option>
+                    <option value="2">★★☆☆☆ (Poor)</option>
+                    <option value="1">★☆☆☆☆ (Terrible)</option>
+                </select>
+            </div>
+
+            <label for="comment">Your Message:</label>
+            <textarea name="comment" id="comment" rows="4" placeholder="Tell us more details..." required></textarea>
+
+            <button type="submit" class="btn-submit-modal">Send Feedback</button>
+        </form>
+    </div>
+</div>
 
 
 <section class="contact-section">
@@ -108,6 +149,32 @@
     <!--<a href="/feedback" style="color: white; margin-right: 20px; text-decoration: none;">Give Feedback</a>-->
     <p>&copy; Momentum. All rights reserved</p>
 </footer>
+
+
+<script>
+    function openFeedbackModal() {
+        // Caută elementul cu ID-ul "feedbackModal" și îl face vizibil (flex)
+        var modal = document.getElementById("feedbackModal");
+        if (modal) {
+            modal.style.display = "flex";
+        } else {
+            console.error("Nu am găsit modalul! Verifică dacă ai <div id='feedbackModal'> în pagină.");
+        }
+    }
+
+    function closeFeedbackModal() {
+        document.getElementById("feedbackModal").style.display = "none";
+    }
+
+    // Închide fereastra dacă dai click pe fundalul negru
+    window.onclick = function(event) {
+        var modal = document.getElementById("feedbackModal");
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+
 
 </body>
 </html>

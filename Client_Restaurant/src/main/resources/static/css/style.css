@@ -777,6 +777,117 @@ body.dark-theme {
     box-shadow: 0 5px 15px rgba(230, 126, 34, 0.3);
 }
 
+.modal-overlay {
+    display: none; /* Ascuns implicit - JavaScript-ul îl va face 'flex' */
+    position: fixed; /* Rămâne fix pe ecran chiar dacă dai scroll */
+    z-index: 1000; /* Peste tot restul site-ului */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Negru transparent */
+    backdrop-filter: blur(4px); /* Efect modern de ceață în spate */
+    justify-content: center; /* Centrează cutia orizontal */
+    align-items: center; /* Centrează cutia vertical */
+}
+
+/* 2. Cutia albă (Fereastra propriu-zisă) */
+.modal-box {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%; /* Pe mobil ocupă aproape tot */
+    max-width: 500px; /* Pe desktop nu se face mai mare de atât */
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5); /* Umbră puternică 3D */
+    position: relative;
+    animation: slideDown 0.3s ease-out; /* Animație de intrare */
+    text-align: left; /* Aliniem textele la stânga în interior */
+}
+
+/* Animația de apariție */
+@keyframes slideDown {
+    from { transform: translateY(-30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* 3. Butonul "X" de închidere */
+.close-btn {
+    color: #aaa;
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+    line-height: 1;
+}
+
+.close-btn:hover {
+    color: #e74c3c; /* Roșu la hover */
+}
+
+/* 4. Stiluri pentru Formular (Inputuri, Selecturi) */
+.modal-box label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #2c3e50;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.95em;
+}
+
+.modal-box select,
+.modal-box textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: 'Lato', sans-serif;
+    font-size: 1em;
+    background-color: #f8f9fa;
+    box-sizing: border-box; /* Important: padding-ul nu lățește elementul */
+    transition: border-color 0.3s;
+}
+
+.modal-box select:focus,
+.modal-box textarea:focus {
+    outline: none;
+    border-color: #e67e22; /* Portocaliu când scrii */
+    background-color: #fff;
+}
+
+.modal-box textarea {
+    resize: vertical; /* Userul poate trage de el doar în jos */
+    min-height: 80px;
+}
+
+/* Wrapper pentru steluțe (opțional, doar spațiere) */
+.rating-wrapper {
+    position: relative;
+}
+
+/* 5. Butonul de Trimitere din Modal */
+.btn-submit-modal {
+    margin-top: 25px;
+    width: 100%;
+    padding: 12px;
+    background-color: #e67e22; /* Același portocaliu ca restul site-ului */
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.btn-submit-modal:hover {
+    background-color: #d35400; /* Puțin mai închis la hover */
+    transform: translateY(-2px);
+}
+
 /* ========================
    SECȚIUNEA CONTACT
    ======================== */
@@ -861,7 +972,7 @@ body.dark-theme {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('../images/Home.png');
+    background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('../images/RegisterPicture.png');
     background-size: cover;
     margin: 0;
 }

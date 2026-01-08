@@ -403,4 +403,26 @@ public class HomeController {
             return "register";
         }
     }
+
+    ///feedback
+    @PostMapping("/submit-feedback")
+    public String submitFeedback(@ModelAttribute Feedback feedback, HttpSession session) {
+        User userLogat = (User) session.getAttribute("userLogat");
+        if (userLogat == null) {
+            return "redirect:/login";
+        }
+        feedback.setClientId(userLogat.getUserId());
+        feedback.setDateTime(LocalDateTime.now());
+
+        try {
+            System.out.println("Se trimite feedback de la user ID: " + userLogat.getUserId());
+            client.sendAndReceive(new Message("ADD_FEEDBACK", feedback));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "redirect:/?feedbackSuccess";
+    }
+
 }
