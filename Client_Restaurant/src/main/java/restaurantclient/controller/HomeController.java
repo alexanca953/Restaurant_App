@@ -2,13 +2,22 @@ package restaurantclient.controller;
 
 import jakarta.servlet.http.HttpSession;
 import restaurantclient.model.*;
+import model.*;
+import model.Message;
+import model.Product;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.*;
+
 import java.beans.PropertyEditorSupport;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.ArrayList;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import java.util.stream.Collectors;
 
 @Controller
@@ -66,6 +75,7 @@ public class HomeController {
 
     @PostMapping("/menu-management/delete")
     public String deleteProduct(@RequestParam("productId") int id) {
+
         try{
             Product product = new Product();
             product.setProductId(id);
@@ -145,9 +155,10 @@ public class HomeController {
 
         return "menu";
     }
-
+    ///RESERVATIONS
     @GetMapping("/reservations")
     public String showReservations(Model model) {
+
         List<Map<String, Object>> reservations = new ArrayList<>();
         List<Table> tables = new ArrayList<>();
 
@@ -163,6 +174,7 @@ public class HomeController {
                 }
             }
         } catch (Exception e) {
+            System.out.println("Eroare la preluarea datelor: " + e.getMessage());
             e.printStackTrace();
         }
 
@@ -171,7 +183,6 @@ public class HomeController {
 
         return "reservations";
     }
-
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(LocalDateTime.class, new PropertyEditorSupport() {
@@ -189,11 +200,11 @@ public class HomeController {
             }
         });
     }
-
     @PostMapping("/reservations/save")
     public String saveReservation(@ModelAttribute Reservation reservation) {
         try {
             String command = (reservation.getReservationId() == 0) ? "ADD_RESERVATION" : "UPDATE_RESERVATION";
+            System.out.println("Sending command: " + command);
             Object response = client.sendAndReceive(new Message(command, reservation));
             if (Boolean.FALSE.equals(response)) {
                 return "redirect:/reservations?error=true";
@@ -203,14 +214,16 @@ public class HomeController {
         }
         return "redirect:/reservations";
     }
-
     @PostMapping("/reservations/delete")
     public String deleteReservation(@RequestParam("reservationId") int id) {
         try {
             Reservation r = new Reservation();
             r.setReservationId(id);
+            System.out.println("Deleting reservation ID: " + id);
             client.sendAndReceive(new Message("DELETE_RESERVATION", r));
+
         } catch (Exception e) {
+            System.out.println("Eroare la ștergere: " + e.getMessage());
             e.printStackTrace();
         }
         return "redirect:/reservations";
@@ -338,7 +351,7 @@ public class HomeController {
         try {
             if (!user.getPassword().equals(confirmPassword)) {
                 model.addAttribute("error", "Passwords do not match!");
-                return "register";
+                return "register"; // Rămânem pe pagină cu eroare
             }
             if (user.getEmail().isEmpty() || user.getPassword().isEmpty()) {
                 model.addAttribute("error", "All fields are required!");
@@ -349,7 +362,7 @@ public class HomeController {
             Object response = client.sendAndReceive(new Message("ADD_USER", user));
 
             if (Boolean.TRUE.equals(response)) {
-                return "redirect:/login?registered";
+                return "redirect:/login?registered"; // Succes -> Trimitem la Login
             } else {
                 model.addAttribute("error", "Username or Email already exists!");
                 return "register";
@@ -362,15 +375,24 @@ public class HomeController {
         }
     }
 
+    ///feedback
     @PostMapping("/submit-feedback")
-    public String submitFeedback(@ModelAttribute Feedback feedback, @SessionAttribute("userLogat") User userLogat) {
+    public String submitFeedback(@ModelAttribute Feedback feedback, HttpSession session) {
+        User userLogat = (User) session.getAttribute("userLogat");
+        if (userLogat == null) {
+            return "redirect:/login";
+        }
         feedback.setClientId(userLogat.getUserId());
         feedback.setDateTime(LocalDateTime.now());
+
         try {
+            System.out.println("Se trimite feedback de la user ID: " + userLogat.getUserId());
             client.sendAndReceive(new Message("ADD_FEEDBACK", feedback));
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return "redirect:/?feedbackSuccess";
     }
     ///table
@@ -403,13 +425,52 @@ public class HomeController {
             // Pentru moment, facem update direct. Dacă vrei să ștergi rezervările,
             // poți trimite un flag către server sau să faci logica aia în Handler.
 
-            String command = (table.getTableId() == 0) ? "ADD_TABLE" : "UPDATE_TABLE";
-            client.sendAndReceive(new Message(command, table));
+    // --- ZONA REZERVĂRI PENTRU CLIENT ---
+
+    @GetMapping("/clientReservation")
+    public String showReservationForm(HttpSession session, Model model) {
+        User userLogat = (User) session.getAttribute("userLogat");
+
+        if (userLogat == null) {
+            return "redirect:/login";
+        }
+        model.addAttribute("clientReservation", new Reservation());
+
+        return "clientReservation";
+    }
+
+    @PostMapping("/clientReservation/submit")
+    public String submitReservation(@ModelAttribute Reservation reservation, HttpSession session) {
+
+        User userLogat = (User) session.getAttribute("userLogat");
+
+        if (userLogat == null) {
+            return "redirect:/login";
+        }
+
+        try {
+            reservation.setClientId(userLogat.getUserId());
+
+            String fullName = userLogat.getFirstName() + " " + userLogat.getLastName();
+            reservation.setTempClientName(fullName);
+
+            reservation.setTempClientPhone(userLogat.getPhoneNumber());
+
+            reservation.setStatus("PENDING");
+            reservation.setTableId(0);
+
+            System.out.println("Sending reservation for: " + fullName);
+            client.sendAndReceive(new Message("ADD_RESERVATION", reservation));
+
+            return "redirect:/?reservationSuccess";
+
         } catch (Exception e) {
             e.printStackTrace();
+            return "redirect:/reservation?error=server";
         }
-        return "redirect:/table-management";
     }
+
+}
 
     @PostMapping("/table-management/delete")
     public String deleteTable(@RequestParam("tableId") int tableId) {
