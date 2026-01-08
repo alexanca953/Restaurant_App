@@ -420,29 +420,27 @@ body.dark-theme {
 }
 
 .menu-header {
-    /* 1. Setări pentru TOT ecranul */
-    height: 100vh; /* 100% din înălțimea vizibilă (Viewport Height) */
+    /* 1. ÎNALȚIME FIXĂ (Aici modifici cât de "îngustă" e pe înălțime) */
+    height: 500px;
+
+    /* 2. LĂȚIME COMPLETĂ (Dintr-un capăt în celălalt) */
     width: 100%;
 
-    /* 2. Centrare perfectă a textului și a search-ului */
+    /* 3. Centrare conținut */
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Centrat vertical */
+    justify-content: center; /* Centrat vertical în cei 500px */
     align-items: center;     /* Centrat orizontal */
 
-    /* 3. Imaginea de fundal (Pune link-ul ales de tine de pe Unsplash) */
+    /* 4. Imaginea de fundal */
+    /* Folosește linkul tău preferat de pe Unsplash aici */
     background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
-    url('../images/MenuPicture.png');
-
+    url('../images/MenuPicture2.png');
     background-size: cover;
     background-position: center;
-
-    /* Opțional: Efect Parallax (imaginea stă pe loc când dai scroll) */
-    background-attachment: fixed;
-
-    /* 4. Eliminăm linia și spațierea */
-    border-bottom: none; /* Fără dunga portocalie */
-    margin-bottom: 50px; /* Spațiu până la lista de produse */
+    border-bottom: none;
+    margin-bottom: 10px;
+    background-attachment: fixed
 }
 
 /* Ajustăm titlul să se vadă bine pe poză */
@@ -492,7 +490,7 @@ body.dark-theme {
 .menu-list-container {
     max-width: 800px;
     width: 90%;
-    margin: 50px auto;
+    margin: 30px auto;
     padding: 20px;
     background-color: transparent; /* Sau o culoare închisă */
 
