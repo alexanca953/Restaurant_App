@@ -373,4 +373,52 @@ public class HomeController {
         }
         return "redirect:/?feedbackSuccess";
     }
+    ///table
+    // === TABLE MANAGEMENT (MANAGER ONLY) ===
+
+    @GetMapping("/table-management")
+    public String showTableManagement(Model model) {
+        try {
+
+            Object response = client.sendAndReceive(new Message("GET_ALL_TABLES", null));
+            if (response instanceof List) {
+                List<Table> tables = (List<Table>) response;
+                // Le sortăm frumos după numărul mesei
+                tables.sort(Comparator.comparingInt(Table::getTableNumber));
+                model.addAttribute("tables", tables);
+            } else {
+                model.addAttribute("tables", new ArrayList<>());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "table-management";
+    }
+
+    @PostMapping("/table-management/save")
+    public String saveTable(Table table) {
+        try {
+            // Logica specială cerută:
+            // Dacă e UPDATE și capacitatea scade, ar trebui să verificăm rezervările.
+            // Pentru moment, facem update direct. Dacă vrei să ștergi rezervările,
+            // poți trimite un flag către server sau să faci logica aia în Handler.
+
+            String command = (table.getTableId() == 0) ? "ADD_TABLE" : "UPDATE_TABLE";
+            client.sendAndReceive(new Message(command, table));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "redirect:/table-management";
+    }
+
+    @PostMapping("/table-management/delete")
+    public String deleteTable(@RequestParam("tableId") int tableId) {
+        try {
+            // Asta va șterge masa și (datorită CASCADE din SQL) legăturile cu rezervările
+            client.sendAndReceive(new Message("DELETE_TABLE", tableId));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "redirect:/table-management";
+    }
 }

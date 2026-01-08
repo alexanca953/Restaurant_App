@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head_common}"></head>
+<body>
+
+<div th:replace="~{fragments/layout :: main_layout( ~{::section} )}">
+    <section>
+        <div class="page-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h1 class="res-page-title">Table Management</h1>
+            <button onclick="openTableModal(0, '', '', 'FREE')" class="res-btn-add">
+                + New Table
+            </button>
+        </div>
+
+        <div class="res-table-card">
+            <table class="res-table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Table Number</th>
+                    <th>Capacity</th>
+                    <th>Status</th> <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="t : ${tables}">
+                    <td th:text="${'#' + t.tableId}"></td>
+                    <td th:text="${'Masa ' + t.tableNumber}" style="font-weight: bold;"></td>
+                    <td>
+             <span style="background-color: #e8f6f3; color: #16a085; padding: 5px 10px; border-radius: 15px;">
+                <i class="fas fa-users"></i> <span th:text="${t.capacity}"></span> Pers
+             </span>
+                    </td>
+
+                    <td style="font-weight: bold;"
+                        th:text="${t.status}"
+                        th:style="${t.status == 'OCCUPIED' ? 'color: red;' :
+                        (t.status == 'FREE' ? 'color: green;' : 'color: orange;')}">
+                    </td>
+
+                    <td>
+                        <button class="res-action-btn res-edit"
+                                th:onclick="openTableModal([[${t.tableId}]], [[${t.tableNumber}]], [[${t.capacity}]], [[${t.status}]])">
+                            Edit
+                        </button>
+
+                        <form th:action="@{/table-management/delete}" method="post" style="display:inline;">
+                            <input type="hidden" name="tableId" th:value="${t.tableId}">
+                            <button type="submit" class="res-action-btn res-delete"
+                                    onclick="return confirm('Sigur vrei să ștergi masa?')">
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="tableModal" class="res-modal-overlay">
+            <div class="res-modal-box">
+                <span class="res-close-btn" onclick="closeTableModal()">&times;</span>
+                <h2 id="modalTitle">Table Details</h2>
+
+                <form th:action="@{/table-management/save}" method="post">
+                    <input type="hidden" id="tableId" name="tableId" value="0">
+
+                    <div class="res-form-row">
+                        <label>Table Number</label>
+                        <input type="number" id="tableNumber" name="tableNumber" required>
+                    </div>
+
+                    <div class="res-form-row">
+                        <label>Capacity</label>
+                        <input type="number" id="capacity" name="capacity" required>
+                    </div>
+
+                    <div class="res-form-row">
+                        <label>Status</label>
+                        <select id="status" name="status">
+                            <option value="FREE">FREE (Liberă)</option>
+                            <option value="OCCUPIED">OCCUPIED (Ocupată)</option>
+                            <option value="UNAVAILABLE">UNAVAILABLE (În lucru/Reparații)</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="res-btn-save">Save Table</button>
+                </form>
+            </div>
+        </div>
+
+        <script>
+            // Am adăugat parametrul 'stat' (status)
+            function openTableModal(id, number, cap, stat) {
+                document.getElementById('tableModal').style.display = 'block';
+                document.getElementById('tableId').value = id;
+                document.getElementById('tableNumber').value = number;
+                document.getElementById('capacity').value = cap;
+                document.getElementById('status').value = stat; // Selectează statusul curent
+
+                document.getElementById('modalTitle').innerText = (id === 0) ? "New Table" : "Edit Table " + number;
+            }
+
+            function closeTableModal() {
+                document.getElementById('tableModal').style.display = 'none';
+            }
+
+            window.onclick = function(event) {
+                if (event.target == document.getElementById('tableModal')) closeTableModal();
+            }
+        </script>
+    </section>
+</div>
+</body>
+</html>

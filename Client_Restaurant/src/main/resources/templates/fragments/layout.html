@@ -26,7 +26,7 @@
         <div th:if="${role == 'MANAGER' || role == null}">
             <p class="menu-label">ADMINISTRATION</p>
             <a href="/menu-management">Edit Menu</a> <a href="/statistics">Statistics</a> </div>
-
+            <a href="/table-management">Manage Tables</a>
 
         <div th:if="${role == 'WAITER' or role == 'MANAGER' or role == null}">
             <p class="menu-label">DAILY OPERATIONS</p>

@@ -18,15 +18,30 @@ public class TableRepository implements ITableRepository {
         this.repository = new Repository();
     }
 
-    @Override
+    // 1. ADD TABLE
     public boolean addTable(Table table) {
-        String sql = "INSERT INTO restaurant_table (table_number, capacity, status) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO restaurant_table (table_number, capacity, is_occupied) VALUES (?, ?, ?)";
+        try (Connection conn = repository.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, table.getTableNumber());
+            stmt.setInt(2, table.getCapacity());
+            stmt.setBoolean(3, false); // Implicit liberă
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) { e.printStackTrace(); return false; }
+    }
+
+    // În TableRepository.java (pe Server)
+    public boolean updateTable(Table table) {
+        // Adaugă 'status=?' în SQL
+        String sql = "UPDATE restaurant_table SET table_number=?, capacity=?, status=? WHERE table_id=?";
+
         try (Connection conn = repository.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, table.getTableNumber());
             stmt.setInt(2, table.getCapacity());
-            stmt.setString(3, table.getStatus());
+            stmt.setString(3, table.getStatus()); // <--- AICI SALVEZI STATUSUL ALES DE MANAGER
+            stmt.setInt(4, table.getTableId());
 
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -35,38 +50,14 @@ public class TableRepository implements ITableRepository {
         }
     }
 
-    @Override
+    // 3. DELETE TABLE
     public boolean deleteTable(int tableId) {
-        String sql = "DELETE FROM restaurant_table WHERE table_id = ?";
+        String sql = "DELETE FROM restaurant_table WHERE table_id=?";
         try (Connection conn = repository.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-
             stmt.setInt(1, tableId);
             return stmt.executeUpdate() > 0;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    @Override
-    public boolean updateTable(int tableId, Table table) {
-        String sql = "UPDATE restaurant_table SET table_number = ?, capacity = ?, status = ? WHERE table_id = ?";
-        try (Connection conn = repository.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setInt(1, table.getTableNumber());
-            stmt.setInt(2, table.getCapacity());
-            stmt.setString(3, table.getStatus());
-            stmt.setInt(4, tableId);
-
-            return stmt.executeUpdate() > 0;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        } catch (SQLException e) { e.printStackTrace(); return false; }
     }
 
     @Override

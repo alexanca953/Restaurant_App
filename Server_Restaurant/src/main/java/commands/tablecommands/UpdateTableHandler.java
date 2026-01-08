@@ -15,7 +15,7 @@ public class UpdateTableHandler implements ICommandHandler {
     @Override
     public Message execute(Object data) {
         Table table = (Table) data;
-        boolean result = tableRepo.updateTable(table.getTableId(), table);
+        boolean result = tableRepo.updateTable( table);
         return new Message("UPDATE_TABLE_RESPONSE", result);
     }
 }
