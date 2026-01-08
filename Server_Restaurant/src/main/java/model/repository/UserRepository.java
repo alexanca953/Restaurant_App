@@ -39,12 +39,12 @@ public class UserRepository implements IUserRepository {
         try (Connection conn = repository.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, user.getRole()); // AICI E CHEIA: 'CLIENT' sau 'EMPLOYEE'
+            stmt.setString(1, user.getRole());
             stmt.setString(2, user.getFirstName());
             stmt.setString(3, user.getLastName());
             stmt.setString(4, user.getEmail());
             stmt.setString(5, user.getPassword());
-            stmt.setString(6, user.getPhoneNumber()); // Java: phoneNumber -> DB: phone
+            stmt.setString(6, user.getPhoneNumber());
 
             int rows = stmt.executeUpdate();
             return rows > 0;

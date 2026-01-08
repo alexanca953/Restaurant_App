@@ -156,7 +156,6 @@
 
 
         <script>
-            // --- 1. PRODUS ---
             function openModal(id, catId, name, desc, price, ingr) {
                 document.getElementById('productModal').style.display = 'block';
                 document.getElementById('inId').value = id;
@@ -171,7 +170,6 @@
                 document.getElementById('productModal').style.display = 'none';
             }
 
-            // --- 2. CATEGORIE (ADD) ---
             function openCategoryModal(id, name) {
                 document.getElementById('categoryModal').style.display = 'block';
                 document.getElementById('catId').value = id;
@@ -182,7 +180,6 @@
                 document.getElementById('categoryModal').style.display = 'none';
             }
 
-            // --- 3. CATEGORIE (DELETE) - NOU ---
             function openDeleteCategoryModal() {
                 document.getElementById('deleteCategoryModal').style.display = 'block';
             }
@@ -190,7 +187,6 @@
                 document.getElementById('deleteCategoryModal').style.display = 'none';
             }
 
-            // --- INCHIDERE GLOBALA ---
             window.onclick = function(event) {
                 if (event.target == document.getElementById('productModal')) closeProductModal();
                 if (event.target == document.getElementById('categoryModal')) closeCategoryModal();

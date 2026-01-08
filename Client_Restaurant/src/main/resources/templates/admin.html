@@ -127,8 +127,6 @@
         <script>
             function openUserModal(id, fname, lname, email, phone, pass, role) {
                 document.getElementById('userModal').style.display = 'block';
-
-                // 1. Populăm câmpurile standard
                 document.getElementById('userId').value = id;
                 document.getElementById('firstName').value = fname;
                 document.getElementById('lastName').value = lname;
@@ -136,27 +134,16 @@
                 document.getElementById('phone').value = phone;
                 document.getElementById('password').value = pass;
 
-                // 2. LOGICA PENTRU ROLURI (Aici e modificarea)
                 const roleSelect = document.getElementById('role');
-                // Căutăm opțiunea care are valoarea 'CLIENT'
-                // (Nota: Asigură-te că în HTML ai <option value="CLIENT">Client</option>)
                 const clientOption = roleSelect.querySelector('option[value="CLIENT"]');
 
                 if (id === 0) {
-                    // === MODUL ADD (Angajat Nou) ===
-                    // Ascundem opțiunea CLIENT. Adminul nu poate crea clienți manual.
                     if(clientOption) clientOption.style.display = 'none';
-
-                    // Selectăm automat primul angajat disponibil (WAITER)
                     roleSelect.value = 'WAITER';
 
                     document.getElementById('modalTitle').innerText = "New Employee";
                 } else {
-                    // === MODUL EDIT (Orice User) ===
-                    // Afișăm opțiunea CLIENT (poate edităm un client existent)
                     if(clientOption) clientOption.style.display = 'block';
-
-                    // Setăm valoarea reală a userului
                     roleSelect.value = role;
 
                     document.getElementById('modalTitle').innerText = "Edit User #" + id;
