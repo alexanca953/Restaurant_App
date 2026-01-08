@@ -14,8 +14,9 @@ public class UpdateReservationHandler implements ICommandHandler {
 
     @Override
     public Message execute(Object data) {
-        Reservation reservation = (Reservation) data;
-        boolean result = reservationRepo.updateReservation(reservation.getReservationId(), reservation);
-        return new Message("UPDATE_RESERVATION_RESPONSE", result);
+        Reservation r = (Reservation) data;
+        System.out.println("SERVER: Updating reservation ID " + r.getReservationId());
+        boolean success = reservationRepo.updateReservation(r);
+        return new Message("UPDATE_RESERVATION_RESPONSE", success);
     }
 }

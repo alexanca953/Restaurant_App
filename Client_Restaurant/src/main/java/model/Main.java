@@ -12,11 +12,11 @@ import controller.ConcreteClient;
 import java.util.Scanner;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"controller", "model"}) // Ca sa gaseasca ConcreteClient-ul tau
+@ComponentScan(basePackages = {"controller", "model"})
 public class Main implements CommandLineRunner {
 
     @Autowired
-    private ConcreteClient client; // Spring ni-l da pe ala gata facut
+    private ConcreteClient client;
 
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
@@ -25,9 +25,7 @@ public class Main implements CommandLineRunner {
     @Override
     public void run(String... args) {
         System.out.println("CLIENT: Gata de testare! Scrie comanda (ex: GET_ALL_USERS):");
-
         Scanner scanner = new Scanner(System.in);
-
         while (true) {
             String comanda = scanner.nextLine();
 
@@ -35,15 +33,9 @@ public class Main implements CommandLineRunner {
                 try { client.closeConnection(); } catch(Exception e) {}
                 break;
             }
-
             User a=new User(10,"a","a","a","a","a","a");
-            // 1. Facem mesajul simplu (fara date suplimentare momentan)
             Message msg = new Message(comanda, a);
-
-            // 2. Il trimitem si ASTEPTAM raspunsul pe loc (metoda aia cu sendAndReceive)
             Object raspuns = client.sendAndReceive(msg);
-
-            // 3. Afisam ce am primit
             if (raspuns != null) {
                 System.out.println("SERVER A RASPUNS: " + raspuns.toString());
             } else {

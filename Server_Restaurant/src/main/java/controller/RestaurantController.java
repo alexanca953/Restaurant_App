@@ -1,7 +1,6 @@
 package controller;
 
 import commands.ICommandHandler;
-import commands.clientcommands.*;
 import commands.usercommands.*;
 import commands.tablecommands.*;
 import commands.tablereservationcommands.*;
@@ -9,7 +8,6 @@ import commands.reservationcommands.*;
 import commands.productcommands.*;
 import commands.productcategorycommands.*;
 import commands.feedbackcommands.*;
-import commands.employeecommands.*;
 import model.*;
 import model.repository.*;
 import ocsf.ConnectionToClient;
@@ -19,8 +17,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RestaurantController {
-    private IClientRepository clientRepository;
-    private IEmployeeRepository employeeRepository;
     private IFeedbackRepository feedbackRepository;
     private IProductRepository productRepository;
     private IProductCategoryRepository productCategoryRepository;
@@ -35,8 +31,6 @@ public class RestaurantController {
     public RestaurantController() {
         this.server =new ConcreteServer(8080);
         this.server.setController(this);
-
-        this.clientRepository =  new ClientRepository();
         this.userRepository = new UserRepository();
         this.tableReservationRepository = new TableReservationRepository();
         this.tableRepository = new TableRepository();
@@ -44,7 +38,6 @@ public class RestaurantController {
         this.productCategoryRepository =new ProductCategoryRepository();
         this.productRepository = new ProductRepository();
         this.feedbackRepository =new FeedbackRepository();
-        this.employeeRepository =new EmployeeRepository();
         initHandlers();
 
         try {
@@ -61,22 +54,10 @@ public class RestaurantController {
         handlers.put("DELETE_USER", new DeleteUserHandler(userRepository));
         handlers.put("GET_ALL_USERS", new GetAllUsersHandler(userRepository));
         handlers.put("GET_USER_BY_EMAIL", new GetUserByEmailHandler(userRepository));
+        handlers.put("GET_USER_BY_ROLE", new GetUsersByRoleHandler(userRepository));
         handlers.put("LOGIN", new LoginHandler(userRepository));
         handlers.put("SEARCH_USER_BY_NAME", new SearchUserByNameHandler(userRepository));
         handlers.put("UPDATE_USER", new UpdateUserHandler(userRepository));
-
-        // --- Client Commands ---
-        handlers.put("ADD_CLIENT", new AddClientHandler(clientRepository));
-        handlers.put("DELETE_CLIENT", new DeleteClientHandler(clientRepository));
-        handlers.put("GET_ALL_CLIENTS", new GetAllClientsHandler(clientRepository));
-        handlers.put("UPDATE_CLIENT", new UpdateClientHandler(clientRepository));
-
-        // --- Employee Commands ---
-        handlers.put("ADD_EMPLOYEE", new AddEmployeeHandler(employeeRepository));
-        handlers.put("DELETE_EMPLOYEE", new DeleteEmployeeHandler(employeeRepository));
-        handlers.put("GET_ALL_EMPLOYEES", new GetAllEmployeesHandler(employeeRepository));
-        handlers.put("UPDATE_EMPLOYEE", new UpdateEmployeeHandler(employeeRepository));
-
         // --- Feedback Commands ---
         handlers.put("ADD_FEEDBACK", new AddFeedbackHandler(feedbackRepository));
         handlers.put("DELETE_FEEDBACK", new DeleteFeedbackHandler(feedbackRepository));
@@ -100,6 +81,7 @@ public class RestaurantController {
         handlers.put("ADD_RESERVATION", new AddReservationHandler(reservationRepository));
         handlers.put("DELETE_RESERVATION", new DeleteReservationHandler(reservationRepository));
         handlers.put("GET_ALL_RESERVATIONS", new GetAllReservationsHandler(reservationRepository));
+        handlers.put("GET_RESERVATIONS_MAP", new GetAllReservationsHandlerMap(reservationRepository));
         handlers.put("GET_CLIENT_RESERVATIONS", new GetClientReservationsHandler(reservationRepository));
         handlers.put("UPDATE_RESERVATION", new UpdateReservationHandler(reservationRepository));
 
@@ -131,14 +113,6 @@ public class RestaurantController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public IClientRepository getClientRepository() {
-        return clientRepository;
-    }
-
-    public IEmployeeRepository getEmployeeRepository() {
-        return employeeRepository;
     }
 
     public IFeedbackRepository getFeedbackRepository() {
@@ -173,13 +147,7 @@ public class RestaurantController {
         return server;
     }
 
-    public void setClientRepository(IClientRepository clientRepository) {
-        this.clientRepository = clientRepository;
-    }
 
-    public void setEmployeeRepository(IEmployeeRepository employeeRepository) {
-        this.employeeRepository = employeeRepository;
-    }
 
     public void setFeedbackRepository(IFeedbackRepository feedbackRepository) {
         this.feedbackRepository = feedbackRepository;

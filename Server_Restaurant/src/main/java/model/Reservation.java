@@ -9,6 +9,12 @@ public class Reservation implements Serializable {
     private LocalDateTime dateTime;
     private int numberOfPeople;
     private String status;
+    private String tempClientName;
+    private String tempClientPhone;
+    private int tableId;
+
+    public int getTableId() { return tableId; }
+    public void setTableId(int tableId) { this.tableId = tableId; }
 
     public Reservation() {}
 
@@ -32,6 +38,12 @@ public class Reservation implements Serializable {
                 ", status='" + status + '\'' +
                 '}';
     }
+    // Getters si Setters
+    public String getTempClientName() { return tempClientName; }
+    public void setTempClientName(String tempClientName) { this.tempClientName = tempClientName; }
+
+    public String getTempClientPhone() { return tempClientPhone; }
+    public void setTempClientPhone(String tempClientPhone) { this.tempClientPhone = tempClientPhone; }
 
     public int getReservationId() { return reservationId; }
     public void setReservationId(int reservationId) { this.reservationId = reservationId; }
@@ -50,4 +62,5 @@ public class Reservation implements Serializable {
 
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+
 }

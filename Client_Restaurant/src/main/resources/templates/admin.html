@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head_common}"></head>
+
+<body>
+
+<div th:replace="~{fragments/layout :: main_layout( ~{::section} )}">
+
+    <section>
+        <div class="page-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h1 class="res-page-title">User Management</h1>
+            <button onclick="openUserModal(0, '', '', '', '', '', 'CLIENT')" class="res-btn-add">
+                + New User / Employee
+            </button>
+        </div>
+
+        <div class="res-table-card">
+            <table class="res-table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Role</th> <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="u : ${users}">
+                    <td th:text="${'#' + u.userId}"></td>
+
+                    <td>
+            <span th:class="'res-status-badge ' +
+                  (${u.role == 'ADMIN'} ? 'status-cancelled' :
+                  (${u.role == 'MANAGER'} ? 'status-confirmed' :
+                  (${u.role == 'WAITER'} ? 'status-pending' : '')))"
+                  style="background-color: #ecf0f1; color: #2c3e50;"
+                  th:if="${u.role == 'CLIENT'}">CLIENT</span>
+
+                        <span th:class="'res-status-badge ' +
+                  (${u.role == 'ADMIN'} ? 'status-cancelled' :
+                  (${u.role == 'MANAGER'} ? 'status-confirmed' : 'status-pending'))"
+                              th:unless="${u.role == 'CLIENT'}"
+                              th:text="${u.role}"></span>
+                    </td>
+
+                    <td th:text="${u.firstName + ' ' + u.lastName}" style="font-weight: bold;"></td>
+                    <td th:text="${u.email}"></td>
+                    <td th:text="${u.phoneNumber}"></td>
+
+                    <td>
+                        <button class="res-action-btn res-edit"
+                                th:onclick="openUserModal(
+                                    [[${u.userId}]],
+                                    [[${u.firstName}]],
+                                    [[${u.lastName}]],
+                                    [[${u.email}]],
+                                    [[${u.phoneNumber}]],
+                                    [[${u.password}]],
+                                    [[${u.role}]]
+                                )">
+                            Edit
+                        </button>
+
+                        <form th:action="@{/users/delete}" method="post" style="display:inline;">
+                            <input type="hidden" name="userId" th:value="${u.userId}">
+                            <button type="submit" class="res-action-btn res-delete"
+                                    onclick="return confirm('Are you sure you want to delete this user?')">
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="userModal" class="res-modal-overlay">
+            <div class="res-modal-box">
+                <span class="res-close-btn" onclick="closeUserModal()">&times;</span>
+                <h2 id="modalTitle" style="font-family: 'Playfair Display'; margin-bottom: 20px; color: #8e44ad;">User Details</h2>
+
+                <form th:action="@{/users/save}" method="post">
+                    <input type="hidden" id="userId" name="userId" value="0">
+
+                    <div class="res-form-row" style="display: flex; gap: 10px;">
+                        <div style="flex: 1;">
+                            <label>First Name</label>
+                            <input type="text" id="firstName" name="firstName" required>
+                        </div>
+                        <div style="flex: 1;">
+                            <label>Last Name</label>
+                            <input type="text" id="lastName" name="lastName" required>
+                        </div>
+                    </div>
+
+                    <div class="res-form-row">
+                        <label>Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+
+                    <div class="res-form-row">
+                        <label>Password</label>
+                        <input type="text" id="password" name="password" required placeholder="Secret123">
+                    </div>
+
+                    <div class="res-form-row">
+                        <label>Phone</label>
+                        <input type="text" id="phone" name="phoneNumber" required>
+                    </div>
+
+                    <div class="res-form-row">
+                        <label>Role</label>
+                        <select id="role" name="role">
+                            <option value="CLIENT">Client</option>
+                            <option value="WAITER">Waiter (Ospătar)</option>
+                            <option value="MANAGER">Manager</option>
+                            <option value="ADMIN">Administrator</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="res-btn-save">Save User</button>
+                </form>
+            </div>
+        </div>
+
+        <script>
+            function openUserModal(id, fname, lname, email, phone, pass, role) {
+                document.getElementById('userModal').style.display = 'block';
+                document.getElementById('userId').value = id;
+                document.getElementById('firstName').value = fname;
+                document.getElementById('lastName').value = lname;
+                document.getElementById('email').value = email;
+                document.getElementById('phone').value = phone;
+                document.getElementById('password').value = pass;
+
+                const roleSelect = document.getElementById('role');
+                const clientOption = roleSelect.querySelector('option[value="CLIENT"]');
+
+                if (id === 0) {
+                    if(clientOption) clientOption.style.display = 'none';
+                    roleSelect.value = 'WAITER';
+
+                    document.getElementById('modalTitle').innerText = "New Employee";
+                } else {
+                    if(clientOption) clientOption.style.display = 'block';
+                    roleSelect.value = role;
+
+                    document.getElementById('modalTitle').innerText = "Edit User #" + id;
+                }
+            }
+
+            function closeUserModal() {
+                document.getElementById('userModal').style.display = 'none';
+            }
+
+            window.onclick = function(event) {
+                const modal = document.getElementById('userModal');
+                if (event.target == modal) {
+                    closeUserModal();
+                }
+            }
+        </script>
+
+    </section>
+
+</div>
+</body>
+</html>

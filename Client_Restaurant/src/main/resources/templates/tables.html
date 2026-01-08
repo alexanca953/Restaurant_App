@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head_common}"></head>
+
+<body>
+<style>
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 25px;
+        padding: 20px 0;
+    }
+
+    .table-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        border: 1px solid #eee;
+        overflow: hidden;
+        transition: transform 0.2s;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .table-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    .card-header {
+        background: #2c3e50;
+        color: white;
+        padding: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .table-number {
+        font-size: 1.4rem;
+        font-family: 'Playfair Display', serif;
+        font-weight: bold;
+    }
+
+    .table-capacity {
+        background: rgba(255,255,255,0.2);
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+    }
+
+    .card-body {
+        padding: 15px;
+        flex-grow: 1;
+    }
+
+    .res-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .res-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid #f0f0f0;
+        font-size: 0.95rem;
+    }
+
+    .res-item:last-child {
+        border-bottom: none;
+    }
+
+    .res-time {
+        font-weight: bold;
+        color: #e67e22;
+        background: #fff3e0;
+        padding: 2px 6px;
+        border-radius: 4px;
+        margin-right: 10px;
+    }
+
+    .res-name {
+        color: #333;
+        font-weight: 500;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        max-width: 140px;
+    }
+
+    .empty-state {
+        text-align: center;
+        color: #95a5a6;
+        padding: 30px 0;
+        font-style: italic;
+    }
+
+    .status-badge {
+        font-size: 0.7em;
+        padding: 2px 5px;
+        border-radius: 3px;
+    }
+    .CONFIRMED { color: green; background: #e8f5e9; }
+    .PENDING { color: orange; background: #fff3e0; }
+</style>
+
+<div th:replace="~{fragments/layout :: main_layout( ~{::section} )}">
+
+    <section>
+        <div class="page-header">
+            <h1 class="res-page-title">Tables Dashboard (Today)</h1>
+            <p style="color: #666;">Overview of reservations for <span th:text="${#temporals.format(#temporals.createNow(), 'dd MMMM yyyy')}"></span></p>
+        </div>
+
+        <div class="dashboard-grid">
+
+            <div class="table-card" th:each="table : ${tables}">
+
+                <div class="card-header">
+                    <span class="table-number" th:text="'Table ' + ${table.tableNumber}"></span>
+                    <span class="table-capacity">
+                        <i class="fas fa-users"></i> <span th:text="${table.capacity} + ' seats'"></span>
+                    </span>
+                </div>
+
+                <div class="card-body">
+
+                    <div th:if="${reservationsMap.containsKey(table.tableId)}">
+                        <ul class="res-list">
+                            <li class="res-item" th:each="res : ${reservationsMap.get(table.tableId)}">
+                                <div style="display:flex; align-items:center;">
+                                    <span class="res-time" th:text="${#temporals.format(res.reservationDate, 'HH:mm')}"></span>
+                                    <span class="res-name" th:text="${res.customerName}"></span>
+                                </div>
+                                <span th:class="'status-badge ' + ${res.status}" th:text="${res.status}"></span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div th:unless="${reservationsMap.containsKey(table.tableId)}" class="empty-state">
+                        Free all day
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+</div>
+</body>
+</html>
