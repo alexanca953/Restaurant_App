@@ -2,26 +2,20 @@ package controller;
 
 import jakarta.servlet.http.HttpSession;
 import model.*;
-import model.*;
 import model.Message;
 import model.Product;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
-import java.nio.file.FileStore;
 import java.util.*;
 
 import java.beans.PropertyEditorSupport;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
 import java.util.stream.Collectors;
 import java.util.List;
 import java.util.Map;
@@ -168,6 +162,8 @@ public class HomeController {
 
         return "menu";
     }
+
+
     ///RESERVATIONS
     @GetMapping("/reservations")
     public String showReservations(Model model) {
@@ -423,6 +419,51 @@ public class HomeController {
         }
 
         return "redirect:/?feedbackSuccess";
+    }
+
+    // --- ZONA REZERVĂRI PENTRU CLIENT ---
+
+    @GetMapping("/clientReservation")
+    public String showReservationForm(HttpSession session, Model model) {
+        User userLogat = (User) session.getAttribute("userLogat");
+
+        if (userLogat == null) {
+            return "redirect:/login";
+        }
+        model.addAttribute("clientReservation", new Reservation());
+
+        return "clientReservation";
+    }
+
+    @PostMapping("/clientReservation/submit")
+    public String submitReservation(@ModelAttribute Reservation reservation, HttpSession session) {
+
+        User userLogat = (User) session.getAttribute("userLogat");
+
+        if (userLogat == null) {
+            return "redirect:/login";
+        }
+
+        try {
+            reservation.setClientId(userLogat.getUserId());
+
+            String fullName = userLogat.getFirstName() + " " + userLogat.getLastName();
+            reservation.setTempClientName(fullName);
+
+            reservation.setTempClientPhone(userLogat.getPhoneNumber());
+
+            reservation.setStatus("PENDING");
+            reservation.setTableId(0);
+
+            System.out.println("Sending reservation for: " + fullName);
+            client.sendAndReceive(new Message("ADD_RESERVATION", reservation));
+
+            return "redirect:/?reservationSuccess";
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/reservation?error=server";
+        }
     }
 
 }
