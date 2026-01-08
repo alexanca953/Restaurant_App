@@ -2,9 +2,6 @@ package restaurantclient.controller;
 
 import jakarta.servlet.http.HttpSession;
 import restaurantclient.model.*;
-import model.*;
-import model.Message;
-import model.Product;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -425,6 +422,24 @@ public class HomeController {
             // Pentru moment, facem update direct. Dacă vrei să ștergi rezervările,
             // poți trimite un flag către server sau să faci logica aia în Handler.
 
+            String command = (table.getTableId() == 0) ? "ADD_TABLE" : "UPDATE_TABLE";
+            client.sendAndReceive(new Message(command, table));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "redirect:/table-management";
+    }
+
+    @PostMapping("/table-management/delete")
+    public String deleteTable(@RequestParam("tableId") int tableId) {
+        try {
+            // Asta va șterge masa și (datorită CASCADE din SQL) legăturile cu rezervările
+            client.sendAndReceive(new Message("DELETE_TABLE", tableId));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "redirect:/table-management";
+    }
     // --- ZONA REZERVĂRI PENTRU CLIENT ---
 
     @GetMapping("/clientReservation")
@@ -472,14 +487,4 @@ public class HomeController {
 
 }
 
-    @PostMapping("/table-management/delete")
-    public String deleteTable(@RequestParam("tableId") int tableId) {
-        try {
-            // Asta va șterge masa și (datorită CASCADE din SQL) legăturile cu rezervările
-            client.sendAndReceive(new Message("DELETE_TABLE", tableId));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "redirect:/table-management";
-    }
-}
+
