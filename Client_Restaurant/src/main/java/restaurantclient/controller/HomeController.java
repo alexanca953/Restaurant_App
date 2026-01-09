@@ -8,7 +8,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import java.beans.PropertyEditorSupport;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -375,7 +374,7 @@ public class HomeController {
         return "redirect:/?feedbackSuccess";
     }
     ///table
-    // === TABLE MANAGEMENT (MANAGER ONLY) ===
+    //TABLE MANAGEMENT (MANAGER ONLY)
 
     @GetMapping("/table-management")
     public String showTableManagement(Model model) {
@@ -384,7 +383,6 @@ public class HomeController {
             Object response = client.sendAndReceive(new Message("GET_ALL_TABLES", null));
             if (response instanceof List) {
                 List<Table> tables = (List<Table>) response;
-                // Le sortăm frumos după numărul mesei
                 tables.sort(Comparator.comparingInt(Table::getTableNumber));
                 model.addAttribute("tables", tables);
             } else {
@@ -418,7 +416,6 @@ public class HomeController {
     }
     // ==========================================
     // 12. STATISTICS PAGE
-    // ==========================================
 
     @GetMapping("/statistics")
     public String showStatistics(Model model) {

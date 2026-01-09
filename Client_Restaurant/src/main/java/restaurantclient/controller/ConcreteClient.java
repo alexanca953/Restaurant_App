@@ -18,20 +18,15 @@ public class ConcreteClient extends AbstractClient {
     }
 
     public Object sendAndReceive(Object message) {
-        // 1. Reset the promise (create a new empty container for the response)
         pendingResponse = new CompletableFuture<>();
         try {
-            // 2. Ensure connection is open
             if (!isConnected()) {
                 System.out.println("WEB CLIENT: Attempting to connect to backend server...");
                 openConnection();
             }
-            // 3. Send the message
             Message messageToSend = (Message) message;
             sendToServer(messageToSend);
             System.out.println("WEB CLIENT: Sent to server and waiting for response: " + messageToSend.toString());
-
-            // 4. WAIT FOR RESPONSE (Block here for max 5 seconds)
             return pendingResponse.get(5, TimeUnit.SECONDS);
 
         } catch (TimeoutException e) {
@@ -49,8 +44,6 @@ public class ConcreteClient extends AbstractClient {
         try {
             Message message = (Message) msg;
             System.out.println("WEB CLIENT: Received response: " + message.toString());
-
-            // If there is a pending request from the Web Controller, complete it now
             if (pendingResponse != null && !pendingResponse.isDone()) {
                 pendingResponse.complete(message.getData());
             }
