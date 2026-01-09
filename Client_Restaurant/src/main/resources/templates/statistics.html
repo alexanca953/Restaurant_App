@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head_common}"></head>
+<body>
+
+<div th:replace="~{fragments/layout :: main_layout( ~{::section} )}">
+
+    <section>
+        <div class="page-header" style="margin-bottom: 20px;">
+            <h1 class="res-page-title">Performance Analytics</h1>
+            <p style="color: gray;">All-time performance by category vs. Global Average.</p>
+        </div>
+
+        <div style="display: flex; gap: 20px; margin-bottom: 30px;">
+            <div class="res-table-card" style="flex: 1; padding: 20px; text-align: center; border-bottom: 4px solid #f1c40f;">
+                <h3 style="margin: 0; color: #7f8c8d; font-size: 0.9em;">ALL-TIME RATING</h3>
+                <div style="font-size: 3em; font-weight: bold; color: #2c3e50;">
+                    <span th:text="${averageScore}">0.0</span> <span style="font-size: 0.5em; color: #f1c40f;">★</span>
+                </div>
+            </div>
+            <div class="res-table-card" style="flex: 1; padding: 20px; text-align: center; border-bottom: 4px solid #3498db;">
+                <h3 style="margin: 0; color: #7f8c8d; font-size: 0.9em;">TOTAL FEEDBACKS</h3>
+                <div style="font-size: 3em; font-weight: bold; color: #2c3e50;" th:text="${totalReviews}">0</div>
+            </div>
+        </div>
+
+        <div class="res-table-card" style="padding: 30px; background: white; margin-bottom: 30px;">
+            <h3 style="color: #2c3e50; margin-bottom: 20px;">Category Performance (Average Scores)</h3>
+
+            <div id="chart_div" style="width: 100%; height: 500px;"></div>
+
+        </div>
+
+        <div class="res-table-card">
+            <div style="padding: 20px; border-bottom: 1px solid #eee;">
+                <h3 style="margin: 0; color: #2c3e50;">Detailed Feedback Log</h3>
+            </div>
+            <table class="res-table">
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Score</th>
+                    <th>Comment</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="f : ${feedbacks}">
+                    <td th:text="${#temporals.format(f.dateTime, 'dd-MM HH:mm')}"></td>
+                    <td>
+                        <span th:text="${f.type}"
+                              th:style="'padding: 5px 10px; border-radius: 15px; font-weight: bold; font-size: 0.85em; ' +
+                              (${f.type == 'Food'} ? 'background: #fff3e0; color: #e67e22;' :
+                              (${f.type == 'Service'} ? 'background: #e3f2fd; color: #3498db;' :
+                              (${f.type == 'Ambiance'} ? 'background: #f3e5f5; color: #9b59b6;' : 'background: #e8f5e9; color: #2ecc71;')))">
+                        </span>
+                    </td>
+                    <td style="font-weight: bold;">
+                        <span th:text="${f.score}"></span> <span style="color: gold;">★</span>
+                    </td>
+                    <td th:text="${f.comment}" style="font-style: italic; color: #555;"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script th:inline="javascript">
+            google.charts.load('current', {'packages':['corechart']});
+            google.charts.setOnLoadCallback(drawVisualization);
+
+            function drawVisualization() {
+                // Luăm lista cu cele 5 medii trimisă din Java
+                // [AvgFood, AvgServ, AvgAmb, AvgGen, AvgTotal]
+                var stats = [[${chartStats}]];
+
+                if (!stats) return;
+
+                var avgFood = stats[0];
+                var avgServ = stats[1];
+                var avgAmb  = stats[2];
+                var avgGen  = stats[3];
+                var avgTotal= stats[4];
+
+                var data = google.visualization.arrayToDataTable([
+                    ['Category', 'Category Score', 'Global Average'],
+                    ['Food',      avgFood,          avgTotal],
+                    ['Service',   avgServ,          avgTotal],
+                    ['Ambiance',  avgAmb,           avgTotal],
+                    ['General',   avgGen,           avgTotal]
+                ]);
+
+                var options = {
+                    vAxis: {
+                        title: 'Stars (0-5)',
+                        viewWindow: {min: 0, max: 5.5}
+                    },
+                    hAxis: {title: 'Category'},
+                    seriesType: 'bars',
+
+                    // Seria 1 (Global Average) va fi Linia
+                    series: {
+                        0: { color: '#3498db' }, // Culoarea Barelor (Albastru)
+                        1: { type: 'line', color: 'red', lineDashStyle: [4, 4], pointSize: 5 } // Linia Roșie punctată
+                    },
+
+                    // Dacă vrei fiecare bară cu altă culoare, trebuie folosit 'style' role,
+                    // dar ComboChart standard colorează per serie.
+                    // Varianta asta cu albastru vs linie roșie e cea mai curată pentru business.
+                };
+
+                var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
+                chart.draw(data, options);
+            }
+
+            window.addEventListener('resize', drawVisualization);
+        </script>
+
+    </section>
+</div>
+
+</body>
+</html>

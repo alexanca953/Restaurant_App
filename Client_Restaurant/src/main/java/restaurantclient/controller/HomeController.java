@@ -8,6 +8,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import java.beans.PropertyEditorSupport;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -398,11 +399,6 @@ public class HomeController {
     @PostMapping("/table-management/save")
     public String saveTable(Table table) {
         try {
-            // Logica specială cerută:
-            // Dacă e UPDATE și capacitatea scade, ar trebui să verificăm rezervările.
-            // Pentru moment, facem update direct. Dacă vrei să ștergi rezervările,
-            // poți trimite un flag către server sau să faci logica aia în Handler.
-
             String command = (table.getTableId() == 0) ? "ADD_TABLE" : "UPDATE_TABLE";
             client.sendAndReceive(new Message(command, table));
         } catch (Exception e) {
@@ -414,11 +410,51 @@ public class HomeController {
     @PostMapping("/table-management/delete")
     public String deleteTable(@RequestParam("tableId") int tableId) {
         try {
-            // Asta va șterge masa și (datorită CASCADE din SQL) legăturile cu rezervările
             client.sendAndReceive(new Message("DELETE_TABLE", tableId));
         } catch (Exception e) {
             e.printStackTrace();
         }
         return "redirect:/table-management";
+    }
+    // ==========================================
+    // 12. STATISTICS PAGE
+    // ==========================================
+
+    @GetMapping("/statistics")
+    public String showStatistics(Model model) {
+        List<Feedback> allFeedbacks = new ArrayList<>();
+        try {
+            Object response = client.sendAndReceive(new Message("GET_ALL_FEEDBACKS", null));
+            if (response instanceof List) {
+                allFeedbacks = (List<Feedback>) response;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        double sumFood=0, sumServ=0, sumAmb=0, sumGen=0, sumTotal=0;
+        int cntFood=0, cntServ=0, cntAmb=0, cntGen=0;
+
+        for (Feedback f : allFeedbacks) {
+            sumTotal += f.getScore();
+
+            if ("Food".equalsIgnoreCase(f.getType())) { sumFood += f.getScore(); cntFood++; }
+            else if ("Service".equalsIgnoreCase(f.getType())) { sumServ += f.getScore(); cntServ++; }
+            else if ("Ambiance".equalsIgnoreCase(f.getType())) { sumAmb += f.getScore(); cntAmb++; }
+            else if ("General".equalsIgnoreCase(f.getType())) { sumGen += f.getScore(); cntGen++; }
+        }
+        double avgFood = cntFood > 0 ? sumFood / cntFood : 0;
+        double avgServ = cntServ > 0 ? sumServ / cntServ : 0;
+        double avgAmb  = cntAmb  > 0 ? sumAmb  / cntAmb  : 0;
+        double avgGen  = cntGen  > 0 ? sumGen  / cntGen  : 0;
+
+        double avgTotal = allFeedbacks.isEmpty() ? 0 : sumTotal / allFeedbacks.size();
+        List<Double> stats = Arrays.asList(avgFood, avgServ, avgAmb, avgGen, avgTotal);
+        model.addAttribute("chartStats", stats);
+        model.addAttribute("averageScore", String.format("%.1f", avgTotal));
+        model.addAttribute("totalReviews", allFeedbacks.size());
+        allFeedbacks.sort((f1, f2) -> f2.getDateTime().compareTo(f1.getDateTime()));
+        model.addAttribute("feedbacks", allFeedbacks);
+
+        return "statistics";
     }
 }
