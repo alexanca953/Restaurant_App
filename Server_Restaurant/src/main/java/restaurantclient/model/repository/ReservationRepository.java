@@ -293,6 +293,40 @@ public class ReservationRepository implements IReservationRepository {
     public List<Reservation> getAllReservations() { return new ArrayList<>(); }
     @Override
     public List<Reservation> getReservationsByClient(int clientId) {
-        return List.of();
+        List<Reservation> list = new ArrayList<>();
+
+        String sql = "SELECT r.*, rt.table_id " +
+                "FROM reservation r " +
+                "LEFT JOIN reservation_table rt ON r.reservation_id = rt.reservation_id " +
+                "WHERE r.user_id = ?";
+
+        try (Connection conn = repository.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, clientId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Reservation res = new Reservation();
+
+                    res.setReservationId(rs.getInt("reservation_id"));
+                    res.setClientId(rs.getInt("user_id"));
+                    res.setNumberOfPeople(rs.getInt("party_size"));
+                    res.setStatus(rs.getString("status"));
+
+                    Timestamp ts = rs.getTimestamp("reservation_date");
+                    if (ts != null) {
+                        res.setDateTime(ts.toLocalDateTime());
+                    }
+                    int tId = rs.getInt("table_id");
+                    res.setTableId(rs.wasNull() ? 0 : tId);
+
+                    list.add(res);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 }

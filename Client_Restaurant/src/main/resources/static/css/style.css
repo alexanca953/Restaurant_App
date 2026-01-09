@@ -342,6 +342,7 @@ body#home-page { margin: 0; overflow-x: hidden; overflow-y: auto; } /* Reactivă
     align-items: center;
     text-align: center;
     color: white;
+    background-attachment: fixed
 }
 
 .hero-title { font-size: 5em;
@@ -1332,3 +1333,180 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
     transition: 0.3s;
 }
 .back-link:hover { color: white; }
+
+
+/* =========================================
+   LISTA REZERVĂRI CLIENT (Client Reservations List)
+   ========================================= */
+
+.cli-res-body {
+    min-height: 100vh;
+    /* ATENȚIE LA CALE: În CSS, nu punem 'static'. */
+    /* Folosim /images/daca folderul e in static/images */
+    background-image: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)),
+    url('../images/RegisterPicture.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    margin: 0;
+    font-family: 'Lato', sans-serif;
+    padding: 40px 20px;
+    color: white;
+}
+
+.cli-res-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.cli-res-title {
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 3em;
+    margin-bottom: 40px;
+    color: #ffffff;
+    text-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+/* CARDUL DE REZERVARE (DREPTUNGHIUL TRANSPARENT) */
+.cli-res-card {
+    /* Am crescut opacitatea la 0.15 ca să se vadă mai bine conturul */
+    background: rgba(255, 255, 255, 0.15);
+
+    /* Efectul de ceață */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px); /* Pentru Safari */
+
+    /* Bordură albă fină */
+    border: 1px solid rgba(255, 255, 255, 0.3);
+
+    border-radius: 16px;
+    padding: 25px;
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* Umbră subtilă */
+    transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
+}
+
+.cli-res-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.25); /* Mai alb la hover */
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Informațiile din stânga */
+.cli-res-info h3 {
+    margin: 0 0 10px 0;
+    font-size: 1.5em;
+    color: #e67e22; /* Portocaliu */
+    font-family: 'Playfair Display', serif;
+    letter-spacing: 0.5px;
+}
+
+.cli-res-details {
+    color: #dfe6e9;
+    font-size: 1.1em;
+    margin-bottom: 6px;
+}
+
+.cli-res-details span {
+    color: white;
+    font-weight: 700;
+}
+
+/* Badge-ul de Status (Dreapta) */
+.cli-res-status-badge {
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-weight: bold;
+    font-size: 0.9em;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.status-PENDING {
+    background-color: rgba(241, 196, 15, 0.25);
+    color: #f1c40f;
+    border: 1px solid #f1c40f;
+}
+
+.status-CONFIRMED {
+    background-color: rgba(46, 204, 113, 0.25);
+    color: #2ecc71;
+    border: 1px solid #2ecc71;
+}
+
+.status-CANCELLED {
+    background-color: rgba(231, 76, 60, 0.25);
+    color: #e74c3c;
+    border: 1px solid #e74c3c;
+}
+
+/* Mesaj când lista e goală */
+.cli-res-empty {
+    text-align: center;
+    color: #ecf0f1;
+    font-size: 1.3em;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 50px;
+    border-radius: 15px;
+    backdrop-filter: blur(5px);
+}
+
+.cli-res-back-btn {
+    display: block;
+    width: fit-content;
+    margin: 40px auto 0 auto;
+    text-decoration: none;
+    color: #bdc3c7;
+    border: 1px solid rgba(189, 195, 199, 0.5);
+    padding: 12px 30px;
+    border-radius: 30px;
+    transition: 0.3s;
+    font-weight: bold;
+}
+
+.cli-res-back-btn:hover {
+    background: white;
+    color: #2c3e50;
+    border-color: white;
+}
+
+/* =========================================
+   UTILITY: SCROLLBAR (GLASS)
+   ========================================= */
+
+.glass-scroll-list {
+    max-height: 65vh;
+
+    overflow-y: auto;
+
+    padding-right: 15px;
+
+    margin: 20px 0;
+}
+
+
+.glass-scroll-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.glass-scroll-list::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+
+.glass-scroll-list::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    transition: background 0.3s;
+}
+
+.glass-scroll-list::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+}

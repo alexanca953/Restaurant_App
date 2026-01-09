@@ -485,6 +485,44 @@ public class HomeController {
         }
     }
 
+    @GetMapping("/clientReservationList")
+    public String showClientReservations(Model model,
+                                         @SessionAttribute(value = "userLogat", required = false) User userLogat) {
+
+        if (userLogat == null) {
+            return "redirect:/login";
+        }
+
+        List<Reservation> myReservations = new ArrayList<>();
+
+        try {
+            System.out.println("Cer rezervări pentru client ID: " + userLogat.getUserId());
+
+            Object response = client.sendAndReceive(new Message("GET_CLIENT_RESERVATIONS", userLogat.getUserId()));
+
+            if (response instanceof List) {
+                // 1. Facem cast direct (chiar dacă Java dă un warning mic, e sigur aici)
+                List<Reservation> serverList = (List<Reservation>) response;
+
+                // 2. SECRETUL: Copiem datele într-un nou ArrayList
+                // Asta rezolvă eroarea "UnsupportedOperationException"
+                myReservations = new ArrayList<>(serverList);
+
+                // 3. Acum putem sorta liniștiți copia noastră
+                myReservations.sort((r1, r2) -> {
+                    if (r1.getDateTime() == null || r2.getDateTime() == null) return 0;
+                    return r2.getDateTime().compareTo(r1.getDateTime());
+                });
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        model.addAttribute("myReservations", myReservations);
+        return "clientReservationList";
+    }
+
 }
 
 

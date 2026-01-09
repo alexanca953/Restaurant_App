@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>My Reservations - Momentum</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body class="cli-res-body">
+
+<div class="cli-res-container">
+    <h1 class="cli-res-title">My Reservations</h1>
+
+    <div th:if="${!myReservations.isEmpty()}">
+
+        <div class="glass-scroll-list">
+
+            <div th:each="res : ${myReservations}" class="cli-res-card">
+
+                <div class="cli-res-info">
+                    <h3 th:text="${#temporals.format(res.dateTime, 'dd MMMM yyyy, HH:mm')}">Date</h3>
+
+                    <div class="cli-res-details">
+                        Guests: <span th:text="${res.numberOfPeople}">2</span>
+                    </div>
+
+                    <div class="cli-res-details">
+                        Table:
+                        <span th:if="${res.tableId == 0}" style="color: #bdc3c7; font-style: italic; font-weight:normal;">Processing...</span>
+                        <span th:if="${res.tableId != 0}" th:text="'#' + ${res.tableId}">#5</span>
+                    </div>
+                </div>
+
+                <div th:class="'cli-res-status-badge status-' + ${res.status}" th:text="${res.status}">
+                    PENDING
+                </div>
+
+            </div> </div> </div>
+
+    <div th:if="${myReservations.isEmpty()}" class="cli-res-empty">
+        <p>You have no upcoming reservations.</p>
+        <a href="/clientReservation" style="color: #e67e22; font-weight: bold; text-decoration: none; border-bottom: 1px dashed #e67e22;">Book a table now →</a>
+    </div>
+
+    <a href="/" class="cli-res-back-btn">← Back to Home Page</a>
+</div>
+
+</body>
+</html>
