@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 public class Reservation implements Serializable {
     private int reservationId;
     private int clientId;
-    private int employeeId;
     private LocalDateTime dateTime;
     private int numberOfPeople;
     private String status;
@@ -21,7 +20,6 @@ public class Reservation implements Serializable {
     public Reservation(int reservationId, int clientId, int employeeId, LocalDateTime dateTime, int numberOfPeople, String status) {
         this.reservationId = reservationId;
         this.clientId = clientId;
-        this.employeeId = employeeId;
         this.dateTime = dateTime;
         this.numberOfPeople = numberOfPeople;
         this.status = status;
@@ -32,7 +30,6 @@ public class Reservation implements Serializable {
         return "Reservation{" +
                 "reservationId=" + reservationId +
                 ", clientId=" + clientId +
-                ", employeeId=" + employeeId +
                 ", dateTime=" + dateTime +
                 ", numberOfPeople=" + numberOfPeople +
                 ", status='" + status + '\'' +
@@ -50,9 +47,6 @@ public class Reservation implements Serializable {
 
     public int getClientId() { return clientId; }
     public void setClientId(int clientId) { this.clientId = clientId; }
-
-    public int getEmployeeId() { return employeeId; }
-    public void setEmployeeId(int employeeId) { this.employeeId = employeeId; }
 
     public LocalDateTime getDateTime() { return dateTime; }
     public void setDateTime(LocalDateTime dateTime) { this.dateTime = dateTime; }

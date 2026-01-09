@@ -11,14 +11,13 @@ import java.util.*;
 
 import java.beans.PropertyEditorSupport;
 import java.time.LocalDateTime;
-import java.util.*;
 import java.util.ArrayList;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.stream.Collectors;
 
 @Controller
-public class HomeController {
+public class ClientController {
     ConcreteClient client = new ConcreteClient();
 
     @ModelAttribute

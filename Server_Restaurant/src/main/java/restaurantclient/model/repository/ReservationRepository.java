@@ -50,7 +50,6 @@ public class ReservationRepository implements IReservationRepository {
                     }
                 }
             }
-
             int finalUserId = reservation.getClientId();
             if (finalUserId == 0 && reservation.getTempClientPhone() != null) {
                 String findUserSql = "SELECT user_id FROM user WHERE phone = ?";
@@ -86,21 +85,19 @@ public class ReservationRepository implements IReservationRepository {
                     }
                 }
             }
-
             if (finalUserId == 0) {
                 System.out.println("EROARE: Nu s-a putut asocia un User.");
                 conn.rollback();
                 return false;
             }
-            String sqlRes = "INSERT INTO reservation (user_id, employee_id, reservation_date, party_size, status) VALUES (?, ?, ?, ?, ?)";
+            String sqlRes = "INSERT INTO reservation (user_id, reservation_date, party_size, status) VALUES (?, ?, ?, ?)";
+
             int newReservationId = 0;
             try (PreparedStatement stmtRes = conn.prepareStatement(sqlRes, Statement.RETURN_GENERATED_KEYS)) {
                 stmtRes.setInt(1, finalUserId);
-                if (reservation.getEmployeeId() > 0) stmtRes.setInt(2, reservation.getEmployeeId());
-                else stmtRes.setNull(2, Types.INTEGER);
-                stmtRes.setTimestamp(3, Timestamp.valueOf(reservation.getDateTime()));
-                stmtRes.setInt(4, reservation.getNumberOfPeople());
-                stmtRes.setString(5, reservation.getStatus());
+                stmtRes.setTimestamp(2, Timestamp.valueOf(reservation.getDateTime()));
+                stmtRes.setInt(3, reservation.getNumberOfPeople());
+                stmtRes.setString(4, reservation.getStatus());
                 if (stmtRes.executeUpdate() == 0) {
                     conn.rollback(); return false;
                 }
