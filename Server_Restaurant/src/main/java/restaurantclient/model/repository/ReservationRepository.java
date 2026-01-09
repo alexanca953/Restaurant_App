@@ -95,7 +95,7 @@ public class ReservationRepository implements IReservationRepository {
             String sqlRes = "INSERT INTO reservation (user_id, employee_id, reservation_date, party_size, status) VALUES (?, ?, ?, ?, ?)";
             int newReservationId = 0;
             try (PreparedStatement stmtRes = conn.prepareStatement(sqlRes, Statement.RETURN_GENERATED_KEYS)) {
-                stmtRes.setInt(1, finalUserId); // Punem USER ID
+                stmtRes.setInt(1, finalUserId);
                 if (reservation.getEmployeeId() > 0) stmtRes.setInt(2, reservation.getEmployeeId());
                 else stmtRes.setNull(2, Types.INTEGER);
                 stmtRes.setTimestamp(3, Timestamp.valueOf(reservation.getDateTime()));
@@ -176,7 +176,7 @@ public class ReservationRepository implements IReservationRepository {
                         if (reservation.getNumberOfPeople() > capacity) {
                             System.out.println("EROARE EDIT: Masa e prea mică! (Cap: " + capacity + ", Pers: " + reservation.getNumberOfPeople() + ")");
                             conn.rollback();
-                            return false; // Respingem modificarea
+                            return false;
                         }
                     }
                 }
@@ -192,7 +192,7 @@ public class ReservationRepository implements IReservationRepository {
                         "AND DATE_ADD(r.reservation_date, INTERVAL 2 HOUR) > ?";
                 try (PreparedStatement s = conn.prepareStatement(checkSql)) {
                     s.setInt(1, reservation.getTableId());
-                    s.setInt(2, reservation.getReservationId()); // ID-ul nostru (exclus din căutare)
+                    s.setInt(2, reservation.getReservationId());
                     s.setTimestamp(3, Timestamp.valueOf(reservation.getDateTime().plusHours(2)));
                     s.setTimestamp(4, Timestamp.valueOf(reservation.getDateTime()));
                     ResultSet rs = s.executeQuery();
@@ -262,7 +262,7 @@ public class ReservationRepository implements IReservationRepository {
                 "u.phone, " +
                 "rt.table_id " +
                 "FROM reservation r " +
-                "LEFT JOIN user u ON r.user_id = u.user_id " + // Join User
+                "LEFT JOIN user u ON r.user_id = u.user_id " +
                 "LEFT JOIN reservation_table rt ON r.reservation_id = rt.reservation_id";
 
         try (Connection conn = repository.getConnection();
@@ -271,7 +271,7 @@ public class ReservationRepository implements IReservationRepository {
             while (rs.next()) {
                 Map<String, Object> row = new HashMap<>();
                 row.put("reservationId", rs.getInt("reservation_id"));
-                row.put("userId", rs.getInt("user_id")); // user_id
+                row.put("userId", rs.getInt("user_id"));
                 row.put("numberOfPeople", rs.getInt("party_size"));
                 row.put("status", rs.getString("status"));
                 Timestamp ts = rs.getTimestamp("reservation_date");

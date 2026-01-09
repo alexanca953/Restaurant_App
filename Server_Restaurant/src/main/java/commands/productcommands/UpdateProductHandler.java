@@ -15,7 +15,6 @@ public class UpdateProductHandler implements ICommandHandler {
     @Override
     public Message execute(Object data) {
         Product product = (Product) data;
-        // Presupunem ca obiectul product are ID-ul setat corect
         boolean result = productRepo.updateProduct(product.getProductId(), product);
         return new Message("UPDATE_PRODUCT_RESPONSE", result);
     }

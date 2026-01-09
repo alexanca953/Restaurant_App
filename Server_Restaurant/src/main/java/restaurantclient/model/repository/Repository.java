@@ -3,7 +3,6 @@ package restaurantclient.model.repository;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
 public class Repository {
     private static final String URL = "jdbc:mysql://localhost:3306/restaurant_db";
     private static final String USER = "root";

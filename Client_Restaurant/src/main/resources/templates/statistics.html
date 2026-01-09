@@ -70,18 +70,15 @@
             google.charts.setOnLoadCallback(drawVisualization);
 
             function drawVisualization() {
-                // Luăm lista cu cele 5 medii trimisă din Java
-                // [AvgFood, AvgServ, AvgAmb, AvgGen, AvgTotal]
                 var stats = [[${chartStats}]];
 
-                if (!stats) return;
-
+                if (!stats)
+                    return;
                 var avgFood = stats[0];
                 var avgServ = stats[1];
                 var avgAmb  = stats[2];
                 var avgGen  = stats[3];
                 var avgTotal= stats[4];
-
                 var data = google.visualization.arrayToDataTable([
                     ['Category', 'Category Score', 'Global Average'],
                     ['Food',      avgFood,          avgTotal],
@@ -89,7 +86,6 @@
                     ['Ambiance',  avgAmb,           avgTotal],
                     ['General',   avgGen,           avgTotal]
                 ]);
-
                 var options = {
                     vAxis: {
                         title: 'Stars (0-5)',
@@ -97,22 +93,14 @@
                     },
                     hAxis: {title: 'Category'},
                     seriesType: 'bars',
-
-                    // Seria 1 (Global Average) va fi Linia
                     series: {
-                        0: { color: '#3498db' }, // Culoarea Barelor (Albastru)
-                        1: { type: 'line', color: 'red', lineDashStyle: [4, 4], pointSize: 5 } // Linia Roșie punctată
+                        0: { color: '#3498db' },
+                        1: { type: 'line', color: 'red', lineDashStyle: [4, 4], pointSize: 5 }
                     },
-
-                    // Dacă vrei fiecare bară cu altă culoare, trebuie folosit 'style' role,
-                    // dar ComboChart standard colorează per serie.
-                    // Varianta asta cu albastru vs linie roșie e cea mai curată pentru business.
                 };
-
                 var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
                 chart.draw(data, options);
             }
-
             window.addEventListener('resize', drawVisualization);
         </script>
 

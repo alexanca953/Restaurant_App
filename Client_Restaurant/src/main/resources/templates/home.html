@@ -153,7 +153,6 @@
 
 <script>
     function openFeedbackModal() {
-        // Caută elementul cu ID-ul "feedbackModal" și îl face vizibil (flex)
         var modal = document.getElementById("feedbackModal");
         if (modal) {
             modal.style.display = "flex";
@@ -165,8 +164,6 @@
     function closeFeedbackModal() {
         document.getElementById("feedbackModal").style.display = "none";
     }
-
-    // Închide fereastra dacă dai click pe fundalul negru
     window.onclick = function(event) {
         var modal = document.getElementById("feedbackModal");
         if (event.target == modal) {
@@ -174,7 +171,5 @@
         }
     }
 </script>
-
-
 </body>
 </html>
