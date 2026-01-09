@@ -16,7 +16,8 @@
     </div>
 
     <div class="nav-buttons">
-        <a href="/reservation" class="nav-link" >Make a Reservation</a>
+        <a href="/clientReservation" class="nav-link" >Book a Table</a>
+        <a href="/clientReservationList" class="nav-link" >View Reservations</a>
         <a th:if="${userLogat == null}" href="/login" class="btn-nav">Login / New account</a>
 
         <div th:if="${userLogat != null}" class="user-profile">
@@ -110,7 +111,7 @@
                 <span class="icon">📍</span>
                 <div>
                     <strong>Address:</strong>
-                    <p>Strada Memorandumului, Nr. 10<br>Cluj-Napoca, Romania</p>
+                    <p>Memorandumului Street, Nr. 10<br>Cluj-Napoca, Romania</p>
                 </div>
             </div>
 
@@ -157,7 +158,7 @@
         if (modal) {
             modal.style.display = "flex";
         } else {
-            console.error("Nu am găsit modalul! Verifică dacă ai <div id='feedbackModal'> în pagină.");
+            console.error("Did not find the modal! Verif if you have <div id='feedbackModal'> in page.");
         }
     }
 
