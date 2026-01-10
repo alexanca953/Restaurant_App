@@ -1,8 +1,8 @@
 package commands.usercommands;
 
 import commands.ICommandHandler;
-import restaurantclient.model.IUserRepository;
-import restaurantclient.model.Message;
+import restaurantproject.model.IUserRepository;
+import restaurantproject.model.Message;
 
 public class DeleteUserHandler implements ICommandHandler {
     private IUserRepository userRepo;

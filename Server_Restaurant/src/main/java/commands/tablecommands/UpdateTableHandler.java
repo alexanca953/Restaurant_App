@@ -1,9 +1,9 @@
 package commands.tablecommands;
 
 import commands.ICommandHandler;
-import restaurantclient.model.ITableRepository;
-import restaurantclient.model.Message;
-import restaurantclient.model.Table;
+import restaurantproject.model.ITableRepository;
+import restaurantproject.model.Message;
+import restaurantproject.model.Table;
 
 public class UpdateTableHandler implements ICommandHandler {
     private ITableRepository tableRepo;

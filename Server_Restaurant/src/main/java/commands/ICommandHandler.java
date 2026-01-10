@@ -1,6 +1,6 @@
 package commands;
 
-import restaurantclient.model.Message;
+import restaurantproject.model.Message;
 
 public interface ICommandHandler {
     Message execute(Object data);

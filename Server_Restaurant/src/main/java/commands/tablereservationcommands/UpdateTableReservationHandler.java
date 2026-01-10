@@ -1,9 +1,9 @@
 package commands.tablereservationcommands;
 
 import commands.ICommandHandler;
-import restaurantclient.model.ITableReservationRepository;
-import restaurantclient.model.Message;
-import restaurantclient.model.TableReservation;
+import restaurantproject.model.ITableReservationRepository;
+import restaurantproject.model.Message;
+import restaurantproject.model.TableReservation;
 
 public class UpdateTableReservationHandler implements ICommandHandler {
     private ITableReservationRepository repo;

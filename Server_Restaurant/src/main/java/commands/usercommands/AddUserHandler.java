@@ -1,9 +1,9 @@
 package commands.usercommands;
 
 import commands.ICommandHandler;
-import restaurantclient.model.Message;
-import restaurantclient.model.User;
-import restaurantclient.model.IUserRepository;
+import restaurantproject.model.Message;
+import restaurantproject.model.User;
+import restaurantproject.model.IUserRepository;
 
 public class AddUserHandler implements ICommandHandler {
     private IUserRepository userRepo;

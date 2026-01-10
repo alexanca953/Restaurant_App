@@ -1,11 +1,11 @@
 package commands.usercommands;
 
 import commands.ICommandHandler;
-import restaurantclient.model.IUserRepository;
-import restaurantclient.model.Message;
+import restaurantproject.model.IUserRepository;
+import restaurantproject.model.Message;
 
 import java.util.List;
-import restaurantclient.model.User;
+import restaurantproject.model.User;
 
 public class GetAllUsersHandler implements ICommandHandler {
     private IUserRepository userRepo;
