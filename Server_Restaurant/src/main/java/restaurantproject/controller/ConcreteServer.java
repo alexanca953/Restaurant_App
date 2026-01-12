@@ -6,11 +6,6 @@ import ocsf.ConnectionToClient;
 
 
 public class ConcreteServer extends AbstractServer {
-    /**
-     * Constructs a new server.
-     *
-     * @param port the port number on which to listen.
-     */
     final public static int DEFAULT_PORT=8080;
     private RestaurantController controller;
 

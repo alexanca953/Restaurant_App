@@ -16,10 +16,6 @@ import java.util.stream.Collectors;
 @Controller
 public class ClientController {
     ConcreteClient client = new ConcreteClient();
-
-    // --- PAZNICUL (HELPER PENTRU SECURITATE) ---
-    // Această metodă verifică dacă userul e logat și dacă are rolul potrivit.
-    // Returnează un link de redirect (spre login sau access-denied) sau NULL dacă e totul ok.
     private String checkAccess(HttpSession session, String... allowedRoles) {
         User user = (User) session.getAttribute("userLogat");
         if (user == null) {
@@ -27,10 +23,10 @@ public class ClientController {
         }
         for (String role : allowedRoles) {
             if (role.equals(user.getRole())) {
-                return null; // Acces permis!
+                return null;
             }
         }
-        return "redirect:/access-denied"; // Acces interzis!
+        return "redirect:/access-denied";
     }
 
     @ModelAttribute
@@ -44,7 +40,7 @@ public class ClientController {
 
     @GetMapping("/")
     public String home(Model model) {
-        return "home"; // Pagina publică, accesibilă oricui
+        return "home";
     }
 
     @GetMapping("/access-denied")
@@ -52,24 +48,18 @@ public class ClientController {
         return "access-denied";
     }
 
-    // ==========================================
     // 1. DASHBOARD (Admin, Manager, Waiter)
-    // ==========================================
     @GetMapping("/dashboard")
     public String showDashboard(HttpSession session) {
-        // Paznic: Doar angajații au voie
         String redirect = checkAccess(session, "ADMIN", "MANAGER", "WAITER");
-        if (redirect != null) return redirect;
-
+        if (redirect != null)
+            return redirect;
         return "dashboard";
     }
 
-    // ==========================================
     // 2. MENU MANAGEMENT (Admin, Manager)
-    // ==========================================
     @GetMapping("/menu-management")
     public String showManager(Model model, HttpSession session) {
-        // Paznic: Doar Admin si Manager pot modifica meniul
         String redirect = checkAccess(session, "ADMIN", "MANAGER");
         if (redirect != null) return redirect;
 
@@ -89,7 +79,6 @@ public class ClientController {
 
     @PostMapping("/menu-management/save")
     public String saveProduct(Product product, HttpSession session) {
-        // Paznic si pe POST (ca sa nu dea request din Postman)
         String redirect = checkAccess(session, "ADMIN", "MANAGER");
         if (redirect != null) return redirect;
 
@@ -145,30 +134,23 @@ public class ClientController {
         }
         return "redirect:/menu-management";
     }
-
-    // ==========================================
     // 3. PUBLIC MENU (Oricine)
-    // ==========================================
     @GetMapping("/menu")
     public String showMenu(@RequestParam(name = "keyword", required = false) String keyword, Model model) {
-        // Aici NU punem paznic, meniul e public pentru clienti
         ArrayList<Product> products=new ArrayList<>();
         ArrayList<ProductCategory> categories = new ArrayList<>();
-
         try{
             products=(ArrayList<Product>) client.sendAndReceive(new Message("GET_ALL_PRODUCTS",null));
             categories=(ArrayList<ProductCategory>) client.sendAndReceive(new Message("GET_ALL_CATEGORIES",null));
         } catch(Exception e){
             e.printStackTrace();
         }
-
         Map<Integer, String> categoryNamesMap = new HashMap<>();
         if (categories != null) {
             for (ProductCategory cat : categories) {
                 categoryNamesMap.put(cat.getCategoryId(), cat.getName());
             }
         }
-
         List<Product> filteredList;
         if (keyword != null && !keyword.isEmpty()) {
             filteredList = new ArrayList<>();
@@ -196,12 +178,9 @@ public class ClientController {
         return "menu";
     }
 
-    // ==========================================
     // 4. RESERVATIONS (INTERNAL - Waiter, Manager, Admin)
-    // ==========================================
     @GetMapping("/reservations")
     public String showReservations(Model model, HttpSession session) {
-        // Paznic: Doar angajatii vad rezervarile interne
         String redirect = checkAccess(session, "ADMIN", "MANAGER", "WAITER");
         if (redirect != null) return redirect;
 
@@ -284,12 +263,9 @@ public class ClientController {
         return "redirect:/reservations";
     }
 
-    // ==========================================
     // 5. TABLES (Waiter - View, Manager/Admin - Edit)
-    // ==========================================
     @GetMapping("/tables")
     public String showTablesDashboard(Model model, HttpSession session) {
-        // Toti angajatii pot vedea mesele
         String redirect = checkAccess(session, "ADMIN", "MANAGER", "WAITER");
         if (redirect != null) return redirect;
 
@@ -326,16 +302,12 @@ public class ClientController {
 
         return "tables";
     }
-
-    // ==========================================
     // 6. USERS (ADMIN ONLY)
-    // ==========================================
     @GetMapping("/users")
     public String showAdminUsers(Model model, HttpSession session) {
-        // STRICT ADMIN
         String redirect = checkAccess(session, "ADMIN");
-        if (redirect != null) return redirect;
-
+        if (redirect != null)
+            return redirect;
         try {
             Object response = client.sendAndReceive(new Message("GET_ALL_USERS", null));
             if (response instanceof List) {
@@ -375,10 +347,7 @@ public class ClientController {
         }
         return "redirect:/users";
     }
-
-    // ==========================================
-    // LOGIN & REGISTER (PUBLIC)
-    // ==========================================
+    // LOGIN & REGISTER
     @GetMapping("/login")
     public String showLoginForm(Model model) {
         model.addAttribute("user", new User());
@@ -453,9 +422,7 @@ public class ClientController {
         }
     }
 
-    // ==========================================
     // FEEDBACK
-    // ==========================================
     @PostMapping("/submit-feedback")
     public String submitFeedback(@ModelAttribute Feedback feedback, HttpSession session) {
         User userLogat = (User) session.getAttribute("userLogat");
@@ -476,15 +443,14 @@ public class ClientController {
         return "redirect:/?feedbackSuccess";
     }
 
-    // ==========================================
+
     // TABLE CONFIGURATION (MANAGER/ADMIN Only)
-    // ==========================================
+
     @GetMapping("/table-management")
     public String showTableManagement(Model model, HttpSession session) {
-        // Paznic: Waiterul nu are voie sa stearga mese din sistem, doar Manager/Admin
         String redirect = checkAccess(session, "ADMIN", "MANAGER");
-        if (redirect != null) return redirect;
-
+        if (redirect != null)
+            return redirect;
         try {
             Object response = client.sendAndReceive(new Message("GET_ALL_TABLES", null));
             if (response instanceof List) {
@@ -527,12 +493,9 @@ public class ClientController {
         return "redirect:/table-management";
     }
 
-    // ==========================================
     // STATISTICS (ADMIN/MANAGER Only)
-    // ==========================================
     @GetMapping("/statistics")
     public String showStatistics(Model model, HttpSession session) {
-        // Paznic: Waiterul nu vede banii
         String redirect = checkAccess(session, "ADMIN", "MANAGER");
         if (redirect != null) return redirect;
 
@@ -572,9 +535,9 @@ public class ClientController {
         return "statistics";
     }
 
-    // ==========================================
-    // ZONA REZERVĂRI PENTRU CLIENT (Numai pentru USERI logați)
-    // ==========================================
+
+    // ZONA REZERVĂRI PENTRU CLIENT
+
     @GetMapping("/clientReservation")
     public String showReservationForm(HttpSession session, Model model) {
         User userLogat = (User) session.getAttribute("userLogat");

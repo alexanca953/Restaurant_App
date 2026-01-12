@@ -1,13 +1,9 @@
 
-/* reservations view page*/
-/* Header specific rezervărilor */
 .res-page-title {
     font-family: 'Playfair Display', serif;
     color: #2c3e50;
     margin: 0;
 }
-
-/* Buton specific de adăugare rezervare (Mov închis) */
 .res-btn-add {
     background-color: #8e44ad;
     color: white;
@@ -23,7 +19,6 @@
     transform: scale(1.05);
 }
 
-/* Tabel specific rezervărilor */
 .res-table-card {
     background: white;
     border-radius: 10px;
@@ -43,7 +38,7 @@
 }
 
 .res-table thead tr {
-    background-color: #8e44ad; /* Mov */
+    background-color: #8e44ad;
     color: #ffffff;
     text-align: left;
 }
@@ -54,10 +49,9 @@
 }
 
 .res-table tbody tr:hover {
-    background-color: #f3e5f5; /* Mov foarte deschis */
+    background-color: #f3e5f5;
 }
 
-/* Badge-uri pentru status */
 .res-status-badge {
     padding: 5px 10px;
     border-radius: 15px;
@@ -65,11 +59,10 @@
     font-weight: bold;
     color: white;
 }
-.status-confirmed { background-color: #2ecc71; } /* Verde */
-.status-pending { background-color: #f1c40f; color: black; } /* Galben */
-.status-cancelled { background-color: #e74c3c; } /* Rosu */
+.status-confirmed { background-color: #2ecc71; }
+.status-pending { background-color: #f1c40f; color: black; }
+.status-cancelled { background-color: #e74c3c; }
 
-/* Modal specific rezervărilor */
 .res-modal-overlay {
     display: none;
     position: fixed;
@@ -130,7 +123,6 @@
 }
 .res-btn-save:hover { background-color: #732d91; }
 
-/* Butoane actiuni tabel */
 .res-action-btn {
     border: none;
     padding: 5px 10px;
@@ -141,31 +133,25 @@
 }
 .res-edit { background-color: #f39c12; }
 .res-delete { background-color: #e74c3c; }
-/* reservations view page*/
 @font-face {
     font-family: 'Playfair Display';
-    /* "../fonts/" înseamnă: ieși din folderul css, intră în fonts */
     src: url('../fonts/Playfair.ttf') format('truetype');
     font-weight: bold;
     font-style: normal;
 }
 
-/* Definim Fontul Simplu (Text) */
 @font-face {
     font-family: 'Lato';
     src: url('../fonts/Lato.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
-
-/* (Opțional) Lato Bold pentru butoane */
 @font-face {
     font-family: 'Lato';
     src: url('../fonts/LatoBold.ttf') format('truetype');
     font-weight: bold;
     font-style: normal;
 }
-
 
 * {
     margin: 0;
@@ -175,8 +161,8 @@
 
 body {
     font-family: 'Lato' , sans-serif;
-    height: 100vh; /* Corpul paginii ocupă tot ecranul */
-    overflow: hidden; /* Ascundem bara de scroll a browserului */
+    height: 100vh;
+    overflow: hidden;
     color: #333;
 }
 
@@ -184,38 +170,25 @@ h1, h2, h3, .logo, .hero-title {
     font-family: 'Playfair Display', serif;
 }
 
-/* 2. DEFINIREA GRILEI (SCHELETUL) */
 .grid-container {
     display: grid;
-    height: 100vh; /* Grid-ul ocupă toată înălțimea */
-
-    /* COLOANE: Prima e Sidebar (250px), a doua e restul ecranului (1fr) */
+    height: 100vh;
     grid-template-columns: 250px 1fr;
-
-    /* RÂNDURI: Primul e Header (60px), al doilea e conținutul (restul) */
     grid-template-rows: 60px 1fr;
 
-    /* HARTA VIZUALĂ A ZONELOR */
-    /* "sidebar header"  -> Rândul de sus */
-    /* "sidebar content" -> Rândul de jos */
     grid-template-areas:
         "sidebar header"
         "sidebar content";
 }
 
-/* 3. STILIZAREA ZONELOR */
-
-/* --- SIDEBAR (Stânga) --- */
 .sidebar {
-    grid-area: sidebar; /* Se pune în zona "sidebar" definită mai sus */
-    background-color: #323738; /* Culoare închisă (Dark Blue) */
+    grid-area: sidebar;
+    background-color: #323738;
     color: white;
     padding: 20px;
     display: flex;
-    flex-direction: column; /* Link-urile unul sub altul */
+    flex-direction: column;
 }
-
-/* Link-urile din meniu */
 .sidebar a {
     color: #ecf0f1;
     text-decoration: none;
@@ -226,7 +199,6 @@ h1, h2, h3, .logo, .hero-title {
     transition: 0.3s;
     display: block;
 }
-
 .sidebar a:hover {
     background-color: rgba(255, 255, 255, 0.1);
     color: white;
@@ -239,59 +211,57 @@ h1, h2, h3, .logo, .hero-title {
 }
 .menu-label {
     display: block;
-    margin-top: 25px;          /* Spațiu mare deasupra secțiunii */
-    margin-bottom: 8px;        /* Spațiu mic sub titlu */
-    font-size: 0.75em;         /* Text mic */
-    color: #95a5a6;            /* Culoare gri stins */
-    text-transform: uppercase; /* LITERE MARI AUTOMAT */
+    margin-top: 25px;
+    margin-bottom: 8px;
+    font-size: 0.75em;
+    color: #95a5a6;
+    text-transform: uppercase;
     font-weight: bold;
-    letter-spacing: 1px;       /* Spațiu între litere */
-    padding-left: 15px;        /* Aliniere cu textul butoanelor */
-    border-bottom: 1px solid rgba(255,255,255,0.1); /* Linie subtilă sub titlu */
+    letter-spacing: 1px;
+    padding-left: 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
     padding-bottom: 5px;
 }
 
-/* --- HEADER (Sus) --- */
+/* --- HEADER--- */
 .header {
-    grid-area: header; /* Se pune în zona "header" */
-    background-color: #ecf0f1; /* Gri deschis */
+    grid-area: header;
+    background-color: #ecf0f1;
     border-bottom: 2px solid #bdc3c7;
     display: flex;
-    align-items: center; /* Centrează textul pe verticală */
-    justify-content: flex-end; /* Împinge conținutul (Logout) în dreapta */
+    align-items: center;
+    justify-content: flex-end;
     padding: 0 30px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-/* --- MAIN CONTENT (Mijloc) --- */
+/* --- MAIN CONTENT  --- */
 .main-content {
-    grid-area: content; /* Se pune în zona "content" */
+    grid-area: content;
     background-color: #fff;
     padding: 30px;
-    overflow-y: auto; /* Scroll DOAR aici, dacă pagina e lungă */
+    overflow-y: auto;
 }
 
 
 /*----HOME PAGE -------------- */
-     /* Stiluri specifice doar pentru Landing Page */
-body#home-page { margin: 0; overflow-x: hidden; overflow-y: auto; } /* Reactivăm scroll-ul pe verticală */
+body#home-page { margin: 0; overflow-x: hidden; overflow-y: auto; }
 
-/* NAVBAR TRANSPARENT SUS */
 .top-nav {
     position: absolute;
     top: 0;
     width: 100%;
     padding: 20px 50px;
     display: flex;
-    justify-content: space-between; /* Logo stânga, Buton dreapta */
+    justify-content: space-between;
     align-items: center;
-    z-index: 100; /* Să fie peste poza de fundal */
+    z-index: 100;
 
 }
 .nav-buttons {
     display: flex;
     align-items: center;
-    gap: 30px; /* Spațiul dintre "Make a Reservation" și "Hello..." */
+    gap: 30px;
 }
 .nav-link {
     color: white;
@@ -302,17 +272,16 @@ body#home-page { margin: 0; overflow-x: hidden; overflow-y: auto; } /* Reactivă
 }
 
 .nav-link:hover {
-    color: #e67e22; /* Se face portocaliu când pui mouse-ul */
+    color: #e67e22;
 }
 .user-profile {
     display: flex;
     align-items: center;
-    gap: 15px; /* Spațiu mic între Nume și butonul Logout */
-    background: rgba(255, 255, 255, 0.1); /* Opțional: un fundal fin transparent */
+    gap: 15px;
+    background: rgba(255, 255, 255, 0.1);
     padding: 5px 15px;
     border-radius: 30px;
 }
-
 .logo { color: white;
     font-size: 1.8em;
     font-weight: bold;
@@ -329,9 +298,8 @@ body#home-page { margin: 0; overflow-x: hidden; overflow-y: auto; } /* Reactivă
 }
 .btn-login:hover { background-color: #d35400; transform: scale(1.05); }
 
-/* HERO SECTION (Ecran complet) */
 .hero-section {
-    height: 100vh; /* 100% din înălțimea ecranului */
+    height: 100vh;
     background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
     url('../images/Home.png');
     background-size: cover;
@@ -354,7 +322,7 @@ body#home-page { margin: 0; overflow-x: hidden; overflow-y: auto; } /* Reactivă
     font-size: 1.3em;
     margin-bottom: 40px;
     font-family: 'Lato', sans-serif;
-    font-weight: 300; /* Mai subțire */
+    font-weight: 300;
     letter-spacing: 1px;}
 
 .btn-menu-public {
@@ -367,7 +335,6 @@ body#home-page { margin: 0; overflow-x: hidden; overflow-y: auto; } /* Reactivă
 }
 .btn-menu-public:hover { background: white; color: black; }
 
-/* SECȚIUNEA DE JOS (Bucătărie) */
 .info-section {
     padding: 80px 20px;
     background-color: white;
@@ -383,14 +350,12 @@ body#home-page { margin: 0; overflow-x: hidden; overflow-y: auto; } /* Reactivă
 .gallery-img { width: 100%; height: 300px; object-fit: cover; border-radius: 8px; }
 
 .footer {background: #1e2021; color: white; padding: 15px; text-align: center;}
-/* =========================================
-   SECȚIUNE MANAGER (TABEL & MODAL)
-   ========================================= */
+/* SECȚIUNE MANAGER  */
 
-/* Titlul paginii interioare */
+/* Titlul */
 .page-header {
     display: flex;
-    justify-content: space-between; /* Titlu stânga, buton dreapta */
+    justify-content: space-between;
     align-items: center;
     margin-bottom: 30px;
 }
@@ -401,20 +366,19 @@ body#home-page { margin: 0; overflow-x: hidden; overflow-y: auto; } /* Reactivă
     font-size: 2rem;
 }
 
-/* --- TABEL MODERN (CARD STYLE) --- */
 .table-card {
     background: white;
-    padding: 25px; /* Spațiu interior generos */
+    padding: 25px;
     border-radius: 12px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.08); /* Umbră fină */
-    overflow-x: auto; /* Scroll orizontal pe mobil */
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    overflow-x: auto;
 }
 
 .styled-table {
     width: 100%;
-    border-collapse: collapse; /* Elimină spațiile duble dintre celule */
+    border-collapse: collapse;
     font-family: 'Lato', sans-serif;
-    min-width: 600px; /* Asigură că nu se strivește pe ecrane mici */
+    min-width: 600px;
 }
 
 .styled-table thead tr {
@@ -425,27 +389,25 @@ body#home-page { margin: 0; overflow-x: hidden; overflow-y: auto; } /* Reactivă
 }
 
 .styled-table th {
-    font-family: 'Playfair Display', serif; /* Headerul tabelului cu font elegant */
+    font-family: 'Playfair Display', serif;
     font-size: 1.1rem;
-    padding: 15px 20px; /* SPAȚIERE MARE - Rezolvă problema "înghesuit" */
+    padding: 15px 20px;
 }
 
 .styled-table td {
-    padding: 15px 20px; /* SPAȚIERE MARE */
+    padding: 15px 20px;
     border-bottom: 1px solid #eee;
     color: #555;
     vertical-align: middle;
 }
 
-/* Efect la hover pe rând */
 .styled-table tbody tr:hover {
     background-color: #fcfcfc;
 }
 
-/* Culori specifice pentru preț și nume */
 .price-tag {
     font-weight: bold;
-    color: #27ae60; /* Verde */
+    color: #27ae60;
 }
 
 .product-name {
@@ -454,12 +416,11 @@ body#home-page { margin: 0; overflow-x: hidden; overflow-y: auto; } /* Reactivă
     font-size: 1.05rem;
 }
 
-/* --- BUTOANE --- */
 .btn-add {
     background-color: #27ae60;
     color: white;
     padding: 12px 24px;
-    border-radius: 30px; /* Rotunjit ca pe Home page */
+    border-radius: 30px;
     text-decoration: none;
     font-weight: bold;
     border: none;
@@ -467,12 +428,10 @@ body#home-page { margin: 0; overflow-x: hidden; overflow-y: auto; } /* Reactivă
     box-shadow: 0 4px 6px rgba(39, 174, 96, 0.2);
     transition: transform 0.2s;
 }
-
 .btn-add:hover {
     transform: translateY(-2px);
     background-color: #219150;
 }
-
 .btn-icon {
     padding: 8px 12px;
     border-radius: 6px;
@@ -485,21 +444,19 @@ body#home-page { margin: 0; overflow-x: hidden; overflow-y: auto; } /* Reactivă
     cursor: pointer;
     font-family: 'Lato', sans-serif;
 }
-
 .edit { background-color: #f39c12; color: white; }
 .delete { background-color: #e74c3c; color: white; }
 
 .btn-icon:hover { opacity: 0.9; }
 
-/* --- MODAL (POP-UP) --- */
 .modal-overlay {
-    display: none; /* Ascuns implicit */
+    display: none;
     position: fixed;
     z-index: 2000;
     left: 0; top: 0;
     width: 100%; height: 100%;
-    background-color: rgba(0,0,0,0.6); /* Fundal întunecat */
-    backdrop-filter: blur(3px); /* Efect modern de ceață */
+    background-color: rgba(0,0,0,0.6);
+    backdrop-filter: blur(3px);
 }
 
 .modal-box {
@@ -513,7 +470,6 @@ body#home-page { margin: 0; overflow-x: hidden; overflow-y: auto; } /* Reactivă
     box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     animation: slideIn 0.3s ease-out;
 }
-
 @keyframes slideIn {
     from { transform: translateY(-50px); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }
@@ -530,9 +486,7 @@ body#home-page { margin: 0; overflow-x: hidden; overflow-y: auto; } /* Reactivă
 
 .close-modal:hover { color: #333; }
 
-/* Formular stilizat */
 .form-row { margin-bottom: 15px; }
-
 .form-row label {
     display: block;
     margin-bottom: 5px;
@@ -557,7 +511,7 @@ body#home-page { margin: 0; overflow-x: hidden; overflow-y: auto; } /* Reactivă
 .btn-save {
     width: 100%;
     padding: 12px;
-    background-color: #323738; /* Aceeași culoare ca Sidebar-ul */
+    background-color: #323738;
     color: white;
     border: none;
     border-radius: 5px;
@@ -569,16 +523,11 @@ body#home-page { margin: 0; overflow-x: hidden; overflow-y: auto; } /* Reactivă
 .btn-save:hover { background-color: #1abc9c; }
 
 
-
-
-
-/*----MENU-----------------------*/
-
 body.dark-theme {
-    background-color: #1a1a1d; /* Fundal Foarte Închis (aproape negru) */
+    background-color: #1a1a1d;
     color: #ecf0f1;
     font-family: 'Lato', sans-serif;
-    overflow-y: auto; /* Permite Scroll */
+    overflow-y: auto;
 }
 
 .menu-container {
@@ -589,20 +538,12 @@ body.dark-theme {
 }
 
 .menu-header {
-    /* 1. ÎNALȚIME FIXĂ (Aici modifici cât de "îngustă" e pe înălțime) */
     height: 500px;
-
-    /* 2. LĂȚIME COMPLETĂ (Dintr-un capăt în celălalt) */
     width: 100%;
-
-    /* 3. Centrare conținut */
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Centrat vertical în cei 500px */
-    align-items: center;     /* Centrat orizontal */
-
-    /* 4. Imaginea de fundal */
-    /* Folosește linkul tău preferat de pe Unsplash aici */
+    justify-content: center;
+    align-items: center;
     background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
     url('../images/MenuPicture2.png');
     background-size: cover;
@@ -612,22 +553,19 @@ body.dark-theme {
     background-attachment: fixed
 }
 
-/* Ajustăm titlul să se vadă bine pe poză */
 .menu-title {
     color: white;
     font-size: 3.5em;
     margin-bottom: 30px;
-    text-shadow: 2px 2px 4px black; /* Umbră la text să se citească ușor */
+    text-shadow: 2px 2px 4px black;
 }
 
-/* Stil Search Bar */
 .search-box {
     margin-bottom: 50px;
     display: flex;
     justify-content: center;
     gap: 10px;
 }
-
 .search-box input {
     padding: 15px;
     width: 300px;
@@ -654,18 +592,15 @@ body.dark-theme {
     background: #d35400;
 }
 
-
-/* Containerul Principal */
 .menu-list-container {
     max-width: 800px;
     width: 90%;
     margin: 30px auto;
     padding: 20px;
-    background-color: transparent; /* Sau o culoare închisă */
+    background-color: transparent;
 
 }
 
-/* Titlul Categoriei */
 .category-title {
     font-family: 'Playfair Display', serif;
     color: #944d05;
@@ -677,17 +612,15 @@ body.dark-theme {
     letter-spacing: 2px;
 }
 
-/* Rândul unui produs */
 .menu-item-row {
     display: flex;
-    justify-content: space-between; /* Aruncă prețul în dreapta */
+    justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 25px;
-    border-bottom: 1px solid rgba(255,255,255,0.1); /* Linie subtilă de separare */
+    border-bottom: 1px solid rgba(255,255,255,0.1);
     padding-bottom: 15px;
 }
 
-/* Detaliile din stânga */
 .item-details {
     flex: 1;
     padding-right: 40px;
@@ -699,20 +632,20 @@ body.dark-theme {
 
 .item-header {
     display: flex;
-    align-items: baseline; /* Aliniază textul la bază */
+    align-items: baseline;
 }
 
 .item-name {
     margin: 0;
     font-size: 1.3em;
-    color: white; /* Sau #333 pe fundal alb */
+    color: white;
     font-family: 'Playfair Display', serif;
     font-weight: bold;
 }
 
 .item-desc {
     margin: 5px 0 0 0;
-    color: #bdc3c7; /* Gri deschis */
+    color: #bdc3c7;
     font-style: italic;
 
 }
@@ -720,12 +653,10 @@ body.dark-theme {
 .item-ingr {
     margin: 5px 0 0 0;
     font-size: 0.85em;
-    color: #95a5a6; /* Gri mai închis */
+    color: #95a5a6;
 }
-
-/* Prețul din dreapta */
 .item-price {
-    white-space: nowrap; /* Să nu treacă pe rândul următor */
+    white-space: nowrap;
     font-size: 1.3em;
     color: #944d05;
     font-weight: bold;
@@ -734,11 +665,9 @@ body.dark-theme {
     align-items: flex-end;
 }
 
-/* ========================
-   SECȚIUNEA FEEDBACK
-   ======================== */
+/*SECȚIUNEA FEEDBACK*/
 .feedback-section {
-    background-color: #f9f9f9; /* Gri foarte deschis */
+    background-color: #f9f9f9;
     padding: 60px 20px;
     text-align: center;
     border-top: 1px solid #ddd;
@@ -761,7 +690,7 @@ body.dark-theme {
     display: inline-block;
     padding: 12px 30px;
     background-color: transparent;
-    color: #944d05; /* Portocaliu */
+    color: #944d05;
     border: 2px solid #944d05;
     text-decoration: none;
     font-weight: bold;
@@ -774,44 +703,41 @@ body.dark-theme {
 .btn-feedback:hover {
     background-color: #944d05;
     color: white;
-    transform: translateY(-3px); /* Se ridică puțin */
+    transform: translateY(-3px);
     box-shadow: 0 5px 15px rgba(230, 126, 34, 0.3);
 }
 
 .modal-overlay {
-    display: none; /* Ascuns implicit - JavaScript-ul îl va face 'flex' */
-    position: fixed; /* Rămâne fix pe ecran chiar dacă dai scroll */
-    z-index: 1000; /* Peste tot restul site-ului */
+    display: none;
+    position: fixed;
+    z-index: 1000;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.6); /* Negru transparent */
-    backdrop-filter: blur(4px); /* Efect modern de ceață în spate */
-    justify-content: center; /* Centrează cutia orizontal */
-    align-items: center; /* Centrează cutia vertical */
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    justify-content: center;
+    align-items: center;
 }
 
-/* 2. Cutia albă (Fereastra propriu-zisă) */
 .modal-box {
     background-color: #ffffff;
     padding: 30px;
     border-radius: 12px;
-    width: 90%; /* Pe mobil ocupă aproape tot */
-    max-width: 500px; /* Pe desktop nu se face mai mare de atât */
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5); /* Umbră puternică 3D */
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
     position: relative;
-    animation: slideDown 0.3s ease-out; /* Animație de intrare */
-    text-align: left; /* Aliniem textele la stânga în interior */
+    animation: slideDown 0.3s ease-out;
+    text-align: left;
 }
 
-/* Animația de apariție */
 @keyframes slideDown {
     from { transform: translateY(-30px); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }
 }
 
-/* 3. Butonul "X" de închidere */
 .close-btn {
     color: #aaa;
     position: absolute;
@@ -825,10 +751,9 @@ body.dark-theme {
 }
 
 .close-btn:hover {
-    color: #e74c3c; /* Roșu la hover */
+    color: #e74c3c;
 }
 
-/* 4. Stiluri pentru Formular (Inputuri, Selecturi) */
 .modal-box label {
     display: block;
     margin-top: 15px;
@@ -848,33 +773,31 @@ body.dark-theme {
     font-family: 'Lato', sans-serif;
     font-size: 1em;
     background-color: #f8f9fa;
-    box-sizing: border-box; /* Important: padding-ul nu lățește elementul */
+    box-sizing: border-box;
     transition: border-color 0.3s;
 }
 
 .modal-box select:focus,
 .modal-box textarea:focus {
     outline: none;
-    border-color: #e67e22; /* Portocaliu când scrii */
+    border-color: #e67e22;
     background-color: #fff;
 }
 
 .modal-box textarea {
-    resize: vertical; /* Userul poate trage de el doar în jos */
+    resize: vertical;
     min-height: 80px;
 }
 
-/* Wrapper pentru steluțe (opțional, doar spațiere) */
 .rating-wrapper {
     position: relative;
 }
 
-/* 5. Butonul de Trimitere din Modal */
 .btn-submit-modal {
     margin-top: 25px;
     width: 100%;
     padding: 12px;
-    background-color:  #944d05; /* Același portocaliu ca restul site-ului */
+    background-color:  #944d05;
     color: white;
     border: none;
     border-radius: 30px;
@@ -885,15 +808,13 @@ body.dark-theme {
 }
 
 .btn-submit-modal:hover {
-    background-color: #e67e22; /* Puțin mai închis la hover */
+    background-color: #e67e22;
     transform: translateY(-2px);
 }
 
-/* ========================
-   SECȚIUNEA CONTACT
-   ======================== */
+/* SECȚIUNEA CONTACT*/
 .contact-section {
-    background-color: #323738; /* Fundal închis (Dark Blue/Gray) */
+    background-color: #323738;
     color: white;
     padding: 60px 20px;
 }
@@ -902,12 +823,11 @@ body.dark-theme {
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
-    flex-wrap: wrap; /* Pe mobil trec una sub alta */
-    gap: 50px;       /* Spațiu între text și hartă */
+    flex-wrap: wrap;
+    gap: 50px;
     align-items: center;
 }
 
-/* Coloana Stânga (Text) */
 .contact-info {
     flex: 1;
     min-width: 300px;
@@ -935,12 +855,12 @@ body.dark-theme {
 .icon {
     font-size: 1.5em;
     margin-right: 15px;
-    margin-top: -3px; /* Ajustare fină */
+    margin-top: -3px;
 }
 
 .info-item strong {
     display: block;
-    color: #e67e22; /* Titlurile mici portocalii */
+    color: #e67e22;
     margin-bottom: 5px;
 }
 
@@ -950,7 +870,6 @@ body.dark-theme {
     line-height: 1.4;
 }
 
-/* Coloana Dreapta (Harta) */
 .contact-map {
     flex: 1;
     min-width: 300px;
@@ -1015,7 +934,7 @@ body.dark-theme {
     border: none;
     background: rgba(255,255,255,0.9);
     font-size: 1em;
-    box-sizing: border-box; /* Important ca să nu iasă din chenar */
+    box-sizing: border-box;
 }
 
 .btn-login {
@@ -1031,7 +950,6 @@ body.dark-theme {
     margin-top: 10px;
     font-weight: bold;
 }
-
 .btn-login:hover {
     background-color: #d35400;
     transform: scale(1.02);
@@ -1055,11 +973,10 @@ body.dark-theme {
 
 /*-------------LOGIN BUTTON------------*/
 
-/* Stil pentru zona de user logat */
 .user-profile {
     display: flex;
     align-items: center;
-    gap: 15px; /* Spațiu între nume și buton */
+    gap: 15px;
 }
 
 .welcome-msg {
@@ -1069,7 +986,7 @@ body.dark-theme {
 }
 
 .welcome-msg b {
-    color: #944d05; /* Numele userului cu portocaliu */
+    color: #944d05;
 }
 
 .btn-logout {
@@ -1084,14 +1001,12 @@ body.dark-theme {
 
 .btn-logout:hover {
     color: white;
-    border-color: #e74c3c; /* Roșu la hover pentru logout */
+    border-color: #e74c3c;
     background-color: rgba(231, 76, 60, 0.1);
 }
 
-/* Asigură-te că butonul vechi de login arată bine */
 .btn-nav {
-    /* ... stilurile tale existente pentru butonul maro ... */
-    background-color: #944d05; /* Exemplu */
+    background-color: #944d05;
     color: white;
     padding: 10px 20px;
     border-radius: 25px;
@@ -1114,12 +1029,12 @@ body.dark-theme {
 }
 
 .register-card {
-    background: rgba(255, 255, 255, 0.1); /* Efect de sticlă */
+    background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     padding: 40px;
     border-radius: 15px;
     width: 100%;
-    max-width: 450px; /* Puțin mai lat decât login-ul */
+    max-width: 450px;
     box-shadow: 0 15px 35px rgba(0,0,0,0.5);
     text-align: center;
     border: 1px solid rgba(255,255,255,0.2);
@@ -1193,13 +1108,11 @@ body.dark-theme {
 
 /*--------------Client Reservation---------------*/
 
-/* STILURI SPECIFICE PENTRU PAGINA DE REZERVARE */
 .res-body {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    /* Imagine de fundal */
     background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
     url('../images/RegisterPicture.png');
     background-size: cover;
@@ -1207,7 +1120,6 @@ body.dark-theme {
     margin: 0;
     font-family: 'Lato', sans-serif;
 }
-
 .res-card {
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
@@ -1220,7 +1132,6 @@ body.dark-theme {
     border: 1px solid rgba(255,255,255,0.2);
     color: white;
 }
-
 .res-title {
     font-family: 'Playfair Display', serif;
     font-size: 2.5em;
@@ -1242,18 +1153,16 @@ body.dark-theme {
 .form-group label {
     display: block;
     margin-bottom: 8px;
-    color:  #e67e22; /* Accent portocaliu */
+    color:  #e67e22;
     font-weight: bold;
     font-size: 0.95em;
 }
 
-/* --- STILURI UNIFICATE PENTRU INPUT-URI --- */
 .form-group input {
     width: 100%;
     padding: 15px;
     border-radius: 8px;
     border: 1px solid rgba(255, 255, 255, 0.1);
-    /* Fundalul gri-transparent (Glassy) */
     background-color: rgba(255, 255, 255, 0.3) !important;
     color: white !important;
     font-family: 'Lato', sans-serif;
@@ -1269,7 +1178,6 @@ body.dark-theme {
     box-shadow: 0 0 15px rgba(230, 126, 34, 0.3);
 }
 
-/* REPARĂ ICONIȚA DE CALENDAR (O face albă) */
 input[type="datetime-local"]::-webkit-calendar-picker-indicator {
     filter: invert(1);
     cursor: pointer;
@@ -1280,7 +1188,6 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
     transform: scale(1.1);
 }
 
-/* Stil specific pentru 'readonly' (cele blocate) */
 .input-readonly {
     background-color: rgba(255, 255, 255, 0.15) !important;
     color: #bdc3c7 !important;
@@ -1335,14 +1242,10 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
 .back-link:hover { color: white; }
 
 
-/* =========================================
-   LISTA REZERVĂRI CLIENT (Client Reservations List)
-   ========================================= */
+/* LISTA REZERVĂRI CLIENT  */
 
 .cli-res-body {
     min-height: 100vh;
-    /* ATENȚIE LA CALE: În CSS, nu punem 'static'. */
-    /* Folosim /images/daca folderul e in static/images */
     background-image: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)),
     url('../images/RegisterPicture.png');
     background-size: cover;
@@ -1368,40 +1271,33 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
     text-shadow: 0 4px 15px rgba(0,0,0,0.5);
 }
 
-/* CARDUL DE REZERVARE (DREPTUNGHIUL TRANSPARENT) */
 .cli-res-card {
-    /* Am crescut opacitatea la 0.15 ca să se vadă mai bine conturul */
+
     background: rgba(255, 255, 255, 0.15);
-
-    /* Efectul de ceață */
     backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px); /* Pentru Safari */
-
-    /* Bordură albă fină */
+    -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.3);
-
     border-radius: 16px;
     padding: 25px;
     margin-bottom: 25px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* Umbră subtilă */
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
 }
 
 .cli-res-card:hover {
     transform: translateY(-5px);
-    background: rgba(255, 255, 255, 0.25); /* Mai alb la hover */
+    background: rgba(255, 255, 255, 0.25);
     box-shadow: 0 10px 40px rgba(0,0,0,0.4);
     border-color: rgba(255, 255, 255, 0.5);
 }
 
-/* Informațiile din stânga */
 .cli-res-info h3 {
     margin: 0 0 10px 0;
     font-size: 1.5em;
-    color: #e67e22; /* Portocaliu */
+    color: #e67e22;
     font-family: 'Playfair Display', serif;
     letter-spacing: 0.5px;
 }
@@ -1417,7 +1313,6 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
     font-weight: 700;
 }
 
-/* Badge-ul de Status (Dreapta) */
 .cli-res-status-badge {
     padding: 10px 20px;
     border-radius: 50px;
@@ -1446,7 +1341,6 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
     border: 1px solid #e74c3c;
 }
 
-/* Mesaj când lista e goală */
 .cli-res-empty {
     text-align: center;
     color: #ecf0f1;
@@ -1477,17 +1371,10 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
     border-color: white;
 }
 
-/* =========================================
-   UTILITY: SCROLLBAR (GLASS)
-   ========================================= */
-
 .glass-scroll-list {
     max-height: 65vh;
-
     overflow-y: auto;
-
     padding-right: 15px;
-
     margin: 20px 0;
 }
 
@@ -1495,18 +1382,15 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
 .glass-scroll-list::-webkit-scrollbar {
     width: 8px;
 }
-
 .glass-scroll-list::-webkit-scrollbar-track {
     background: rgba(255, 255, 255, 0.05);
     border-radius: 4px;
 }
-
 .glass-scroll-list::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.3);
     border-radius: 4px;
     transition: background 0.3s;
 }
-
 .glass-scroll-list::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.5);
 }

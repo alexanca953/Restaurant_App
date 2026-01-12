@@ -14,7 +14,6 @@ public class DeleteProductHandler implements ICommandHandler {
 
     @Override
     public Message execute(Object data) {
-        ///int productId = (int) data;
         Product product = (Product) data;
         boolean result = productRepo.deleteProduct(product.getProductId());
         return new Message("DELETE_PRODUCT_RESPONSE", result);

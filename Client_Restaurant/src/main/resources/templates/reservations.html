@@ -11,7 +11,7 @@
       <h1 class="res-page-title">Reservations</h1>
       <div th:if="${param.error}"
            style="background-color: #fee2e2; border: 1px solid #ef4444; color: #b91c1c; padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: center; font-weight: bold;">
-         EROARE: Rezervarea nu a putut fi salvată! <br>
+         ERROR: THE RESERVATION COULD NOT BE SAVED <br>
         <span style="font-weight: normal; font-size: 0.9em;">
             Reason: Table capacity does not match or the table is already booked at that time.
         </span>
@@ -25,7 +25,7 @@
           <th>ID</th>
           <th>Customer Name</th>
           <th>Date & Time</th>
-          <th>Nrper.</th>
+          <th>Nr of pers</th>
           <th>Table No.</th>
           <th>Status</th>
           <th>Actions</th>
@@ -129,14 +129,12 @@
     <script>
       function openResModal(id, name, phone, dateStr, pax, tableId, status) {
         document.getElementById('reservationModal').style.display = 'block';
-
         document.getElementById('resId').value = id;
         document.getElementById('resName').value = name;
         document.getElementById('resPhone').value = phone;
         document.getElementById('resPax').value = pax;
         document.getElementById('resTable').value = tableId;
         document.getElementById('resStatus').value = status;
-
         const dateInput = document.getElementById('resDate');
         if (dateStr) {
           dateInput.value = dateStr.toString().slice(0, 16);
@@ -145,7 +143,6 @@
           now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
           dateInput.value = now.toISOString().slice(0, 16);
         }
-
         const title = document.getElementById('resModalTitle');
         title.innerText = (id === 0) ? "New Reservation" : "Edit Reservation #" + id;
       }

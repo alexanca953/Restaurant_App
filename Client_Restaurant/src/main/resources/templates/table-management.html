@@ -47,7 +47,7 @@
                         <form th:action="@{/table-management/delete}" method="post" style="display:inline;">
                             <input type="hidden" name="tableId" th:value="${t.tableId}">
                             <button type="submit" class="res-action-btn res-delete"
-                                    onclick="return confirm('Sigur vrei să ștergi masa?')">
+                                    onclick="return confirm('Are you sure that you want to delete the table?')">
                                 Delete
                             </button>
                         </form>
@@ -78,9 +78,8 @@
                     <div class="res-form-row">
                         <label>Status</label>
                         <select id="status" name="status">
-                            <option value="FREE">FREE (Liberă)</option>
-                            <option value="OCCUPIED">OCCUPIED (Ocupată)</option>
-                            <option value="UNAVAILABLE">UNAVAILABLE (În lucru/Reparații)</option>
+                            <option value="FREE">FREE</option>
+                            <option value="OCCUPIED">OCCUPIED</option>
                         </select>
                     </div>
 
@@ -90,21 +89,17 @@
         </div>
 
         <script>
-            // Am adăugat parametrul 'stat' (status)
             function openTableModal(id, number, cap, stat) {
                 document.getElementById('tableModal').style.display = 'block';
                 document.getElementById('tableId').value = id;
                 document.getElementById('tableNumber').value = number;
                 document.getElementById('capacity').value = cap;
-                document.getElementById('status').value = stat; // Selectează statusul curent
-
+                document.getElementById('status').value = stat;
                 document.getElementById('modalTitle').innerText = (id === 0) ? "New Table" : "Edit Table " + number;
             }
-
             function closeTableModal() {
                 document.getElementById('tableModal').style.display = 'none';
             }
-
             window.onclick = function(event) {
                 if (event.target == document.getElementById('tableModal')) closeTableModal();
             }

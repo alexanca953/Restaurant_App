@@ -35,7 +35,6 @@ public class Reservation implements Serializable {
                 ", status='" + status + '\'' +
                 '}';
     }
-    // Getters si Setters
     public String getTempClientName() { return tempClientName; }
     public void setTempClientName(String tempClientName) { this.tempClientName = tempClientName; }
 

@@ -14,7 +14,7 @@
     <p class="res-subtitle">Reserve your spot for an unforgettable evening.</p>
 
     <div th:if="${param.error}" class="error-box">
-        ⚠ We couldn't save your reservation. Please try another date or time.
+        We couldn't save your reservation. Please try another date or time.
     </div>
 
     <form th:action="@{/clientReservation/submit}" th:object="${clientReservation}" method="post">
@@ -49,9 +49,7 @@
 
 <script>
     const now = new Date();
-    // Ajustăm fusul orar pentru formatul ISO
     now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-    // Setăm valoarea minimă a inputului la "acum"
     document.getElementById('dateTimeInput').min = now.toISOString().slice(0, 16);
 </script>
 
